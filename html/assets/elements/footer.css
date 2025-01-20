@@ -1,0 +1,15 @@
+/* Rodapé */
+body .footer {
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    background: var(--darker, #000); /* Cor de fundo mais escura com fallback */
+    color: var(--text-color, #fff); /* Cor do texto com fallback */
+    position: relative; /* Garante que o footer respeite o fluxo do documento */
+    z-index: 10; /* Evita sobreposição por outros elementos */
+}
+
+body .footer p {
+    margin: 0;
+    color: var(--text-color, #fff); /* Cor do texto */
+}
