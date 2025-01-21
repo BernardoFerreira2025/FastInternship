@@ -1,0 +1,124 @@
+:root {
+    --primary: #4f8cff;
+    --secondary: #ff4f8c;
+    --dark: #1e2337;
+    --darker: #171b2d;
+    --light: #ffffff;
+    --text-color: #f1f1f1;
+    --glass: rgba(255, 255, 255, 0.05);
+    --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+/* Container Geral */
+.auth-container {
+    min-height: 100vh; /* Ajustado para cobrir a altura total */
+    background: linear-gradient(135deg, var(--dark), var(--darker));
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Cartão de Autenticação */
+.auth-card {
+    margin-top: 80px;
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    color: var(--text-color);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Estilo dos Inputs */
+.form-control {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(79, 140, 255, 0.4);
+}
+
+/* Botão de Login */
+.login-btn {
+    background: var(--gradient);
+    border: none;
+    color: var(--light);
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    box-shadow: 0 8px 20px rgba(79, 140, 255, 0.3);
+    transform: translateY(-3px);
+}
+
+/* Texto de Boas-vindas */
+h2 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Link de Registro */
+.signup-link {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.signup-link a {
+    color: var(--secondary);
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.signup-link a:hover {
+    color: var(--primary);
+}
+
+/* Rodapé */
+.footer {
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    background: var(--darker);
+    color: var(--text-color);
+}
+
+/* Remove o espaço branco */
+body {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--dark); /* Certifique-se de usar o mesmo fundo */
+}
+
+/* Animação */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
