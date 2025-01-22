@@ -36,9 +36,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Login de Aluno
     if (str_ends_with($email, "@escolaaugustogomes.pt")) {
-        $sql_aluno = "SELECT Nome, Password FROM alunos WHERE Email = ?";
-        if (verify_login($sql_aluno, $email, $password, 'aluno', 'aluno_dashboard.php', $conn)) {
-            header("Location: $redirect_page");
+        $sql_aluno = "SELECT id_aluno, Nome, Password FROM alunos WHERE Email = ?";
+        $stmt = $conn->prepare($sql_aluno);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            if (password_verify($password, $user['Password'])) {
+                $_SESSION['id_aluno'] = $user['id_aluno']; // Adiciona o ID do aluno à sessão
+                $_SESSION['username'] = $user['Nome'];
+                $_SESSION['user_role'] = 'aluno';
+                header("Location: aluno_dashboard.php");
+                exit();
+            } else {
+                $_SESSION['error'] = "Senha incorreta.";
+            }
+        } else {
+            $_SESSION['error'] = "E-mail não encontrado.";
+        }
             exit();
         }
     }
@@ -65,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['error'] = "Credenciais inválidas. Tente novamente.";
     header("Location: formlogin.php");
     exit();
-} else {
+{
     die("Método inválido.");
 }
 ?>

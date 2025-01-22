@@ -2419,3 +2419,141 @@ body {
     color: #fff;
     font-size: 1.2rem;
 }
+/* Estilo Geral */
+.candidatar-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Título */
+.candidatar-container h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    background: linear-gradient(90deg, #4f8cff, #ff4f8c);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+/* Fieldsets */
+.candidatar-container fieldset {
+    border: none;
+    margin-bottom: 20px;
+}
+
+/* Legend */
+.candidatar-container legend {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4f8cff;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Labels */
+.candidatar-container label {
+    display: block;
+    margin-bottom: 10px;
+    color: #ddd;
+    font-size: 1rem;
+}
+
+/* Selects e Textarea */
+.candidatar-container select,
+.candidatar-container textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #171b2d;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+/* Focus */
+.candidatar-container select:focus,
+.candidatar-container textarea:focus {
+    outline: none;
+    border: 1px solid #4f8cff;
+    box-shadow: 0 0 10px rgba(79, 140, 255, 0.5);
+}
+
+/* Botão */
+.candidatar-container input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg, #4f8cff, #ff4f8c);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+/* Hover no botão */
+.candidatar-container input[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(79, 140, 255, 0.4);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .candidatar-container {
+        padding: 20px;
+    }
+
+    .candidatar-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .candidatar-container label,
+    .candidatar-container select,
+    .candidatar-container textarea {
+        font-size: 0.9rem;
+    }
+
+    .candidatar-container input[type="submit"] {
+        font-size: 1rem;
+        padding: 12px;
+    }
+}
+.btn-view-curriculo {
+    display: inline-block;
+    padding: 10px 15px;
+    background: linear-gradient(90deg, #4f8cff, #ff4f8c);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1px; /* Adicionado para aumentar o espaço acima */
+}
+
+.btn-view-curriculo:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(79, 140, 255, 0.5);
+}
+
+#curriculo-preview {
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: #f9f9f9;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-top: 10px; /* Espaçamento acima do preview */
+}

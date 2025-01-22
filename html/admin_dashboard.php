@@ -34,7 +34,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
                 <h3>Administrador</h3>
             </div>
             <div class="menu-items">
-<<<<<<< HEAD
                 <a href="admin_dashboard.php?page=dashboard" class="menu-item <?php echo $page === 'dashboard' ? 'active' : ''; ?>">
                     <i class="fas fa-tachometer-alt"></i> Gerir Candidaturas
                 </a>
@@ -45,18 +44,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
                     <i class="fas fa-users"></i> Gestão de Utilizadores
                 </a>
                 <a href="admin_dashboard.php?page=gestao_ofertas" class="menu-item <?php echo $page === 'gestao_ofertas' ? 'active' : ''; ?>">
-=======
-                <a href="admin_dashboard.php?pages=dashboard" class="menu-item <?php echo $page === 'dashboard' ? 'active' : ''; ?>">
-                    <i class="fas fa-tachometer-alt"></i> Gerir Candidaturas
-                </a>
-                <a href="admin_dashboard.php?pages=gerir_ofertas" class="menu-item <?php echo $page === 'gerir_ofertas' ? 'active' : ''; ?>">
-                    <i class="fas fa-briefcase"></i> Publicar Ofertas
-                </a>
-                <a href="admin_dashboard.php?pages=gestao_utilizadores" class="menu-item <?php echo $page === 'gestao_utilizadores' ? 'active' : ''; ?>">
-                    <i class="fas fa-users"></i> Gestão de Utilizadores
-                </a>
-                <a href="admin_dashboard.php?pages=gestao_ofertas" class="menu-item <?php echo $page === 'gestao_ofertas' ? 'active' : ''; ?>">
->>>>>>> 9cdd88bbd5c6b13318b6824c8b6210c86cc24075
                     <i class="fas fa-users"></i> Gestão de Ofertas
                 </a>
             </div>

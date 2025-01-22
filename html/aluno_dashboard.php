@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+// Verificar se o usuário está logado e é um aluno
+if (!isset($_SESSION['username']) || $_SESSION['user_role'] !== 'aluno') {
+    header("Location: formlogin.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
