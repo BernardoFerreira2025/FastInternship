@@ -2557,3 +2557,124 @@ body {
     border-radius: 10px;
     margin-top: 10px; /* Espaçamento acima do preview */
 }
+/* Estilo geral da seção do histórico */
+.historico-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Ajusta automaticamente o tamanho dos cards */
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    background-color: inherit;
+    max-width: 1400px; /* Limite de largura */
+    margin: 0 auto;
+}
+
+/* Card de cada candidatura */
+.historico-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    width: 100%;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.historico-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(79, 140, 255, 0.4);
+}
+
+/* Título do card */
+.historico-card h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #4f8cff;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+/* Informações adicionais */
+.historico-card p {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Labels */
+.historico-card p strong {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+/* Valor das informações */
+.historico-card p span {
+    color: #ffffff;
+    font-weight: 400;
+    text-align: right;
+}
+
+/* Botão de cancelar candidatura */
+.btn-cancel {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg, #ff4f4f, #ff6f6f);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(90deg, #ff3b3b, #ff5a5a);
+    transform: translateY(-3px);
+}
+
+/* Botão desabilitado */
+.btn-disabled {
+    width: 100%;
+    padding: 15px;
+    background: rgba(75, 78, 86, 0.5);
+    border: none;
+    border-radius: 10px;
+    color: #9ba1a8;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: not-allowed;
+    margin-top: 20px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .historico-section {
+        grid-template-columns: 1fr; /* Um card por linha */
+    }
+    
+    .historico-card {
+        padding: 20px;
+    }
+    
+    .historico-card h3 {
+        font-size: 1.6rem;
+    }
+    
+    .historico-card p {
+        font-size: 0.9rem;
+    }
+}
+/* Status */
+.status.pendente {
+    color: #FF4F4F; /* Vermelho */
+}
+
+.status.aceite {
+    color: #4CAF50; /* Verde */
+}

@@ -46,7 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Inserir nova candidatura (sem o campo 'curriculo')
-    $sql_insert = "INSERT INTO candidaturas (id_aluno, id_oferta, status, data_candidatura, carta_motivacao, respostas) VALUES (?, ?, 'pendente', CURRENT_TIMESTAMP, ?, ?)";
+    $sql_insert = "INSERT INTO candidaturas (id_aluno, id_oferta, status_professor, status_empresa, data_candidatura, carta_motivacao, respostas) 
+                    VALUES (?, ?, 'pendente', 'pendente', CURRENT_TIMESTAMP, ?, ?)";
     if ($stmt = $conn->prepare($sql_insert)) {
         $respostas_json = json_encode($respostas); // Armazena as respostas das perguntas em formato JSON
 

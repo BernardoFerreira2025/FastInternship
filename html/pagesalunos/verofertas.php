@@ -5,6 +5,26 @@ if (!$conn) {
     die("Falha ao conectar com a base de dados: " . mysqli_connect_error());
 }
 
+// Verificar se a sessão já foi iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$id_aluno = $_SESSION['id_aluno'] ?? null;
+
+if (!$id_aluno) {
+    die("Você precisa estar autenticado para visualizar esta página.");
+}
+
+// Verificar número de candidaturas do aluno
+$sql_count_candidaturas = "SELECT COUNT(*) AS total_candidaturas FROM candidaturas WHERE id_aluno = ?";
+$stmt = $conn->prepare($sql_count_candidaturas);
+$stmt->bind_param("i", $id_aluno);
+$stmt->execute();
+$stmt->bind_result($total_candidaturas);
+$stmt->fetch();
+$stmt->close();
+
 // Obter ofertas disponíveis
 $sql_ofertas = "SELECT o.*, e.nome_empresa as empresa_nome, e.responsavel as empresa_responsavel
                 FROM ofertas_empresas o 
@@ -46,6 +66,18 @@ if (isset($_GET['candidatura']) && $_GET['candidatura'] === 'sucesso') {
         });
     </script>";
 }
+
+// Verificar se o limite de candidaturas foi atingido
+if ($total_candidaturas >= 3) {
+    echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Limite de Candidaturas Atingido',
+            text: 'Você só pode se candidatar a no máximo 3 ofertas.',
+            confirmButtonText: 'Entendido'
+        });
+    </script>";
+}
 ?>
 
 <h1>Ofertas Disponíveis</h1>
@@ -62,7 +94,11 @@ if (isset($_GET['candidatura']) && $_GET['candidatura'] === 'sucesso') {
                 <p><strong>Requisitos:</strong> <?php echo htmlspecialchars($oferta['requisitos']); ?></p>
                 <p><strong>Vagas:</strong> <?php echo htmlspecialchars($oferta['vagas']); ?></p>
                 <p><strong>Curso Relacionado:</strong> <?php echo htmlspecialchars($oferta['curso_relacionado']); ?></p>
-                <a href="aluno_dashboard.php?page=candidatar&id=<?php echo urlencode($oferta['id_oferta']); ?>" class="btn-view">Candidatar</a>
+                <?php if ($total_candidaturas < 3): ?>
+                    <a href="aluno_dashboard.php?page=candidatar&id=<?php echo urlencode($oferta['id_oferta']); ?>" class="btn-view">Candidatar</a>
+                <?php else: ?>
+                    <button class="btn-disabled" disabled>Limite Atingido</button>
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
     <?php else: ?>
