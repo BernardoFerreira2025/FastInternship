@@ -1,53 +1,91 @@
+<?php
+include '../database/mysqli.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Verifica se o usuário está logado e é um professor
+$id_professor = $_SESSION['id_professor'] ?? null;
+
+if (!$id_professor) {
+    $_SESSION['error'] = "Sessão inválida. Faça login novamente.";
+    header("Location: ../formlogin.php");
+    exit();
+}
+
+// Obtém o curso do professor
+$query = "SELECT c.id_curso, c.nome AS curso_nome 
+          FROM professores p
+          JOIN cursos c ON p.id_curso = c.id_curso
+          WHERE p.id_professor = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $id_professor);
+$stmt->execute();
+$result = $stmt->get_result();
+$professor = $result->fetch_assoc();
+$id_curso = $professor['id_curso'] ?? null;
+$curso_nome = $professor['curso_nome'] ?? "Curso não encontrado";
+
+?>
+
 <form action="geriroferta_handler.php" method="POST" class="form-container" id="ofertaForm">
     <h1>Inserir Nova Oferta</h1>
+
     <div class="form-group">
         <label for="titulo">Título da Oferta:</label>
         <input type="text" id="titulo" name="titulo" placeholder="Ex: Nome da Empresa" required>
     </div>
+    
     <div class="form-group">
         <label for="descricao">Descrição:</label>
         <textarea id="descricao" name="descricao" placeholder="Descreva os detalhes da oferta..." required></textarea>
     </div>
+    
     <div class="form-group">
         <label for="requisitos">Requisitos:</label>
         <textarea id="requisitos" name="requisitos" placeholder="Liste os requisitos necessários..." required></textarea>
     </div>
+    
     <div class="form-group">
         <label for="id_empresa">Empresa:</label>
         <select id="id_empresa" name="id_empresa" required>
             <option value="">Selecione uma empresa</option>
             <?php
-            include '../database/mysqli.php';
-            $result = $conn->query("SELECT id_empresas, nome_empresa FROM empresas");
-            while ($empresa = $result->fetch_assoc()) {
+            // Buscar apenas empresas do mesmo curso que o professor
+            $queryEmpresas = "SELECT id_empresas, nome_empresa FROM empresas WHERE id_curso = ?";
+            $stmtEmpresas = $conn->prepare($queryEmpresas);
+            $stmtEmpresas->bind_param("i", $id_curso);
+            $stmtEmpresas->execute();
+            $resultEmpresas = $stmtEmpresas->get_result();
+
+            while ($empresa = $resultEmpresas->fetch_assoc()) {
                 echo "<option value='{$empresa['id_empresas']}'>{$empresa['nome_empresa']}</option>";
             }
             ?>
         </select>
     </div>
+    
     <div class="form-group">
         <label for="vagas">Número de Vagas:</label>
         <input type="number" id="vagas" name="vagas" min="1" placeholder="Ex: 5" required>
     </div>
+    
     <div class="form-group">
         <label for="curso_relacionado">Curso Relacionado:</label>
-        <select id="curso_relacionado" name="curso_relacionado" required>
-            <option value="">Selecione um curso</option>
-            <option value="Técnico(a) de Multimédia">Técnico(a) de Multimédia</option>
-            <option value="Técnico(a) de Turismo">Técnico(a) de Turismo</option>
-            <option value="Técnico(a) de Gestão e Programação de Sistemas Informáticos">
-                Técnico(a) de Gestão e Programação de Sistemas Informáticos
-            </option>
-        </select>
+        <input type="text" id="curso_relacionado" name="curso_relacionado" value="<?php echo $curso_nome; ?>" readonly>
     </div>
+    
     <div class="form-group">
         <label for="data_inicio">Data de Início:</label>
         <input type="date" id="data_inicio" name="data_inicio" required>
     </div>
+    
     <div class="form-group">
         <label for="data_fim">Data de Fim:</label>
         <input type="date" id="data_fim" name="data_fim" required>
     </div>
+    
     <button type="submit" class="btn-submit">Salvar Oferta</button>
 </form>
 
@@ -60,9 +98,8 @@
         const requisitos = document.getElementById('requisitos').value.trim();
         const idEmpresa = document.getElementById('id_empresa').value.trim();
         const vagas = document.getElementById('vagas').value.trim();
-        const cursoRelacionado = document.getElementById('curso_relacionado').value.trim();
 
-        if (!titulo || !descricao || !requisitos || !idEmpresa || !vagas || !cursoRelacionado) {
+        if (!titulo || !descricao || !requisitos || !idEmpresa || !vagas) {
             showToast('Por favor, preencha todos os campos.', 'error');
             event.preventDefault();
             return;

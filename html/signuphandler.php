@@ -12,6 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm-password'];
 
+    // Validar se o e-mail tem o domínio correto
+    if (!str_ends_with($email, "@escolaaugustogomes.pt")) {
+        die("Apenas alunos com e-mail '@escolaaugustogomes.pt' podem se registrar.");
+    }
+
     // Validar se as senhas coincidem
     if ($password !== $confirm_password) {
         die("As senhas não coincidem! Tente novamente.");
@@ -20,29 +25,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Hash da senha para armazenamento seguro
     $password_hashed = password_hash($password, PASSWORD_DEFAULT);
 
-    // Upload do currículo
+    // Upload do currículo (APENAS PDF)
     $curriculo = $_FILES['resume'];
     $curriculo_nome = $curriculo['name'];
     $curriculo_tmp = $curriculo['tmp_name'];
     $curriculo_tamanho = $curriculo['size'];
     $curriculo_extensao = strtolower(pathinfo($curriculo_nome, PATHINFO_EXTENSION));
-    $extensoes_permitidas = ['pdf', 'doc', 'docx'];
 
-    if (!in_array($curriculo_extensao, $extensoes_permitidas)) {
-        die("Apenas arquivos PDF, DOC ou DOCX são permitidos.");
+    // Permitir somente PDF
+    if ($curriculo_extensao !== 'pdf') {
+        die("Erro: Apenas arquivos PDF são permitidos.");
     }
 
-    if ($curriculo_tamanho > 2 * 1024 * 1024) { // Limite de 2MB
-        die("O arquivo ultrapassa o limite de 2MB.");
+    // Limite de 2MB
+    if ($curriculo_tamanho > 2 * 1024 * 1024) {
+        die("Erro: O arquivo ultrapassa o limite de 2MB.");
     }
 
-    // Garantir que o diretório de upload exista
+    // Criar diretório caso não exista
     $destino_diretorio = "../uploads/curriculos/";
     if (!is_dir($destino_diretorio)) {
         mkdir($destino_diretorio, 0777, true);
     }
 
-    $destino_curriculo = $destino_diretorio . uniqid() . "." . $curriculo_extensao;
+    $destino_curriculo = $destino_diretorio . uniqid() . ".pdf";
     if (!move_uploaded_file($curriculo_tmp, $destino_curriculo)) {
         die("Erro ao fazer upload do arquivo. Tente novamente.");
     }

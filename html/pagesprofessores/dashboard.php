@@ -1,26 +1,28 @@
 <?php
 // Conexão com o banco de dados
 include '../database/mysqli.php';
+if (session_status() === PHP_SESSION_NONE) 
+session_start(); // Certifique-se de iniciar a sessão
 
 // Verifica se foi enviado um filtro de curso
 $cursoSelecionado = isset($_GET['curso']) ? $_GET['curso'] : '';
 
 // Consulta para obter as ofertas com base no filtro
 if ($cursoSelecionado) {
-    $query = "SELECT id_oferta, titulo, descricao, vagas, curso_relacionado, data_inicio, data_fim 
+    $query = "SELECT id_oferta, titulo, descricao, vagas, id_curso, data_inicio, data_fim 
               FROM ofertas_empresas 
-              WHERE curso_relacionado = ?";
+              WHERE id_curso = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $cursoSelecionado);
+    $stmt->bind_param("i", $cursoSelecionado);
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
-    $query = "SELECT id_oferta, titulo, descricao, vagas, curso_relacionado, data_inicio, data_fim FROM ofertas_empresas";
+    $query = "SELECT id_oferta, titulo, descricao, vagas, id_curso, data_inicio, data_fim FROM ofertas_empresas";
     $result = $conn->query($query);
 }
 
 // Consulta para obter os cursos disponíveis
-$cursosQuery = "SELECT DISTINCT curso_relacionado FROM ofertas_empresas";
+$cursosQuery = "SELECT DISTINCT id_curso FROM ofertas_empresas";
 $cursosResult = $conn->query($cursosQuery);
 ?>
 <!DOCTYPE html>
@@ -36,22 +38,6 @@ $cursosResult = $conn->query($cursosQuery);
         <!-- Título do Painel -->
         <h1 class="dashboard-header">Controlo das Candidaturas</h1>
 
-        <!-- Filtro por Curso -->
-        <form method="GET" class="filter-form">
-            <label for="curso">Filtrar por Curso:</label>
-            <select name="curso" id="curso" onchange="this.form.submit()">
-                <option value="">Todos os Cursos</option>
-                <?php
-                if ($cursosResult->num_rows > 0) {
-                    while ($curso = $cursosResult->fetch_assoc()) {
-                        $selected = ($curso['curso_relacionado'] === $cursoSelecionado) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($curso['curso_relacionado']) . "' $selected>" . htmlspecialchars($curso['curso_relacionado']) . "</option>";
-                    }
-                }
-                ?>
-            </select>
-        </form>
-
         <!-- Seção de Ofertas Publicadas -->
         <div class="offers-section">
             <?php
@@ -62,7 +48,16 @@ $cursosResult = $conn->query($cursosQuery);
                     echo "<h3>" . htmlspecialchars($row['titulo']) . "</h3>";
                     echo "<p><strong>Descrição:</strong> " . htmlspecialchars($row['descricao']) . "</p>";
                     echo "<p><strong>Vagas:</strong> " . htmlspecialchars($row['vagas']) . "</p>";
-                    echo "<p><strong>Curso Relacionado:</strong> " . htmlspecialchars($row['curso_relacionado']) . "</p>";
+                    
+                    // Substituir id_curso pelo nome do curso real
+                    $cursoNomeQuery = "SELECT nome FROM cursos WHERE id_curso = ?";
+                    $stmtCurso = $conn->prepare($cursoNomeQuery);
+                    $stmtCurso->bind_param("i", $row['id_curso']);
+                    $stmtCurso->execute();
+                    $cursoNomeResult = $stmtCurso->get_result();
+                    $cursoNome = $cursoNomeResult->fetch_assoc()['nome'] ?? 'Curso não encontrado';
+
+                    echo "<p><strong>Curso Relacionado:</strong> " . htmlspecialchars($cursoNome) . "</p>";
                     echo "<p><strong>Início:</strong> " . htmlspecialchars($row['data_inicio']) . "</p>";
                     echo "<p><strong>Fim:</strong> " . htmlspecialchars($row['data_fim']) . "</p>";
                     echo "<a href='alunos_candidatos.php?oferta_id=" . $row['id_oferta'] . "' class='btn-view'>Ver Candidatos</a>";
@@ -76,7 +71,7 @@ $cursosResult = $conn->query($cursosQuery);
     </div>
 
     <?php
-    // Exibe o pop-up se houver mensagem na sessão
+    // Exibe mensagens de sucesso ou erro
     if (isset($_SESSION['mensagem_sucesso'])) {
         echo "<script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -87,7 +82,7 @@ $cursosResult = $conn->query($cursosQuery);
                     setTimeout(() => toast.remove(), 5000);
                 });
               </script>";
-        unset($_SESSION['mensagem_sucesso']); // Remove a mensagem após exibir
+        unset($_SESSION['mensagem_sucesso']);
     }
 
     if (isset($_SESSION['mensagem_erro'])) {
@@ -100,7 +95,7 @@ $cursosResult = $conn->query($cursosQuery);
                     setTimeout(() => toast.remove(), 5000);
                 });
               </script>";
-        unset($_SESSION['mensagem_erro']); // Remove a mensagem após exibir
+        unset($_SESSION['mensagem_erro']);
     }
     ?>
 </body>

@@ -9,11 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/elements/header.css">
     <link rel="stylesheet" href="assets/elements/footer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <?php require "assets/elements/header.php"; ?>
-    <!-- Conteúdo da Página -->
+
     <div class="signup-container">
         <div class="signup-card">
             <h2 class="gradient-title">Crie a Sua Conta</h2>
@@ -48,44 +47,60 @@
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" class="form-input" placeholder="Escreva o seu email" required>
                 </div>
+
                 <div class="form-group">
                     <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" class="form-input" placeholder="Escreva a sua senha" required>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" class="form-input" placeholder="Escreva a sua senha" required>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('password')">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <label for="confirm-password">Confirme a Senha</label>
-                    <input type="password" id="confirm-password" name="confirm-password" class="form-input" placeholder="Confirme a sua senha" required>
+                    <div class="password-container">
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-input" placeholder="Confirme a sua senha" required>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password')">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
                 </div>
+
                 <div class="form-group">
-                    <label for="resume">Currículo (PDF ou Word)</label>
-                    <input type="file" id="resume" name="resume" class="form-input" accept=".pdf, .doc, .docx" required>
+                    <label for="resume">Currículo (Apenas PDF)</label>
+                    <input type="file" id="resume" name="resume" class="form-input" accept=".pdf" required>
                 </div>
                 <button type="submit" class="signup-btn">Registar</button>
             </form>
-
-            <div class="social-signup">
-                <p>Ou registe-se com:</p>
-                <div class="social-icons">
-                    <button class="social-btn">
-                        <i class="fa-brands fa-google"></i> Google
-                    </button>
-                    <button class="social-btn">
-                        <i class="fa-brands fa-linkedin"></i> LinkedIn
-                    </button>
-                    <button class="social-btn">
-                        <i class="fa-brands fa-github"></i> GitHub
-                    </button>
-                </div>
-            </div>
 
             <div class="login-link">
                 Já tem uma conta? <a href="formlogin.php">Entrar</a>
             </div>
         </div>
     </div>
-        <?php require "assets/elements/footer.php"; ?>
-    <!-- Scripts -->
+
+    <?php require "assets/elements/footer.php"; ?>
+
     <script src="assets/js/signup.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    function togglePasswordVisibility(id) {
+        var passwordInput = document.getElementById(id);
+        var eyeIcon = passwordInput.nextElementSibling.querySelector("i");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+        }
+    }
+    </script>
 </body>
 </html>

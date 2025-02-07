@@ -1178,89 +1178,155 @@ textarea::-webkit-scrollbar-thumb {
     --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
 }
 
-/* Container Geral */
-/* Styles for login */
+/* === Container Geral do Login === */
 .auth-container {
-    min-height: 100vh; /* Ajustado para cobrir a altura total */
-    background: linear-gradient(135deg, var(--dark), var(--darker));
-    padding: 2rem;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e2337, #171b2d); /* Fundo moderno */
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 2rem;
 }
 
-/* Cartão de Autenticação */
+/* === Cartão de Login === */
 .auth-card {
-    margin-top: 80px;
-    background: var(--glass);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
+    border-radius: 15px;
     padding: 2rem;
     width: 100%;
     max-width: 400px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    color: var(--text-color);
-    animation: fadeIn 0.5s ease-in-out;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    backdrop-filter: blur(12px);
 }
 
-/* Estilo dos Inputs */
+/* === Título e Texto do Formulário === */
+.auth-card h2 {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.auth-card p {
+    color: #ccc;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* === Estilo dos Inputs === */
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    color: #ddd;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
 .form-control {
-    background: rgb(255, 255, 255);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--text-color);
+    width: 100%;
+    padding: 0.8rem 2.5rem 0.8rem 1rem; /* Espaço para o ícone do olho */
     border-radius: 10px;
-    padding: 0.8rem;
-    transition: all 0.3s ease;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-control::placeholder {
+    color: #bbb;
 }
 
 .form-control:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 15px rgba(79, 140, 255, 0.4);
+    border: 1px solid #4f8cff;
+    box-shadow: 0 0 10px rgba(79, 140, 255, 0.5);
 }
 
-/* Botão de Login */
-.login-btn {
-    background: var(--gradient);
-    border: none;
-    color: var(--light);
-    font-weight: bold;
-    padding: 0.8rem 1.5rem;
-    border-radius: 10px;
-    width: 100%;
-    margin-top: 1rem;
-    transition: all 0.3s ease;
+/* === Ajuste para Centralizar Apenas o Ícone do Olho === */
+.password-container {
+    position: relative;
 }
 
-.login-btn:hover {
-    background: linear-gradient(135deg, var(--secondary), var(--primary));
-    box-shadow: 0 8px 20px rgba(79, 140, 255, 0.3);
-    transform: translateY(-3px);
+/* Ícone do Olho Centralizado Dentro do Campo */
+.password-container .toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: #bbb;
+    transition: color 0.3s ease;
 }
 
-/* Texto de Boas-vindas */
-h2 {
-    font-size: 1.8rem;
-    color: var(--text-color);
-    margin-bottom: 1rem;
-    text-align: center;
+.password-container .toggle-password:hover {
+    color: #fff;
+}
+/* === Estilização do Link "Esqueceu-se da palavra-passe?" === */
+.forgot-password {
+    margin-top: -10px; /* Ajuste de posição */
+    margin-bottom: 15px; /* Espaço antes do botão */
 }
 
-/* Link de Registro */
-.signup-link {
-    margin-top: 1rem;
-    text-align: center;
-}
-
-.signup-link a {
-    color: var(--secondary);
-    font-weight: bold;
+.forgot-password a {
+    font-size: 0.9rem;
+    color: #ff4f8c;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
+.forgot-password a:hover {
+    color: #4f8cff;
+    text-decoration: underline;
+}
+
+/* === Botão de Login === */
+.login-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #4f8cff, #ff4f8c);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: linear-gradient(90deg, #ff4f8c, #4f8cff);
+    box-shadow: 0 5px 15px rgba(79, 140, 255, 0.4);
+    transform: translateY(-3px);
+}
+
+/* === Link para Registro === */
+.signup-link {
+    margin-top: 1rem;
+}
+
+.signup-link p {
+    color: #bbb;
+    font-size: 0.9rem;
+}
+
+.signup-link a {
+    color: #ff4f8c;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
 .signup-link a:hover {
-    color: var(--primary);
+    color: #4f8cff;
 }
 
 /* Remove o espaço branco */
@@ -2363,31 +2429,40 @@ body {
 .form-container button:hover {
     background: #ff4f8c;
 }
-.toast-success, .toast-error {
+/* === TOAST MESSAGE GLOBAL === */
+.toast-message {
     position: fixed;
-    bottom: 20px; /* Altere aqui para ajustar a distância da parte inferior */
+    bottom: 20px; /* Mantém no centro inferior */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
-    padding: 10px 20px;
-    color: #fff;
+    z-index: 1050;
+    padding: 12px 20px;
     font-size: 16px;
-    border-radius: 5px;
+    font-weight: bold;
+    border-radius: 8px;
+    color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    animation: fadeInOut 5s ease-in-out; /* Animação para aparecer e desaparecer */
+    animation: fadeInOut 4s ease-in-out; /* Mantém padrão para todas as mensagens */
 }
 
-/* Estilo para mensagens de sucesso */
-.toast-success {
-    background-color: #4caf50;
-}
-
-/* Estilo para mensagens de erro */
+/* === Tipos de Toast === */
 .toast-error {
-    background-color: #f44336;
+    background-color: #f44336; /* Vermelho para erros */
 }
 
-/* Animação de entrada e saída */
+.toast-success {
+    background-color: #4caf50; /* Verde para sucesso */
+}
+
+.toast-warning {
+    background-color: #ff9800; /* Laranja para alertas */
+}
+
+.toast-info {
+    background-color: #2196f3; /* Azul para informações */
+}
+
+/* === Animação Fade-In e Fade-Out === */
 @keyframes fadeInOut {
     0% {
         opacity: 0;
@@ -2557,124 +2632,154 @@ body {
     border-radius: 10px;
     margin-top: 10px; /* Espaçamento acima do preview */
 }
-/* Estilo geral da seção do histórico */
-.historico-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Ajusta automaticamente o tamanho dos cards */
-    gap: 20px;
-    padding: 20px;
-    justify-content: center;
-    background-color: inherit;
-    max-width: 1400px; /* Limite de largura */
-    margin: 0 auto;
+/* Arquivo: historico.php */
+/* Geral */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0F172A; /* Fundo escuro */
+    margin: 0;
+    padding: 0;
+    color: #E2E8F0; /* Texto claro */
 }
 
-/* Card de cada candidatura */
+/* Seção de Histórico */
+.historico-section {
+    margin: 20px auto;
+    max-width: 90%;
+    display: flex; /* Exibir os cards em linha */
+    flex-wrap: wrap; /* Permitir quebra de linha se necessário */
+    gap: 25px; /* Espaçamento entre os cards */
+    justify-content: center; /* Centralizar cards */
+}
+
+/* Card de Histórico */
 .historico-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 20px;
-    width: 100%;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #1E293B; /* Fundo do card */
+    padding: 25px; /* Mais espaçamento interno */
+    flex: 1 1 calc(30% - 50px); /* Aumentei um pouco a largura */
+    max-width: 350px; /* Largura máxima maior */
+    border-radius: 12px; /* Cantos arredondados */
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Sombra suave */
+    color: #E2E8F0; /* Cor do texto */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animação ao passar o mouse */
+    min-height: 220px; /* Altura mínima aumentada */
 }
 
 .historico-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(79, 140, 255, 0.4);
+    transform: translateY(-8px); /* Elevação ao passar o mouse */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Sombra mais intensa */
 }
 
-/* Título do card */
 .historico-card h3 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #4f8cff;
-    text-align: left;
+    color: #3B82F6; /* Azul para o título */
     margin-bottom: 15px;
+    font-size: 20px; /* Título levemente maior */
+    font-weight: bold;
+    text-align: center;
 }
 
-/* Informações adicionais */
 .historico-card p {
-    margin: 10px 0;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.5;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin: 8px 0; /* Mais espaçamento entre os parágrafos */
+    font-size: 15px; /* Texto maior */
+    line-height: 1.6;
 }
 
-/* Labels */
-.historico-card p strong {
-    color: rgba(255, 255, 255, 0.6);
-    font-weight: 500;
+.historico-card .status {
+    font-weight: bold;
 }
 
-/* Valor das informações */
-.historico-card p span {
-    color: #ffffff;
-    font-weight: 400;
-    text-align: right;
+.historico-card .status.pendente {
+    color: #EF4444; /* Vermelho para "pendente" */
 }
 
-/* Botão de cancelar candidatura */
+/* Botão de Cancelar */
 .btn-cancel {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(90deg, #ff4f4f, #ff6f6f);
+    background-color: #EF4444; /* Vermelho */
+    color: #fff;
     border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 500;
+    padding: 12px 25px; /* Botão levemente maior */
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 20px;
+    border-radius: 6px; /* Bordas arredondadas maiores */
+    font-size: 15px; /* Texto maior */
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Animação ao passar o mouse */
 }
 
 .btn-cancel:hover {
-    background: linear-gradient(90deg, #ff3b3b, #ff5a5a);
-    transform: translateY(-3px);
-}
-
-/* Botão desabilitado */
-.btn-disabled {
-    width: 100%;
-    padding: 15px;
-    background: rgba(75, 78, 86, 0.5);
-    border: none;
-    border-radius: 10px;
-    color: #9ba1a8;
-    font-size: 1.1rem;
-    font-weight: 500;
-    cursor: not-allowed;
-    margin-top: 20px;
+    background-color: #DC2626; /* Vermelho mais escuro */
+    transform: scale(1.08); /* Aumenta levemente o botão */
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .historico-section {
-        grid-template-columns: 1fr; /* Um card por linha */
-    }
-    
     .historico-card {
-        padding: 20px;
+        flex: 1 1 calc(45% - 30px); /* 2 cards por linha em telas menores */
     }
-    
-    .historico-card h3 {
-        font-size: 1.6rem;
-    }
-    
-    .historico-card p {
-        font-size: 0.9rem;
-    }
-}
-/* Status */
-.status.pendente {
-    color: #FF4F4F; /* Vermelho */
 }
 
-.status.aceite {
-    color: #4CAF50; /* Verde */
+@media (max-width: 480px) {
+    .historico-card {
+        flex: 1 1 100%; /* 1 card por linha em telas muito pequenas */
+    }
+}
+/* Estilização da seção do perfil do professor */
+.professor-profile {
+    text-align: center;
+    padding: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+/* Container da imagem */
+.profile-pic-container {
+    position: relative;
+    display: inline-block;
+}
+
+.admin-profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.5px solid transparent;
+    background: linear-gradient(45deg, #ff7eb3, #ff758c); /* Rosa e Roxo */
+    padding: 3px; /* Efeito de borda */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.admin-profile-picture:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 15px rgba(255, 117, 140, 0.7);
+}
+
+/* Ícone de "+" estilizado para upload */
+.upload-icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: linear-gradient(45deg, #ff7eb3, #ff758c); /* Rosa e Roxo igual à borda */
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid white;
+    box-shadow: 0px 0px 10px rgba(255, 117, 140, 0.5);
+}
+
+.upload-icon:hover {
+    background: linear-gradient(45deg, #ff758c, #ff7eb3);
+    transform: scale(1.1);
+    box-shadow: 0px 0px 15px rgba(255, 117, 140, 0.7);
+}
+
+
+/* Esconde o input de upload de foto */
+#upload-foto {
+    display: none;
 }

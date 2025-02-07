@@ -1,13 +1,14 @@
 <?php
-require_once '../database/mysqli.php';
-
-if (!$conn) {
-    die("Falha ao conectar com a base de dados: " . mysqli_connect_error());
-}
+require_once 'C:/xampp/htdocs/pap/database/mysqli.php';
 
 // Verificar se a sessão já foi iniciada
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
+
+// Verificar conexão com o banco de dados
+if (!$conn) {
+    die("Falha ao conectar com a base de dados: " . mysqli_connect_error());
 }
 
 $id_aluno = $_SESSION['id_aluno'] ?? null;
@@ -50,19 +51,24 @@ $conn->close();
     <link rel="stylesheet" href="../assets/css/allcss.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Ofertas Disponíveis</title>
+    <style>
+        .swal2-popup {
+            font-family: 'Arial', sans-serif; /* Defina a fonte aqui */
+        }
+    </style>
 </head>
 <body>
 <?php
-// Verifica se a candidatura foi bem-sucedida e exibe o toast
+// Exibir o pop-up de sucesso da candidatura
 if (isset($_GET['candidatura']) && $_GET['candidatura'] === 'sucesso') {
     echo "<script>
         Swal.fire({
-            toast: true,
-            position: 'top-end',
+            title: 'Sucesso!',
+            text: 'Candidatura enviada com sucesso!',
             icon: 'success',
-            title: 'Candidatura enviada com sucesso!',
-            showConfirmButton: false,
-            timer: 3000
+            confirmButtonColor: '#4CAF50',
+            timer: 3000,
+            showConfirmButton: false
         });
     </script>";
 }
@@ -74,7 +80,20 @@ if ($total_candidaturas >= 3) {
             icon: 'error',
             title: 'Limite de Candidaturas Atingido',
             text: 'Você só pode se candidatar a no máximo 3 ofertas.',
-            confirmButtonText: 'Entendido'
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#d33',
+            
+        });
+    </script>";
+}
+
+// Exibir o pop-up de sucesso da candidatura cancelada
+if (isset($_GET['candidatura']) && $_GET['candidatura'] === 'cancelada') {
+    echo "<script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Candidatura cancelada com sucesso!',
+            confirmButtonColor: '#4CAF50'
         });
     </script>";
 }
@@ -97,8 +116,9 @@ if ($total_candidaturas >= 3) {
                 <?php if ($total_candidaturas < 3): ?>
                     <a href="aluno_dashboard.php?page=candidatar&id=<?php echo urlencode($oferta['id_oferta']); ?>" class="btn-view">Candidatar</a>
                 <?php else: ?>
-                    <button class="btn-disabled" disabled>Limite Atingido</button>
+                    <button class="btn-disabled" onclick="limiteCandidaturas()" disabled>Limite Atingido</button>
                 <?php endif; ?>
+
             </div>
         <?php endforeach; ?>
     <?php else: ?>

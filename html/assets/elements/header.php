@@ -7,13 +7,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <nav class="navbar">
     <!-- Logo -->
-    <a class="logo" href="index.php">FastInternship</a>
+    <a class="logo" href="http://localhost/pap/html/index.php">FastInternship</a>
     
     <!-- Links de navegação -->
     <div class="nav-links">
-        <a href="index.php">Início</a>
-        <a href="about.php">Sobre</a>
-        <a href="contact.php">Contacto</a>
+        <a href="http://localhost/pap/html/index.php">Início</a>
+        <a href="http://localhost/pap/html/about.php">Sobre</a>
+        <a href="http://localhost/pap/html/contact.php">Contacto</a>
     </div>
     
     <!-- Links dinâmicos -->
@@ -34,8 +34,8 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         <?php else: ?>
             <div class="auth-links">
-                <a href="formlogin.php" class="btn-login">Login</a>
-                <a href="signup.php" class="btn-signup">Registe-se</a>
+                <a href="http://localhost/pap/html/formlogin.php" class="btn-login">Login</a>
+                <a href="http://localhost/pap/html/signup.php" class="btn-signup">Registe-se</a>
             </div>
         <?php endif; ?>
     </div>
