@@ -1,0 +1,17 @@
+{
+    "name": "delas/pap",
+    "autoload": {
+        "psr-4": {
+            "Delas\\Pap\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "puroinpuro",
+            "email": "159020276+puroinpuro@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

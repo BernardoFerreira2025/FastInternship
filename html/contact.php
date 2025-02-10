@@ -1,17 +1,17 @@
+<?php
+session_start(); // Inicia sessão para verificar o status do e-mail
+?>
+
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacte-nos - FastInternship</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom Styles -->
     <link rel="stylesheet" href="assets/css/allcss.css">
     <link rel="stylesheet" href="assets/elements/header.css">
     <link rel="stylesheet" href="assets/elements/footer.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
 </head>
 <body>
         <?php include 'assets/elements/header.php'; ?>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="info-text">
                         <h3>E-mail</h3>
-                        <p>contacto@fastinternship.com</p>
+                        <p>fastinternship@gmail.com</p>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                     <p>Tem dúvidas, sugestões ou precisa de ajuda? Preencha o formulário abaixo e entraremos em contacto consigo o mais breve possível.</p>
                 </div>
 
-                <form id="contact-form" action="contact.php" method="POST">
+                <form id="contact-form" action="enviar_email.php" method="POST">
                     <div class="form-group">
                         <label class="form-label" for="name">Nome</label>
                         <input type="text" name="name" id="name" class="form-input" placeholder="Insira o seu nome" required>
@@ -104,12 +104,29 @@
         </div>
     </div>
         <?php include 'assets/elements/footer.php'; ?>
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/contact.js"></script>
-    
-    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-message" style="display: none;"></div>
+
+    <!-- JavaScript para exibir Toast -->
+    <script>
+        function showToast(message, type) {
+            var toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "toast-message " + (type === "error" ? "toast-error" : "toast-success");
+
+            toast.style.display = "block";
+            setTimeout(function () {
+                toast.style.display = "none";
+            }, 4000);
+        }
+
+        // Verifica se há uma mensagem de status na sessão e exibe o toast
+        <?php if (isset($_SESSION['email_status'])): 
+            list($type, $msg) = explode('|', $_SESSION['email_status']);
+            unset($_SESSION['email_status']); // Limpa a sessão após exibição ?>
+            showToast("<?= $msg ?>", "<?= $type ?>");
+        <?php endif; ?>
+    </script>
+
 </body>
 </html>
-
-

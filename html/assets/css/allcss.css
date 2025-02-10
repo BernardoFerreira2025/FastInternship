@@ -271,209 +271,6 @@ body {
         transform: translateY(0);
     }
 }
-
-
-/* --- Content from /mnt/data/signup.css --- */
-:root {
-    --primary: #4f8cff;
-    --secondary: #ff4f8c;
-    --dark: #1e2337;
-    --darker: #171b2d;
-    --light: #ffffff;
-    --text-color: #f1f1f1;
-    --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-    --glass-bg: rgba(30, 35, 55, 0.95);
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --placeholder-color: rgba(100, 100, 100, 0.8); /* Cor menos escura e suave */
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    background: var(--dark);
-}
-
-/* Styles for signup */
-.signup-container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    margin-top: 4rem;
-    perspective: 1000px;
-}
-
-.signup-container .signup-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    padding: 3rem;
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 600px;
-    animation: cardEntrance 1s ease-out;
-}
-
-.gradient-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    text-align: center;
-    background: var(--gradient);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-}
-
-.signup-container label,
-.signup-container p {
-    color: var(--light);
-    font-size: 1rem;
-}
-
-.signup-container .form-input {
-    width: 100%;
-    padding: 1.2rem 1.8rem;
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    color: rgba(100,100,100,0.8);
-    font-size: 1rem;
-    transition: var(--transition);
-}
-
-/* Placeholder para campos de texto */
-.signup-container .form-input::placeholder {
-    color: var(--placeholder-color); /* Cor mais suave */
-    opacity: 1;
-}
-
-/* Estilo para o campo de seleção (dropdown) */
-.signup-container .form-input select {
-    color: var(--placeholder-color); /* Cor do texto do dropdown */
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 1rem;
-    font-size: 1rem;
-    appearance: none;
-    transition: var(--transition);
-    outline: none;
-}
-
-.signup-container .form-input option[value=""][disabled] {
-    color: var(--placeholder-color); /* Placeholder no dropdown */
-}
-
-/* Estilo para o campo de data */
-.signup-container .form-input[type="date"] {
-    color: var(--placeholder-color); /* Texto dentro do campo de data */
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 1.2rem 1.8rem;
-    font-size: 1rem;
-}
-
-/* Ícone de calendário no campo de data */
-.signup-container .form-input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: brightness(0) invert(1);
-}
-
-/* Wrapper para posicionar ícones */
-.signup-container .form-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-/* Ícones em campos de texto */
-.signup-container .form-group i {
-    position: absolute;
-    right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--light);
-    pointer-events: none;
-    font-size: 1.2rem;
-}
-
-/* Botão */
-.signup-container .signup-btn {
-    background: var(--gradient);
-    border: none;
-    padding: 1.2rem;
-    border-radius: 16px;
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
-    width: 80%;
-    margin: 2rem auto;
-    display: block;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.signup-container .signup-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(79, 140, 255, 0.3);
-}
-
-/* Redes Sociais */
-.signup-container .social-signup p {
-    color: rgba(255, 255, 255, 0.7);
-    text-align: center;
-}
-
-.signup-container .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.signup-container .social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.2rem;
-    border: none;
-    border-radius: 16px;
-    background: var(--card-bg);
-    color: var(--light);
-    font-size: 1rem;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.signup-container .social-btn:hover {
-    background: var(--gradient);
-    color: var(--light);
-}
-
-/* Links */
-.signup-container .login-link {
-    margin-top: 2rem;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.signup-container .login-link a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.signup-container .login-link a:hover {
-    color: var(--secondary);
-}
-
 /* --- Content from /mnt/data/styles.css --- */
 :root {
     --primary: #4f8cff;
@@ -977,48 +774,6 @@ html, body {
     color: var(--text-color);
 }
 
-/* Styles for signup */
-.form-input {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--light);
-    font-size: 1rem;
-    border-radius: 10px;
-    transition: var(--transition);
-}
-
-.form-input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 10px rgba(79, 140, 255, 0.5);
-    outline: none;
-}
-
-.form-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* Botão de Envio */
-.submit-btn {
-    display: inline-block;
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 10px;
-    background: var(--gradient);
-    color: var(--light);
-    text-align: center;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.submit-btn:hover {
-    background: linear-gradient(135deg, var(--secondary), var(--primary));
-    box-shadow: 0 4px 15px rgba(79, 140, 255, 0.3);
-}
 @media (max-width: 768px) {
 /* Styles for contact */
     .contact-wrapper {
@@ -1373,183 +1128,6 @@ html, body {
     display: flex;
     flex-direction: column;
     background: var(--dark);
-}
-
-/* Styles for signup */
-.signup-container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    margin-top: 4rem;
-    perspective: 1000px;
-}
-
-.signup-container .signup-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    padding: 3rem;
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 600px;
-    animation: cardEntrance 1s ease-out;
-}
-
-.gradient-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    text-align: center;
-    background: var(--gradient);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-}
-
-.signup-container label,
-.signup-container p {
-    color: var(--light);
-    font-size: 1rem;
-}
-
-.signup-container .form-input {
-    width: 100%;
-    padding: 1.2rem 1.8rem;
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    color: rgba(100,100,100,0.8);
-    font-size: 1rem;
-    transition: var(--transition);
-}
-
-/* Placeholder para campos de texto */
-.signup-container .form-input::placeholder {
-    color: var(--placeholder-color); /* Cor mais suave */
-    opacity: 1;
-}
-
-/* Estilo para o campo de seleção (dropdown) */
-.signup-container .form-input select {
-    color: var(--placeholder-color); /* Cor do texto do dropdown */
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 1rem;
-    font-size: 1rem;
-    appearance: none;
-    transition: var(--transition);
-    outline: none;
-}
-
-.signup-container .form-input option[value=""][disabled] {
-    color: var(--placeholder-color); /* Placeholder no dropdown */
-}
-
-/* Estilo para o campo de data */
-.signup-container .form-input[type="date"] {
-    color: var(--placeholder-color); /* Texto dentro do campo de data */
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 1.2rem 1.8rem;
-    font-size: 1rem;
-}
-
-/* Ícone de calendário no campo de data */
-.signup-container .form-input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: brightness(0) invert(1);
-}
-
-/* Wrapper para posicionar ícones */
-.signup-container .form-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-/* Ícones em campos de texto */
-.signup-container .form-group i {
-    position: absolute;
-    right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--light);
-    pointer-events: none;
-    font-size: 1.2rem;
-}
-
-/* Botão */
-.signup-container .signup-btn {
-    background: var(--gradient);
-    border: none;
-    padding: 1.2rem;
-    border-radius: 16px;
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
-    width: 80%;
-    margin: 2rem auto;
-    display: block;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.signup-container .signup-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(79, 140, 255, 0.3);
-}
-
-/* Redes Sociais */
-.signup-container .social-signup p {
-    color: rgba(255, 255, 255, 0.7);
-    text-align: center;
-}
-
-.signup-container .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.signup-container .social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.2rem;
-    border: none;
-    border-radius: 16px;
-    background: var(--card-bg);
-    color: var(--light);
-    font-size: 1rem;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.signup-container .social-btn:hover {
-    background: var(--gradient);
-    color: var(--light);
-}
-
-/* Links */
-.signup-container .login-link {
-    margin-top: 2rem;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.signup-container .login-link a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.signup-container .login-link a:hover {
-    color: var(--secondary);
 }
 
 /* --- Styles from styles.css --- */
@@ -2782,4 +2360,132 @@ body {
 /* Esconde o input de upload de foto */
 #upload-foto {
     display: none;
+}
+.register-container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #6e8efb, #ff6b95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.heading-gradient {
+    background: linear-gradient(45deg, #6e8efb, #ff6b95);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.register-card p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #444;
+    font-weight: 500;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #6e8efb;
+    box-shadow: 0 0 0 3px rgba(110, 142, 251, 0.1);
+    outline: none;
+}
+
+.password-box {
+    position: relative;
+}
+
+.toggle-view {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+}
+
+.register-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #6e8efb, #ff6b95);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.register-btn:hover {
+    transform: translateY(-2px);
+}
+
+.signin-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.signin-link a {
+    color: #6e8efb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signin-link a:hover {
+    text-decoration: underline;
+}
+
+select.input-field {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 15px;
+}
+
+input[type="file"].input-field {
+    padding: 8px;
+}
+
+@media (max-width: 768px) {
+    .register-card {
+        padding: 30px 20px;
+    }
+    
+    .heading-gradient {
+        font-size: 2rem;
+    }
 }
