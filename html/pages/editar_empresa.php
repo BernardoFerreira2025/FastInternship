@@ -17,11 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssssi", $responsavel, $nome, $email, $telefone, $id);
 
     if ($stmt->execute()) {
-        // Define mensagem de sucesso na sessão
-        $_SESSION['mensagem_sucesso'] = 'Alterações guardadas com sucesso!';
-        // Redireciona para gestao_utilizadores.php
-        header('Location: ../admin_dashboard.php?page=gestao_utilizadores');
+        $_SESSION['toast_message'] = "Alterações guardadas com sucesso!";
+        header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
         exit();
+        
     } else {
         echo "Erro ao atualizar os dados.";
     }

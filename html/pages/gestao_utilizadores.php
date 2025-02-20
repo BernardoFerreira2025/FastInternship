@@ -1,112 +1,129 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Inicia a sessão apenas se nenhuma sessão estiver ativa
+    session_start();
 }
-include 'C:/xampp/htdocs/pap/database/mysqli.php';
+include '../database/mysqli.php';
 
-// Consulta para obter as empresas
-$empresas = $conn->query("SELECT id_empresas, nome_empresa, email, telefone, responsavel, morada, cod_postal, Localidade FROM empresas");
+// Verifica se há mensagem de toast na sessão
+$toast_message = "";
+if (isset($_SESSION['toast_message'])) {
+    $toast_message = $_SESSION['toast_message'];
+    unset($_SESSION['toast_message']); // Remove a mensagem da sessão após exibição
+}
 
-// Consulta para obter os alunos
-$alunos = $conn->query("SELECT id_aluno, Nome, Email, Curso, Turma FROM alunos");
+// Consulta para obter empresas
+$empresas = $conn->query("SELECT id_empresas, nome_empresa, email, telefone, responsavel, morada, cod_postal, Localidade, foto FROM empresas");
+
+// Consulta para obter alunos
+$alunos = $conn->query("SELECT id_aluno, Nome, Email, Curso, Turma, foto FROM alunos");
+
+// Consulta para obter professores
+$professores = $conn->query("SELECT id_professor, nome, email, id_curso, foto FROM professores");
 ?>
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão de Utilizadores</title>
     <link rel="stylesheet" href="../assets/css/allcss.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="users-container">
-        <h1 class="users-header">Gerir Utilizadores</h1>
+    <!-- Toast de sucesso -->
+    <?php if (!empty($toast_message)) { ?>
+        <div id="toast" class="toast-message toast-success"><?php echo htmlspecialchars($toast_message); ?></div>
+    <?php } ?>
 
-        <!-- Filtro -->
+    <div class="users-container">
+        <!-- Filtro de Seções -->
         <div class="filter-buttons">
-            <button onclick="showSection('empresas')">Empresas</button>
-            <button onclick="showSection('alunos')">Alunos</button>
+            <button class="filter-btn" onclick="showSection('empresas')"><i class="fas fa-building"></i> Empresas</button>
+            <button class="filter-btn" onclick="showSection('alunos')"><i class="fas fa-user-graduate"></i> Alunos</button>
+            <button class="filter-btn" onclick="showSection('professores')"><i class="fas fa-chalkboard-teacher"></i> Professores</button>
         </div>
 
-        <!-- Section de Empresas -->
+        <!-- Seção Empresas -->
         <div id="empresas" class="section active">
             <h2 class="section-header">Empresas</h2>
             <div class="users-grid">
-                <?php
-                if ($empresas->num_rows > 0) {
-                    while ($empresa = $empresas->fetch_assoc()) {
-                        echo "<div class='user-card'>";
-                        echo "<h3>" . htmlspecialchars($empresa['nome_empresa']) . "</h3>";
-                        echo "<p><strong>Responsável:</strong> " . htmlspecialchars($empresa['responsavel']) . "</p>"; // Exibindo responsável
-                        echo "<p><strong>Email:</strong> " . htmlspecialchars($empresa['email']) . "</p>";
-                        echo "<p><strong>Telefone:</strong> " . htmlspecialchars($empresa['telefone']) . "</p>"; // Exibindo telefone
-                        echo "<p><strong>Morada:</strong> " . htmlspecialchars($empresa['morada']) . "</p>";
-                        echo "<p><strong>Código Postal:</strong> " . htmlspecialchars($empresa['cod_postal']) . "</p>";
-                        echo "<p><strong>Localidade:</strong> " . htmlspecialchars($empresa['Localidade']) . "</p>";
-                        echo "<div class='user-actions'>";
-                        echo "<a href='pages/editar_empresa.php?id=" . $empresa['id_empresas'] . "'>Editar</a>";
-                        echo "<a href='pages/excluir_empresa.php?id=" . $empresa['id_empresas'] . "'>Excluir</a>";
-                        echo "</div>";
-                        echo "</div>";
-                    }
-                } else {
-                    echo "<p>Nenhuma empresa encontrada.</p>";
-                }
-                 ?>
+                <?php while ($empresa = $empresas->fetch_assoc()) { ?>
+                    <div class="user-card">
+                        <div class="profile-pic-container">
+                            <img src="<?php echo !empty($empresa['foto']) ? '../images/'.$empresa['foto'] : '../images/company_default.png'; ?>" alt="Foto da Empresa">
+                        </div>
+                        <h3><?php echo htmlspecialchars($empresa['nome_empresa']); ?></h3>
+                        <p><i class="fas fa-user"></i> <strong>Responsável:</strong> <?php echo htmlspecialchars($empresa['responsavel']); ?></p>
+                        <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <?php echo htmlspecialchars($empresa['email']); ?></p>
+                        <p><i class="fas fa-phone"></i> <strong>Telefone:</strong> <?php echo htmlspecialchars($empresa['telefone']); ?></p>
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Local:</strong> <?php echo htmlspecialchars($empresa['Localidade']); ?></p>
+                        <div class="user-actions">
+                            <a href='pages/editar_empresa.php?id=<?php echo $empresa['id_empresas']; ?>' class="edit"><i class="fas fa-edit"></i> Editar</a>
+                            <a href='pages/excluir_empresa.php?id=<?php echo $empresa['id_empresas']; ?>' class="delete"><i class="fas fa-trash"></i> Excluir</a>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
         </div>
 
-
-        <!-- Section de Alunos -->
+        <!-- Seção Alunos -->
         <div id="alunos" class="section">
             <h2 class="section-header">Alunos</h2>
             <div class="users-grid">
-                <?php
-                if ($alunos->num_rows > 0) {
-                    while ($aluno = $alunos->fetch_assoc()) {
-                        echo "<div class='user-card'>";
-                        echo "<h3>" . htmlspecialchars($aluno['Nome']) . "</h3>";
-                        echo "<p><strong>Email:</strong> " . htmlspecialchars($aluno['Email']) . "</p>";
-                        echo "<p><strong>Curso:</strong> " . htmlspecialchars($aluno['Curso']) . "</p>";
-                        echo "<p><strong>Turma:</strong> " . htmlspecialchars($aluno['Turma']) . "</p>";
-                        echo "<div class='user-actions'>";
-                        echo "<a href='pages/editar_aluno.php?id=" . $aluno['id_aluno'] . "'>Editar</a>";
-                        echo "<a href='pages/excluir_aluno.php?id=" . $aluno['id_aluno'] . "'>Excluir</a>";
-                        echo "</div>";
-                        echo "</div>";
-                    }
-                } else {
-                    echo "<p>Nenhum aluno encontrado.</p>";
-                }
-                ?>
+                <?php while ($aluno = $alunos->fetch_assoc()) { ?>
+                    <div class="user-card">
+                        <div class="profile-pic-container">
+                            <img src="<?php echo !empty($aluno['foto']) ? '../images/'.$aluno['foto'] : '../images/student_default.png'; ?>" alt="Foto do Aluno">
+                        </div>
+                        <h3><?php echo htmlspecialchars($aluno['Nome']); ?></h3>
+                        <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <?php echo htmlspecialchars($aluno['Email']); ?></p>
+                        <p><i class="fas fa-book"></i> <strong>Curso:</strong> <?php echo htmlspecialchars($aluno['Curso']); ?></p>
+                        <p><i class="fas fa-users"></i> <strong>Turma:</strong> <?php echo htmlspecialchars($aluno['Turma']); ?></p>
+                        <div class="user-actions">
+                            <a href='pages/editar_aluno.php?id=<?php echo $aluno['id_aluno']; ?>' class="edit"><i class="fas fa-edit"></i> Editar</a>
+                            <a href='pages/excluir_aluno.php?id=<?php echo $aluno['id_aluno']; ?>' class="delete"><i class="fas fa-trash"></i> Excluir</a>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+
+        <!-- Seção Professores -->
+        <div id="professores" class="section">
+            <h2 class="section-header">Professores</h2>
+            <div class="users-grid">
+                <?php while ($professor = $professores->fetch_assoc()) { ?>
+                    <div class="user-card">
+                        <div class="profile-pic-container">
+                            <img src="<?php echo !empty($professor['foto']) ? '../images/'.$professor['foto'] : '../images/teacher_default.png'; ?>" alt="Foto do Professor">
+                        </div>
+                        <h3><?php echo htmlspecialchars($professor['nome']); ?></h3>
+                        <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <?php echo htmlspecialchars($professor['email']); ?></p>
+                        <p><i class="fas fa-book"></i> <strong>ID Curso:</strong> <?php echo htmlspecialchars($professor['id_curso']); ?></p>
+                        <div class="user-actions">
+                            <a href='pages/editar_professor.php?id=<?php echo $professor['id_professor']; ?>' class="edit"><i class="fas fa-edit"></i> Editar</a>
+                            <a href='pages/excluir_professor.php?id=<?php echo $professor['id_professor']; ?>' class="delete"><i class="fas fa-trash"></i> Excluir</a>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </div>
 
-    <?php
-    if (isset($_SESSION['mensagem_sucesso'])) {
-        echo "<script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const toast = document.createElement('div');
-                    toast.className = 'toast-success';
-                    toast.textContent = '" . $_SESSION['mensagem_sucesso'] . "';
-                    document.body.appendChild(toast);
-                    setTimeout(() => toast.remove(), 3000);
-                });
-                </script>";
-        unset($_SESSION['mensagem_sucesso']); // Remove a mensagem após exibir
-    }
-    ?>
-
-
     <script>
         function showSection(sectionId) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
         }
+
+        // Exibir Toast ao carregar a página se houver mensagem
+        document.addEventListener("DOMContentLoaded", function() {
+            let toast = document.getElementById("toast");
+            if (toast) {
+                setTimeout(function() {
+                    toast.style.display = "none";
+                }, 4000); // Esconde após 4 segundos
+            }
+        });
     </script>
 </body>
 </html>

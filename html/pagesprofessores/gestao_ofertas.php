@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Inicia a sessão apenas se nenhuma sessão estiver ativa
+    session_start();
 }
 include 'C:/xampp/htdocs/pap/database/mysqli.php';
 
@@ -22,12 +22,11 @@ $result = $stmt->get_result();
 $professor = $result->fetch_assoc();
 $id_curso = $professor['id_curso'] ?? null;
 
-// Se não encontrar o curso, impede a exibição das ofertas
 if (!$id_curso) {
     die("<p>Erro: O professor não tem um curso associado.</p>");
 }
 
-// Consulta para obter as ofertas APENAS do curso do professor
+// Consulta para obter as ofertas do curso do professor
 $queryOfertas = "
     SELECT 
         ofertas_empresas.*, 
@@ -47,18 +46,10 @@ $stmtOfertas = $conn->prepare($queryOfertas);
 $stmtOfertas->bind_param("i", $id_curso);
 $stmtOfertas->execute();
 $resultOfertas = $stmtOfertas->get_result();
-
 ?>
-<!DOCTYPE html>
-<html lang="pt-PT">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão de Ofertas</title>
-    <link rel="stylesheet" href="../assets/css/allcss.css">
-</head>
-<body>
-    <div class="users-container">
+
+<div class="form-background">
+    <div class="form-wrapper">
         <h1 class="users-header">Gerir Ofertas Publicadas</h1>
 
         <!-- Grade de Ofertas -->
@@ -86,21 +77,20 @@ $resultOfertas = $stmtOfertas->get_result();
             ?>
         </div>
     </div>
+</div>
 
-    <?php
-    // Exibe o pop-up se houver mensagem na sessão
-    if (isset($_SESSION['mensagem_sucesso'])) {
-        echo "<script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const toast = document.createElement('div');
-                    toast.className = 'toast-success';
-                    toast.textContent = '" . $_SESSION['mensagem_sucesso'] . "';
-                    document.body.appendChild(toast);
-                    setTimeout(() => toast.remove(), 3000);
-                });
-              </script>";
-        unset($_SESSION['mensagem_sucesso']); // Remove a mensagem após exibir
-    }
-    ?>
-</body>
-</html>
+<?php
+// Exibe pop-up se houver mensagem na sessão
+if (isset($_SESSION['mensagem_sucesso'])) {
+    echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toast = document.createElement('div');
+                toast.className = 'toast-success';
+                toast.textContent = '" . $_SESSION['mensagem_sucesso'] . "';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            });
+          </script>";
+    unset($_SESSION['mensagem_sucesso']); 
+}
+?>

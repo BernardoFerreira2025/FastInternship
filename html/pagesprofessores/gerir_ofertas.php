@@ -27,67 +27,74 @@ $professor = $result->fetch_assoc();
 $id_curso = $professor['id_curso'] ?? null;
 $curso_nome = $professor['curso_nome'] ?? "Curso não encontrado";
 
+if (!$id_curso) {
+    die("Erro: Curso do professor não encontrado.");
+}
 ?>
 
-<form action="geriroferta_handler.php" method="POST" class="form-container" id="ofertaForm">
-    <h1>Inserir Nova Oferta</h1>
+<div class="form-background">
+    <div class="form-wrapper">
+        <h1>Inserir Nova Oferta</h1>
 
-    <div class="form-group">
-        <label for="titulo">Título da Oferta:</label>
-        <input type="text" id="titulo" name="titulo" placeholder="Ex: Nome da Empresa" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" name="descricao" placeholder="Descreva os detalhes da oferta..." required></textarea>
-    </div>
-    
-    <div class="form-group">
-        <label for="requisitos">Requisitos:</label>
-        <textarea id="requisitos" name="requisitos" placeholder="Liste os requisitos necessários..." required></textarea>
-    </div>
-    
-    <div class="form-group">
-        <label for="id_empresa">Empresa:</label>
-        <select id="id_empresa" name="id_empresa" required>
-            <option value="">Selecione uma empresa</option>
-            <?php
-            // Buscar apenas empresas do mesmo curso que o professor
-            $queryEmpresas = "SELECT id_empresas, nome_empresa FROM empresas WHERE id_curso = ?";
-            $stmtEmpresas = $conn->prepare($queryEmpresas);
-            $stmtEmpresas->bind_param("i", $id_curso);
-            $stmtEmpresas->execute();
-            $resultEmpresas = $stmtEmpresas->get_result();
+        <form action="geriroferta_handler.php" method="POST" id="ofertaForm">
+            <div class="form-group">
+                <label for="titulo">Título da Oferta:</label>
+                <input type="text" id="titulo" name="titulo" placeholder="Ex: Nome da Empresa" required>
+            </div>
 
-            while ($empresa = $resultEmpresas->fetch_assoc()) {
-                echo "<option value='{$empresa['id_empresas']}'>{$empresa['nome_empresa']}</option>";
-            }
-            ?>
-        </select>
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" placeholder="Descreva os detalhes da oferta..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="requisitos">Requisitos:</label>
+                <textarea id="requisitos" name="requisitos" placeholder="Liste os requisitos necessários..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="id_empresa">Empresa:</label>
+                <select id="id_empresa" name="id_empresa" required>
+                    <option value="">Selecione uma empresa</option>
+                    <?php
+                    // Buscar empresas SOMENTE do mesmo curso do professor
+                    $queryEmpresas = "SELECT id_empresas, nome_empresa FROM empresas WHERE id_curso = ?";
+                    $stmtEmpresas = $conn->prepare($queryEmpresas);
+                    $stmtEmpresas->bind_param("i", $id_curso);
+                    $stmtEmpresas->execute();
+                    $resultEmpresas = $stmtEmpresas->get_result();
+
+                    while ($empresa = $resultEmpresas->fetch_assoc()) {
+                        echo "<option value='{$empresa['id_empresas']}'>{$empresa['nome_empresa']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="vagas">Número de Vagas:</label>
+                <input type="number" id="vagas" name="vagas" min="1" placeholder="Ex: 5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="curso_relacionado">Curso Relacionado:</label>
+                <input type="text" id="curso_relacionado" name="curso_relacionado" value="<?php echo $curso_nome; ?>" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="data_inicio">Data de Início:</label>
+                <input type="date" id="data_inicio" name="data_inicio" required>
+            </div>
+
+            <div class="form-group">
+                <label for="data_fim">Data de Fim:</label>
+                <input type="date" id="data_fim" name="data_fim" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Salvar Oferta</button>
+        </form>
     </div>
-    
-    <div class="form-group">
-        <label for="vagas">Número de Vagas:</label>
-        <input type="number" id="vagas" name="vagas" min="1" placeholder="Ex: 5" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="curso_relacionado">Curso Relacionado:</label>
-        <input type="text" id="curso_relacionado" name="curso_relacionado" value="<?php echo $curso_nome; ?>" readonly>
-    </div>
-    
-    <div class="form-group">
-        <label for="data_inicio">Data de Início:</label>
-        <input type="date" id="data_inicio" name="data_inicio" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="data_fim">Data de Fim:</label>
-        <input type="date" id="data_fim" name="data_fim" required>
-    </div>
-    
-    <button type="submit" class="btn-submit">Salvar Oferta</button>
-</form>
+</div>
 
 <script>
     document.getElementById('ofertaForm').addEventListener('submit', function (event) {

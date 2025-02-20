@@ -88,14 +88,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="nao">Não</option>
             </select>
 
-            <label for="pergunta2">Conhecimentos em ferramentas específicas?</label>
+            <label for="pergunta2">Possui conhecimentos em ferramentas específicas?</label>
             <select id="pergunta2" name="respostas[conhecimentos]" required>
                 <option value="">Selecione</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>
             </select>
 
-            <label for="pergunta3">Possui disponibilidade imediata?</label>
+            <label for="pergunta3">P</label>
             <select id="pergunta3" name="respostas[disponibilidade]" required>
                 <option value="">Selecione</option>
                 <option value="sim">Sim</option>

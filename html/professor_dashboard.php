@@ -32,51 +32,50 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
     <link rel="stylesheet" href="assets/css/allcss.css">
     <link rel="stylesheet" href="assets/elements/header.css">
     <link rel="stylesheet" href="assets/elements/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
     <?php require "assets/elements/header.php"; ?>
 
-    <!-- Sidebar -->
-    <nav class="admin-sidebar professor-sidebar">
-        <div class="admin-profile professor-profile">
-            <!-- Foto do Professor -->
+    <
+       <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="profile">
             <div class="profile-pic-container">
-                <img src="<?php echo $foto; ?>" alt="Foto do Professor" class="admin-profile-picture">
-                <!-- Ícone "+" para upload -->
-                <label for="upload-foto" class="upload-icon">+</label>
+                    <img src="<?php echo $foto_admin; ?>">
+                    <label for="upload-foto" class="upload-icon"><i class="fas fa-camera"></i></label>
+                </div>
+                <h3>Olá, <?php echo $professor['nome']; ?></h3>
+
+                <!-- Formulário de Upload -->
+                <form action="upload_foto.php" method="POST" enctype="multipart/form-data">
+                    <input type="file" id="upload-foto" name="foto" accept="image/*" required onchange="this.form.submit()">
+                </form>
             </div>
 
-            <!-- Formulário de Upload -->
-            <form action="upload_foto.php" method="POST" enctype="multipart/form-data">
-                <input type="file" id="upload-foto" name="foto" accept="image/*" required onchange="this.form.submit()">
-            </form>
-        </div>
+            <ul class="menu">
+                <li><a href="professor_dashboard.php?page=dashboard" class="<?php echo $page === 'dashboard' ? 'active' : ''; ?>">
+                    <i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="professor_dashboard.php?page=gerir_ofertas" class="<?php echo $page === 'gerir_ofertas' ? 'active' : ''; ?>">
+                    <i class="fas fa-plus-circle"></i> Publicar Oferta</a></li>
+                <li><a href="professor_dashboard.php?page=gestao_ofertas" class="<?php echo $page === 'gestao_ofertas' ? 'active' : ''; ?>">
+                    <i class="fas fa-tasks"></i> Gerir Ofertas</a></li>
+            </ul>
+        </nav>
 
-        <div class="menu-items">
-            <a href="professor_dashboard.php?page=dashboard" class="menu-item <?php echo $page === 'dashboard' ? 'active' : ''; ?>">
-                <i class="fas fa-home"></i> Dashboard
-            </a>
-            <a href="professor_dashboard.php?page=gerir_ofertas" class="menu-item <?php echo $page === 'gerir_ofertas' ? 'active' : ''; ?>">
-                <i class="fas fa-plus-circle"></i> Publicar Oferta
-            </a>
-            <a href="professor_dashboard.php?page=gestao_ofertas" class="menu-item <?php echo $page === 'gestao_ofertas' ? 'active' : ''; ?>">
-                <i class="fas fa-tasks"></i> Gerir Ofertas
-            </a>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <?php
-            $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas'];
-            if (in_array($page, $allowed_pages)) {
-                include "pagesprofessores/{$page}.php";
-            } else {
-                echo "<h1>Página não encontrada</h1>";
-            }
-        ?>
-    </main>
+        <!-- Main Content -->
+        <main class="main-content">
+            <?php
+                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas'];
+                if (in_array($page, $allowed_pages)) {
+                    include "pagesprofessores/{$page}.php";
+                } else {
+                    echo "<h1>Página não encontrada</h1>";
+                }
+            ?>
+        </main>
+    </div>
 
     <!-- Footer -->
     <?php require "assets/elements/footer.php"; ?>

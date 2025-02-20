@@ -12,9 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute()) {
         session_start();
-        $_SESSION['mensagem_sucesso'] = 'Alterações Guardadas com Sucesso';
+        $_SESSION['toast_message'] = "Alterações guardadas com sucesso!";
         header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
-        exit();
+        exit();        
     } else {
         echo "Erro ao atualizar os dados.";
     }    
