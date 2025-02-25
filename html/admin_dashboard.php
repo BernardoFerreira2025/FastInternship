@@ -63,7 +63,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'gestao_utilizadores';
                 <li><a href="admin_dashboard.php?page=gestao_ofertas" class="<?php echo $page === 'gestao_ofertas' ? 'active' : ''; ?>">
                     <i class="fas fa-tasks"></i> Gestão de Ofertas</a></li>
                 <li><a href="admin_dashboard.php?page=adicionar_professor" class="<?php echo $page === 'adicionar_professor' ? 'active' : ''; ?>">
-                    <i class="fas fa-tasks"></i> Adicionar Professor</a></li>
+                    <i class="fas fa-plus-circle"></i> Adicionar Professor</a></li>
             </ul>
         </nav>
 

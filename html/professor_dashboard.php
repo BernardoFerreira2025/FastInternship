@@ -57,6 +57,8 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
             <ul class="menu">
                 <li><a href="professor_dashboard.php?page=dashboard" class="<?php echo $page === 'dashboard' ? 'active' : ''; ?>">
                     <i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="professor_dashboard.php?page=adicionar_empresa" class="<?php echo $page === 'adicionar_empresa' ? 'active' : ''; ?>">
+                    <i class="fas fa-plus-circle"></i> Adicionar Empresa</a></li>
                 <li><a href="professor_dashboard.php?page=gerir_ofertas" class="<?php echo $page === 'gerir_ofertas' ? 'active' : ''; ?>">
                     <i class="fas fa-plus-circle"></i> Publicar Oferta</a></li>
                 <li><a href="professor_dashboard.php?page=gestao_ofertas" class="<?php echo $page === 'gestao_ofertas' ? 'active' : ''; ?>">
@@ -67,7 +69,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
         <!-- Main Content -->
         <main class="main-content">
             <?php
-                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas'];
+                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas', 'adicionar_empresa'];
                 if (in_array($page, $allowed_pages)) {
                     include "pagesprofessores/{$page}.php";
                 } else {

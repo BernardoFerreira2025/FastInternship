@@ -1,3 +1,17 @@
+<?php
+include '../database/mysqli.php'; // Conexão com o banco de dados
+
+// Buscar os cursos disponíveis no banco de dados
+$sql_cursos = "SELECT id_curso, nome FROM cursos";
+$result_cursos = $conn->query($sql_cursos);
+
+$cursos = [];
+if ($result_cursos->num_rows > 0) {
+    while ($row = $result_cursos->fetch_assoc()) {
+        $cursos[] = $row;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
@@ -31,12 +45,12 @@
                     <input type="text" id="class" name="class" class="input-field" placeholder="Escreva a sua turma" required>
                 </div>
                 <div class="input-group">
-                    <label for="course">Curso</label>
-                    <select id="course" name="course" class="input-field" required>
+                    <label for="id_curso">Curso</label>
+                    <select id="id_curso" name="id_curso" class="input-field" required>
                         <option value="" disabled selected>Selecione o seu curso</option>
-                        <option value="Técnico(a) de Gestão e Programação de Sistemas Informáticos">Técnico(a) de Gestão e Programação de Sistemas Informáticos</option>
-                        <option value="Técnico(a) de Turismo">Técnico(a) de Turismo</option>
-                        <option value="Técnico(a) de Multimédia">Técnico(a) de Multimédia</option>
+                        <?php foreach ($cursos as $curso): ?>
+                            <option value="<?php echo $curso['id_curso']; ?>"><?php echo htmlspecialchars($curso['nome']); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="input-group">
@@ -80,6 +94,7 @@
             </div>
         </div>
     </div>
+
     <script src="assets/js/register.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -99,6 +114,7 @@
         }
     }
     </script>
-        <?php require "assets/elements/footer.php"; ?>
+
+    <?php require "assets/elements/footer.php"; ?>
 </body>
 </html>

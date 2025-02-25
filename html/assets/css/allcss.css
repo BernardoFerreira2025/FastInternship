@@ -2252,3 +2252,7 @@ button.primary:hover {
         justify-content: center;
     }
 }
+/* distancia botao e textbox*/
+button[type="submit"] {
+    margin-top: 20px; /* Ajuste a distância entre o último campo de input e o botão */
+}

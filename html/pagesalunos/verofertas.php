@@ -17,6 +17,15 @@ if (!$id_aluno) {
     die("Você precisa estar autenticado para visualizar esta página.");
 }
 
+// Obter o ID do curso do aluno logado
+$sql_curso_aluno = "SELECT id_curso FROM alunos WHERE id_aluno = ?";
+$stmt = $conn->prepare($sql_curso_aluno);
+$stmt->bind_param("i", $id_aluno);
+$stmt->execute();
+$stmt->bind_result($id_curso_aluno);
+$stmt->fetch();
+$stmt->close();
+
 // Verificar número de candidaturas do aluno
 $sql_count_candidaturas = "SELECT COUNT(*) AS total_candidaturas FROM candidaturas WHERE id_aluno = ?";
 $stmt = $conn->prepare($sql_count_candidaturas);
@@ -26,21 +35,22 @@ $stmt->bind_result($total_candidaturas);
 $stmt->fetch();
 $stmt->close();
 
-// Obter ofertas disponíveis
-$sql_ofertas = "SELECT o.*, e.nome_empresa as empresa_nome, e.responsavel as empresa_responsavel
+// Obter ofertas disponíveis APENAS do curso do aluno
+$sql_ofertas = "SELECT o.*, e.nome_empresa AS empresa_nome, e.responsavel AS empresa_responsavel, 
+                       c.nome AS curso_relacionado
                 FROM ofertas_empresas o 
-                INNER JOIN empresas e ON o.id_empresa = e.id_empresas";
+                INNER JOIN empresas e ON o.id_empresa = e.id_empresas
+                INNER JOIN cursos c ON o.id_curso = c.id_curso
+                WHERE o.id_curso = ?"; // Filtrar pelo curso do aluno
 
-$result_ofertas = $conn->query($sql_ofertas);
+$stmt = $conn->prepare($sql_ofertas);
+$stmt->bind_param("i", $id_curso_aluno);
+$stmt->execute();
+$result_ofertas = $stmt->get_result();
 
-if ($result_ofertas) {
-    $ofertas = $result_ofertas->fetch_all(MYSQLI_ASSOC);
-} else {
-    error_log("Erro na query SQL: " . $conn->error);
-    die("Erro ao carregar ofertas.");
-}
+$ofertas = $result_ofertas->fetch_all(MYSQLI_ASSOC);
 
-// Fechar conexão após obter os resultados
+// Fechar conexão
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -51,51 +61,21 @@ $conn->close();
     <link rel="stylesheet" href="../assets/css/allcss.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Ofertas Disponíveis</title>
-    <style>
-        .swal2-popup {
-            font-family: 'Arial', sans-serif; /* Defina a fonte aqui */
-        }
-    </style>
 </head>
 <body>
 <?php
-// Exibir o pop-up de sucesso da candidatura
-if (isset($_GET['candidatura']) && $_GET['candidatura'] === 'sucesso') {
-    echo "<script>
-        Swal.fire({
-            title: 'Sucesso!',
-            text: 'Candidatura enviada com sucesso!',
-            icon: 'success',
-            confirmButtonColor: '#4CAF50',
-            timer: 3000,
-            showConfirmButton: false
-        });
-    </script>";
+// Exibir pop-ups com base nas ações
+if (isset($_GET['candidatura'])) {
+    if ($_GET['candidatura'] === 'sucesso') {
+        echo "<script>Swal.fire({ title: 'Sucesso!', text: 'Candidatura enviada com sucesso!', icon: 'success', confirmButtonColor: '#4CAF50', timer: 3000, showConfirmButton: false });</script>";
+    } elseif ($_GET['candidatura'] === 'cancelada') {
+        echo "<script>Swal.fire({ icon: 'success', title: 'Candidatura cancelada com sucesso!', confirmButtonColor: '#4CAF50' });</script>";
+    }
 }
 
 // Verificar se o limite de candidaturas foi atingido
 if ($total_candidaturas >= 3) {
-    echo "<script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Limite de Candidaturas Atingido',
-            text: 'Você só pode se candidatar a no máximo 3 ofertas.',
-            confirmButtonText: 'Entendido',
-            confirmButtonColor: '#d33',
-            
-        });
-    </script>";
-}
-
-// Exibir o pop-up de sucesso da candidatura cancelada
-if (isset($_GET['candidatura']) && $_GET['candidatura'] === 'cancelada') {
-    echo "<script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Candidatura cancelada com sucesso!',
-            confirmButtonColor: '#4CAF50'
-        });
-    </script>";
+    echo "<script>Swal.fire({ icon: 'error', title: 'Limite de Candidaturas Atingido', text: 'Você só pode se candidatar a no máximo 3 ofertas.', confirmButtonText: 'Entendido', confirmButtonColor: '#d33' });</script>";
 }
 ?>
 
@@ -112,7 +92,11 @@ if (isset($_GET['candidatura']) && $_GET['candidatura'] === 'cancelada') {
                 <p><strong>Data de Fim:</strong> <?php echo htmlspecialchars($oferta['data_fim']); ?></p>
                 <p><strong>Requisitos:</strong> <?php echo htmlspecialchars($oferta['requisitos']); ?></p>
                 <p><strong>Vagas:</strong> <?php echo htmlspecialchars($oferta['vagas']); ?></p>
-                <p><strong>Curso Relacionado:</strong> <?php echo htmlspecialchars($oferta['curso_relacionado']); ?></p>
+
+                <p><strong>Curso Relacionado:</strong> 
+                    <?php echo !empty($oferta['curso_relacionado']) ? htmlspecialchars($oferta['curso_relacionado']) : 'Não informado'; ?>
+                </p>
+
                 <?php if ($total_candidaturas < 3): ?>
                     <a href="aluno_dashboard.php?page=candidatar&id=<?php echo urlencode($oferta['id_oferta']); ?>" class="btn-view">Candidatar</a>
                 <?php else: ?>
@@ -122,7 +106,7 @@ if (isset($_GET['candidatura']) && $_GET['candidatura'] === 'cancelada') {
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <p>Não há ofertas disponíveis no momento.</p>
+        <p>Não há ofertas disponíveis no momento para o seu curso.</p>
     <?php endif; ?>
 </div>
 </body>

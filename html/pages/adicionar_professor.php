@@ -12,8 +12,16 @@ $cursos = $conn->query("SELECT id_curso, nome FROM cursos");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $conn->real_escape_string($_POST['nome']);
     $email = $conn->real_escape_string($_POST['email']);
-    $senha = password_hash($_POST['password'], PASSWORD_DEFAULT); // Encripta a senha
+    $senha = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $id_curso = intval($_POST['id_curso']);
+
+    // Validação do domínio do email
+    if (!preg_match("/^[a-zA-Z0-9._%+-]+@esag-edu\.net$/", $email)) {
+        $_SESSION['toast_message'] = "Erro: Apenas emails @esag-edu.net são permitidos!";
+        $_SESSION['toast_type'] = "toast-error";
+        header("Location: admin_dashboard.php?page=adicionar_professor");
+        exit();
+    }
 
     // Insere os dados na tabela `professores`
     $sql = "INSERT INTO professores (nome, email, password, id_curso) VALUES (?, ?, ?, ?)";
@@ -22,10 +30,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt->execute()) {
         $_SESSION['toast_message'] = "Professor adicionado com sucesso!";
-        header("Location: admin_dashboard.php?page=gestao_utilizadores"); // Redireciona
+        $_SESSION['toast_type'] = "toast-success";
+        header("Location: admin_dashboard.php?page=gestao_utilizadores");
         exit();
     } else {
         $_SESSION['toast_message'] = "Erro ao adicionar professor.";
+        $_SESSION['toast_type'] = "toast-error";
     }
 }
 ?>
@@ -42,8 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Exibe a mensagem de toast -->
     <?php if (isset($_SESSION['toast_message'])): ?>
-        <div id="toast" class="toast-message toast-success"><?php echo $_SESSION['toast_message']; ?></div>
-        <?php unset($_SESSION['toast_message']); ?>
+        <div id="toast" class="toast-message <?php echo $_SESSION['toast_type']; ?>">
+            <?php echo $_SESSION['toast_message']; ?>
+        </div>
+        <?php unset($_SESSION['toast_message'], $_SESSION['toast_type']); ?>
     <?php endif; ?>
 
     <div class="form-container">

@@ -1,12 +1,12 @@
 <?php
-include '../database/mysqli.php'; // Inclui a conexão com a base de dados
+include '../database/mysqli.php'; // Conexão com a base de dados
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Capturar os dados do formulário
     $nome = trim($_POST['name']);
     $nr_processo = trim($_POST['processNumber']);
     $turma = trim($_POST['class']);
-    $curso = trim($_POST['course']);
+    $id_curso = $_POST['id_curso']; // Agora recebemos o ID do curso
     $data_nascimento = $_POST['birthDate'];
     $email = trim($_POST['email']);
     $password = $_POST['password'];
@@ -54,14 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Inserir os dados no banco de dados
-    $sql = "INSERT INTO alunos (Nome, nr_processo, Email, Password, Turma, Curso, Data_Nascimento, Curriculo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO alunos (Nome, nr_processo, Email, Password, Turma, id_curso, Data_Nascimento, Curriculo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
         die("Erro na preparação da consulta: " . $conn->error);
     }
 
-    $stmt->bind_param("ssssssss", $nome, $nr_processo, $email, $password_hashed, $turma, $curso, $data_nascimento, $destino_curriculo);
+    $stmt->bind_param("ssssisss", $nome, $nr_processo, $email, $password_hashed, $turma, $id_curso, $data_nascimento, $destino_curriculo);
 
     if ($stmt->execute()) {
         echo "Registro realizado com sucesso!";
