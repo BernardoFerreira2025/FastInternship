@@ -17,7 +17,7 @@ if ($result_cursos->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registar-se - FastInternship</title>
+    <title>Registo - FastInternship</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/allcss.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,9 +27,9 @@ if ($result_cursos->num_rows > 0) {
 <body>
     <?php require "assets/elements/header.php"; ?>
 
-    <div class="register-container">
-        <div class="register-card">
-            <h2 class="heading-gradient">Crie a Sua Conta</h2>
+    <section class="signup-section">
+        <div class="signup-container">
+            <h2 class="signup-title">Crie a Sua Conta</h2>
             <p>Crie a sua conta para aceder às melhores oportunidades de estágio</p>
             <form id="registerForm" action="signuphandler.php" method="POST" enctype="multipart/form-data">
                 <div class="input-group">
@@ -86,18 +86,16 @@ if ($result_cursos->num_rows > 0) {
                     <label for="resume">Currículo (Apenas PDF)</label>
                     <input type="file" id="resume" name="resume" class="input-field" accept=".pdf" required>
                 </div>
-                <button type="submit" class="register-btn">Registar</button>
+                <button type="submit" class="signup-btn">Registar</button>
             </form>
 
-            <div class="signin-link">
+            <div class="signup-link text-center mt-3">
                 Já tem uma conta? <a href="formlogin.php">Entrar</a>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script src="assets/js/register.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
     function togglePasswordVisibility(id) {
         var passwordInput = document.getElementById(id);

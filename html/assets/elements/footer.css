@@ -1,21 +1,30 @@
-/* Ajuste para Fixar o Rodapé no Final */
-html, body {
-    height: 100%;
+/* Garante que a estrutura da página funcione corretamente */
+.page-wrapper {
     display: flex;
     flex-direction: column;
+    min-height: 100vh; /* Garante que o conteúdo ocupe a altura toda da tela */
 }
 
-.main-content {
-    flex: 1; /* Faz com que o conteúdo principal ocupe o espaço disponível */
+/* O conteúdo principal ocupa todo o espaço disponível */
+.content-wrapper {
+    flex: 1;
 }
 
+/* Footer fixado no final */
 .footer {
     text-align: center;
     padding: 1rem 0;
     font-size: 0.9rem;
-    background: var(--darker, #000);
+    background: var(--darker, #000); /* Fundo escuro */
     color: var(--text-color, #fff);
-    position: relative; /* Mantém o footer dentro do fluxo normal */
-    z-index: 10;
     width: 100%;
+    position: relative; /* Mantém dentro do fluxo da página */
+    z-index: 10;
+    margin-top: auto; /* Faz com que o footer sempre fique no final */
+}
+
+/* Garante que o texto do footer fique visível */
+.footer p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
 }
