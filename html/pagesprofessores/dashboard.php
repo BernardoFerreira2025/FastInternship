@@ -30,7 +30,7 @@ $id_curso = $curso['id_curso'];
 // Consulta para obter apenas as ofertas do curso do professor logado
 $query = "SELECT id_oferta, titulo, descricao, vagas, id_curso, data_inicio, data_fim 
           FROM ofertas_empresas 
-          WHERE id_curso = ?";
+          WHERE id_curso = ? AND data_fim >= CURDATE()";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $id_curso);
 $stmt->execute();
@@ -80,10 +80,10 @@ if (isset($_SESSION['mensagem_sucesso'])) {
     echo "<script>
             document.addEventListener('DOMContentLoaded', function() {
                 const toast = document.createElement('div');
-                toast.className = 'toast-success';
+                toast.className = 'toast-message toast-success';
                 toast.textContent = '" . addslashes($_SESSION['mensagem_sucesso']) . "';
                 document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 5000);
+                setTimeout(() => toast.remove(), 4000);
             });
           </script>";
     unset($_SESSION['mensagem_sucesso']);
@@ -93,12 +93,13 @@ if (isset($_SESSION['mensagem_erro'])) {
     echo "<script>
             document.addEventListener('DOMContentLoaded', function() {
                 const toast = document.createElement('div');
-                toast.className = 'toast-error';
+                toast.className = 'toast-message toast-error';
                 toast.textContent = '" . addslashes($_SESSION['mensagem_erro']) . "';
                 document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 5000);
+                setTimeout(() => toast.remove(), 4000);
             });
           </script>";
     unset($_SESSION['mensagem_erro']);
 }
 ?>
+

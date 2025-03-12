@@ -80,17 +80,32 @@ $resultOfertas = $stmtOfertas->get_result();
 </div>
 
 <?php
-// Exibe pop-up se houver mensagem na sessão
+// Exibe mensagens de sucesso ou erro
 if (isset($_SESSION['mensagem_sucesso'])) {
     echo "<script>
             document.addEventListener('DOMContentLoaded', function() {
                 const toast = document.createElement('div');
-                toast.className = 'toast-success';
-                toast.textContent = '" . $_SESSION['mensagem_sucesso'] . "';
+                toast.className = 'toast-message toast-success';
+                toast.textContent = '" . addslashes($_SESSION['mensagem_sucesso']) . "';
                 document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 3000);
+                setTimeout(() => toast.remove(), 4000);
             });
           </script>";
-    unset($_SESSION['mensagem_sucesso']); 
+    unset($_SESSION['mensagem_sucesso']);
+}
+
+if (isset($_SESSION['mensagem_erro'])) {
+    echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toast = document.createElement('div');
+                toast.className = 'toast-message toast-error';
+                toast.textContent = '" . addslashes($_SESSION['mensagem_erro']) . "';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 4000);
+            });
+          </script>";
+    unset($_SESSION['mensagem_erro']);
 }
 ?>
+
+

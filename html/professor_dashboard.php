@@ -2,8 +2,8 @@
 session_start();
 include '../database/mysqli.php';
 
-// Verifica se o usuário está logado e é um professor
-if (!isset($_SESSION['username']) || $_SESSION['user_role'] !== 'professor') {
+// Verifica se o professor está logado corretamente
+if (!isset($_SESSION['id_professor']) || $_SESSION['user_role'] !== 'professor') {
     header("Location: formlogin.php");
     exit();
 }
@@ -20,7 +20,9 @@ $professor = $result->fetch_assoc();
 // Define o caminho da foto
 $foto = !empty($professor['foto']) ? '../images/' . $professor['foto'] : '../images/professor.png';
 
+// Pega a página solicitada via GET
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
+
 ?>
 
 <!DOCTYPE html>
@@ -38,15 +40,15 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
     <!-- Header -->
     <?php require "assets/elements/header.php"; ?>
 
-    <
-       <!-- Sidebar -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
         <nav class="sidebar">
             <div class="profile">
-            <div class="profile-pic-container">
-                    <img src="<?php echo $foto_admin; ?>">
+                <div class="profile-pic-container">
+                    <img src="<?php echo $foto; ?>">
                     <label for="upload-foto" class="upload-icon"><i class="fas fa-camera"></i></label>
                 </div>
-                <h3>Olá, <?php echo $professor['nome']; ?></h3>
+                <h3>Olá, <?php echo htmlspecialchars($professor['nome']); ?></h3>
 
                 <!-- Formulário de Upload -->
                 <form action="upload_foto.php" method="POST" enctype="multipart/form-data">
@@ -61,6 +63,8 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
                     <i class="fas fa-plus-circle"></i> Adicionar Empresa</a></li>
                 <li><a href="professor_dashboard.php?page=gerir_ofertas" class="<?php echo $page === 'gerir_ofertas' ? 'active' : ''; ?>">
                     <i class="fas fa-plus-circle"></i> Publicar Oferta</a></li>
+                <li><a href="professor_dashboard.php?page=ofertas_expiradas" class="<?php echo $page === 'ofertas_expiradas' ? 'active' : ''; ?>">
+                    <i class="fas fa-hourglass-end"></i> Ofertas Expiradas</a></li>
                 <li><a href="professor_dashboard.php?page=gestao_ofertas" class="<?php echo $page === 'gestao_ofertas' ? 'active' : ''; ?>">
                     <i class="fas fa-tasks"></i> Gerir Ofertas</a></li>
             </ul>
@@ -69,7 +73,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
         <!-- Main Content -->
         <main class="main-content">
             <?php
-                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas', 'adicionar_empresa'];
+                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas', 'adicionar_empresa', 'ofertas_expiradas'];
                 if (in_array($page, $allowed_pages)) {
                     include "pagesprofessores/{$page}.php";
                 } else {

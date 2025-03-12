@@ -1,32 +1,46 @@
 <?php
-session_start();
-include '../database/mysqli.php'; // Conexão com o banco
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include 'C:/xampp/htdocs/pap/database/mysqli.php'; // Certifique-se de que o caminho está correto
 
-// Garante que o usuário logado seja um professor
-if (!isset($_SESSION['professor_id'])) {
-    header("Location: ../formlogin.php");
-    exit();
+// Verificar se a conexão com o banco de dados foi estabelecida corretamente
+if (!$conn) {
+    die("Erro: A conexão com o banco de dados não foi estabelecida.");
 }
 
-$professor_id = $_SESSION['professor_id'];
+// Verificar se o professor está logado
+if (!isset($_SESSION['id_professor'])) {
+    die("Erro: Professor não autenticado.");
+}
+
+$id_professor = $_SESSION['id_professor'];
 
 // Buscar o curso do professor logado
 $sql_curso = "SELECT id_curso FROM professores WHERE id_professor = ?";
 $stmt_curso = $conn->prepare($sql_curso);
-$stmt_curso->bind_param("i", $professor_id);
+$stmt_curso->bind_param("i", $id_professor);
 $stmt_curso->execute();
 $result_curso = $stmt_curso->get_result();
-$curso = $result_curso->fetch_assoc();
-$id_curso_professor = $curso['id_curso'];
 
-// Buscar ofertas **expiradas** do curso do professor
-$sql_ofertas = "SELECT id_oferta, titulo, descricao, data_fim 
-                FROM ofertas_empresas 
-                WHERE id_curso = ? AND data_fim < NOW()
-                ORDER BY data_fim DESC";
+if ($result_curso->num_rows === 0) {
+    die("Erro: Não foi possível encontrar o curso do professor.");
+}
+
+$row_curso = $result_curso->fetch_assoc();
+$id_curso = $row_curso['id_curso'];
+
+// Buscar todas as ofertas **expiradas** do curso do professor
+$sql_ofertas = "SELECT oe.id_oferta, oe.titulo, oe.descricao, oe.vagas, oe.data_inicio, oe.data_fim, 
+                       c.nome AS curso_relacionado, e.nome_empresa 
+                FROM ofertas_empresas oe
+                INNER JOIN empresas e ON oe.id_empresa = e.id_empresas
+                INNER JOIN cursos c ON oe.id_curso = c.id_curso
+                WHERE oe.data_fim < CURDATE() AND oe.id_curso = ?
+                ORDER BY oe.data_fim DESC";
 
 $stmt = $conn->prepare($sql_ofertas);
-$stmt->bind_param("i", $id_curso_professor);
+$stmt->bind_param("i", $id_curso);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -36,79 +50,30 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ofertas Expiradas - Professor</title>
-    <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Se necessário -->
+    <title>Ofertas Expiradas</title>
+    <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Certifique-se de que o caminho do CSS está correto -->
 </head>
 <body>
 
-    <div class="ofertas-expiradas-container">
-        <h2 class="title">Ofertas Expiradas do Seu Curso</h2>
+    <div class="offers-container">
+        <h2 class="users-header">Ofertas Expiradas</h2>
 
         <?php if ($result->num_rows > 0): ?>
-            <table class="ofertas-table">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Descrição</th>
-                        <th>Data de Expiração</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($row['titulo']); ?></td>
-                            <td><?= htmlspecialchars($row['descricao']); ?></td>
-                            <td><?= date("d/m/Y", strtotime($row['data_fim'])); ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+            <div class="offers-grid">
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="offer-card">
+                        <h3 class="offer-title"><?= htmlspecialchars($row['titulo']); ?></h3>
+                        <p class="offer-company">Empresa: <?= htmlspecialchars($row['nome_empresa']); ?></p>
+                        <p class="offer-description">Descrição: <?= htmlspecialchars($row['descricao']); ?></p>
+                        <p class="offer-vagas">Vagas: <?= htmlspecialchars($row['vagas']); ?></p>
+                        <p class="offer-curso">Curso Relacionado: <?= htmlspecialchars($row['curso_relacionado']); ?></p>
+                        <p class="offer-dates">Início: <?= date("d/m/Y", strtotime($row['data_inicio'])); ?> | Fim: <?= date("d/m/Y", strtotime($row['data_fim'])); ?></p>
+                    </div>
+                <?php endwhile; ?>
+            </div>
         <?php else: ?>
             <p class="no-results">Nenhuma oferta expirada encontrada para o seu curso.</p>
         <?php endif; ?>
     </div>
-
-    <style>
-        .ofertas-expiradas-container {
-            width: 80%;
-            margin: 40px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .title {
-            font-size: 2rem;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .ofertas-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .ofertas-table th, .ofertas-table td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .ofertas-table th {
-            background: #4f8cff;
-            color: white;
-        }
-
-        .no-results {
-            color: white;
-            font-size: 1.2rem;
-            margin-top: 20px;
-        }
-    </style>
-
 </body>
 </html>

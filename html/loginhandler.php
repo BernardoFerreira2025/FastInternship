@@ -1,6 +1,10 @@
 <?php
 include '../database/mysqli.php'; // Conexão com o banco de dados
-session_start();
+
+// Garante que a sessão está iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
@@ -46,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Define a role e a página de redirecionamento
                 $user_role = $role;
                 $redirect_page = $redirect;
-
+                
                 header("Location: $redirect_page");
                 exit();
             } else {
