@@ -43,7 +43,7 @@ $result = $stmt->get_result();
         <h1 class="dashboard-header">Controlo das Candidaturas</h1>
 
         <!-- Seção de Ofertas Publicadas -->
-        <div class="offers-section">
+        <div class="users-container">
             <?php
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -63,7 +63,7 @@ $result = $stmt->get_result();
                     echo "<p><strong>Curso Relacionado:</strong> " . htmlspecialchars($cursoNome) . "</p>";
                     echo "<p><strong>Início:</strong> " . htmlspecialchars($row['data_inicio']) . "</p>";
                     echo "<p><strong>Fim:</strong> " . htmlspecialchars($row['data_fim']) . "</p>";
-                    echo "<a href='alunos_candidatos.php?oferta_id=" . $row['id_oferta'] . "' class='btn-view'>Ver Candidatos</a>";
+                    echo "<a href='professor_dashboard.php?page=alunos_candidatos&oferta_id=" . $row['id_oferta'] . "' class='btn-view'>Ver Candidatos</a>";
                     echo "</div>";
                 }
             } else {

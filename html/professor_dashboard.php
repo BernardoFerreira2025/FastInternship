@@ -73,7 +73,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
         <!-- Main Content -->
         <main class="main-content">
             <?php
-                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas', 'adicionar_empresa', 'ofertas_expiradas'];
+                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas', 'adicionar_empresa', 'ofertas_expiradas', 'alunos_candidatos'];
                 if (in_array($page, $allowed_pages)) {
                     include "pagesprofessores/{$page}.php";
                 } else {

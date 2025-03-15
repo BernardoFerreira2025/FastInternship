@@ -9,9 +9,11 @@ if (!$conn) {
     die("Erro: A conexão com o banco de dados não foi estabelecida.");
 }
 
-// Verificar se o professor está logado
+// Verifica se o usuário está logado e é um professor
 if (!isset($_SESSION['id_professor'])) {
-    die("Erro: Professor não autenticado.");
+    $_SESSION['error'] = "Sessão inválida. Faça login novamente.";
+    header("Location: ../formlogin.php");
+    exit();
 }
 
 $id_professor = $_SESSION['id_professor'];

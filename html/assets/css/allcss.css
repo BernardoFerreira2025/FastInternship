@@ -2368,3 +2368,71 @@ input[type="date"].input-field::-webkit-calendar-picker-indicator {
         transform: translateY(0);
     }
 }
+/* Grid para os candidatos */
+.candidatos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Card de cada candidato */
+.candidato-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    transition: transform 0.3s ease-in-out;
+}
+
+.candidato-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Nome do candidato */
+.candidato-nome {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4f8cff;
+    margin-bottom: 10px;
+}
+
+/* Botões de ação */
+.acoes-professor {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-success {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #3e8e41;
+}
+
+.btn-danger {
+    background: #f44336;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #d32f2f;
+}
+
+.status-finalizado {
+    font-weight: bold;
+    color: #ffeb3b;
+}
