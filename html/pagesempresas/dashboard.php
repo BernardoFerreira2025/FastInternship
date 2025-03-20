@@ -1,33 +1,33 @@
 <?php
 // Conexão com o banco de dados
-include 'C:/xampp/htdocs/pap/database/mysqli.php';
-
+//include '../../database/mysqli.php';
+require_once '../database/mysqli.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Verifica se o professor está logado e obtém o ID do curso ao qual ele pertence
-if (!isset($_SESSION['id_professor'])) {
+// Verifica se a empresa está logada e obtém o ID do curso ao qual ele pertence
+if (!isset($_SESSION['id_empresas'])) {
     die("Acesso negado.");
 }
 
-$id_professor = $_SESSION['id_professor'];
+$id_professor = $_SESSION['id_empresas'];
 
-// Busca o id_curso do professor logado
-$queryCurso = "SELECT id_curso FROM professores WHERE id_professor = ?";
+// Busca o id_curso da empresa logada
+$queryCurso = "SELECT id_curso FROM empresas WHERE id_empresas = ?";
 $stmtCurso = $conn->prepare($queryCurso);
-$stmtCurso->bind_param("i", $id_professor);
+$stmtCurso->bind_param("i", $id_empresas);
 $stmtCurso->execute();
 $resultCurso = $stmtCurso->get_result();
 $curso = $resultCurso->fetch_assoc();
 
 if (!$curso) {
-    die("Erro ao obter curso do professor.");
+    die("Erro ao obter curso da empresa.");
 }
 
 $id_curso = $curso['id_curso'];
 
-// Consulta para obter apenas as ofertas do curso do professor logado
+// Consulta para obter apenas as ofertas do curso da empresa logada
 $query = "SELECT id_oferta, titulo, descricao, vagas, id_curso, data_inicio, data_fim 
           FROM ofertas_empresas 
           WHERE id_curso = ? AND data_fim >= CURDATE()";
@@ -63,7 +63,7 @@ $result = $stmt->get_result();
                     echo "<p><strong>Curso Relacionado:</strong> " . htmlspecialchars($cursoNome) . "</p>";
                     echo "<p><strong>Início:</strong> " . htmlspecialchars($row['data_inicio']) . "</p>";
                     echo "<p><strong>Fim:</strong> " . htmlspecialchars($row['data_fim']) . "</p>";
-                    echo "<a href='professor_dashboard.php?page=alunos_candidatos&oferta_id=" . $row['id_oferta'] . "' class='btn-view'>Ver Candidatos</a>";
+                    echo "<a href='empresa_dashboard.php?page=alunos_candidatos&oferta_id=" . $row['id_oferta'] . "' class='btn-view'>Ver Candidatos</a>";
                     echo "</div>";
                 }
             } else {

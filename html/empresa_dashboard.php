@@ -1,46 +1,82 @@
+<?php
+session_start();
+include '../database/mysqli.php';
+
+// Verifica se a empresa está logada corretamente
+if (!isset($_SESSION['id_empresas']) || $_SESSION['user_role'] !== 'empresa') {
+    header("Location: formlogin.php");
+    exit();
+}
+
+// Buscar informações da empresa no banco de dados
+$id_empresas = $_SESSION['id_empresas'];
+$query = "SELECT nome_empresa, foto FROM empresas WHERE id_empresas = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $id_empresas);
+$stmt->execute();
+$result = $stmt->get_result();
+$empresa = $result->fetch_assoc();
+
+// Define o caminho da foto
+$foto = !empty($empresa['foto']) ? '../images/' . $empresa['foto'] : '../images/empresa.png';
+
+// Pega a página solicitada via GET
+$page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
+?>
+
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controlo - Empresa</title>
-    <link rel="stylesheet" href="assets/css/empresa_dashboard.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Painel da Empresa</title>
+    <link rel="stylesheet" href="assets/css/allcss.css">
+    <link rel="stylesheet" href="assets/elements/header.css">
+    <link rel="stylesheet" href="assets/elements/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Header -->
+    <?php require "assets/elements/header.php"; ?>
+
     <div class="dashboard-container">
         <!-- Sidebar -->
-        <nav class="company-sidebar">
-            <div class="user-profile">
-                <div class="profile-image">
-                    <i class="fas fa-building"></i>
+        <nav class="sidebar">
+            <div class="profile">
+                <div class="profile-pic-container">
+                    <img src="<?php echo $foto; ?>">
+                    <label for="upload-foto" class="upload-icon"><i class="fas fa-camera"></i></label>
                 </div>
-                <div class="user-info">
-                    <h3>Bem-vindo, Empresa</h3>
-                    <p>Portal Corporativo</p>
-                </div>
+                <h3>Bem-vindo, <?php echo htmlspecialchars($empresa['nome_empresa']); ?></h3>
+
+                <!-- Formulário de Upload -->
+                <form action="upload_foto.php" method="POST" enctype="multipart/form-data">
+                    <input type="file" id="upload-foto" name="foto" accept="image/*" required onchange="this.form.submit()">
+                </form>
             </div>
-            <div class="menu-items">
-                <a href="#" class="menu-item active">
-                    <i class="fas fa-home"></i> Painel de Controlo
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-briefcase"></i> Estágios
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-file-alt"></i> Ver Ofertas
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-cog"></i> Configurações
-                </a>
-            </div>
+
+            <ul class="menu">
+                <li><a href="empresa_dashboard.php?page=dashboard" class="<?php echo $page === 'dashboard' ? 'active' : ''; ?>">
+                    <i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="empresa_dashboard.php?page=gestao_ofertas" class="<?php echo $page === 'gestao_ofertas' ? 'active' : ''; ?>">
+                    <i class="fas fa-briefcase"></i> Gestão das Ofertas</a></li>
+            </ul>
         </nav>
 
         <!-- Main Content -->
         <main class="main-content">
-            <h1>Bem-vindo ao Portal Corporativo</h1>
-            <p>Visualize e gerencie candidaturas a estágios.</p>
+            <?php
+                $allowed_pages = ['dashboard', 'gestao_ofertas', 'alunos_candidatos', 'editar_oferta'];
+                if (in_array($page, $allowed_pages)) {
+                    include "pagesempresas/{$page}.php";
+                } else {
+                    echo "<h1>Página não encontrada</h1>";
+                }
+            ?>
         </main>
     </div>
+
+    <!-- Footer -->
+    <?php require "assets/elements/footer.php"; ?>
 </body>
 </html>

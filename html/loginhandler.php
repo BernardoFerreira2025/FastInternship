@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['foto'] = !empty($user['foto']) ? "../images/" . $user['foto'] : "../images/default.png";
                         break;
                     case 'empresa':
-                        $_SESSION['id_empresa'] = $user['id_empresa'];
+                        $_SESSION['id_empresas'] = $user['id_empresas'];
                         $_SESSION['foto'] = !empty($user['foto']) ? "../images/" . $user['foto'] : "../images/default.png";
                         break;
                 }
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (str_ends_with($email, "@admin.pt")) {
         verify_login("SELECT id_utilizador, username, password, foto FROM utilizadores WHERE email = ?", $email, $password, 'admin', 'admin_dashboard.php', $conn);
     } elseif (str_ends_with($email, "@gmail.com")) {
-        verify_login("SELECT id_empresa, nome_empresa, password, foto FROM empresas WHERE email = ?", $email, $password, 'empresa', 'empresa_dashboard.php', $conn);
+        verify_login("SELECT id_empresas, nome_empresa, password, foto FROM empresas WHERE email = ?", $email, $password, 'empresa', 'empresa_dashboard.php', $conn);
     } else {
         $_SESSION['error'] = "Domínio de e-mail inválido.";
         header("Location: formlogin.php");

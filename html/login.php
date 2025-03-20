@@ -25,7 +25,7 @@ if($_POST){ // Se existir um post, entra!
 		if(count($result) > 0) // Se encontrou password porque está registado
 							//if($result) // Se encontrou password porque está registado
 		{
-			include "./assets/elements/header_login.php";
+			include "./assets/elements/header.php";
 			session_start() ;
 			echo "utilizador encontrado";
 			$_SESSION['username'] = $username; // Cria um cookie saving the username

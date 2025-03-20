@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'fastinternship@gmail.com';
-        $mail->Password   = 'nrwm gvdd qodk adnx';
+        $mail->Password   = 'zesa fvuw lsbt tuni';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 

@@ -95,8 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="nao">Não</option>
             </select>
 
-            <label for="pergunta3">P</label>
-            <select id="pergunta3" name="respostas[disponibilidade]" required>
+            <label for="pergunta3">Sente-se confortável a trabalhar em equipa?</label>
+            <select id="pergunta3" name="respostas[trabalho_em_equipa]" required>
                 <option value="">Selecione</option>
                 <option value="sim">Sim</option>
                 <option value="nao">Não</option>

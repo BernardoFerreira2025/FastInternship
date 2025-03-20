@@ -25,7 +25,7 @@
 
     <!-- Missão e Visão -->
     <section class="mission-vision fade-in">
-    <h2 class="section-title text-center">Nosso Propósito</h2>
+    <h2 class="section-title text-center">O Nosso Propósito</h2>
     <div class="card-container">
         <div class="mission-card fade-in">
             <i class="fas fa-rocket value-icon"></i>

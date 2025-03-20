@@ -36,7 +36,7 @@ $id_oferta = intval($_GET['oferta_id']);
 
 // Buscar candidatos SOMENTE se a oferta e o aluno pertencem ao curso do professor
 $query = "SELECT c.id_candidatura, 
-                 a.nome, a.turma, a.nr_processo, 
+                 a.nome, a.turma, a.nr_processo, a.email,
                  c.carta_motivacao, c.respostas, 
                  c.status_professor, c.status_empresa, 
                  e.nome_empresa 
@@ -60,62 +60,104 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidatos à Oferta</title>
-    <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Garantindo o CSS correto -->
+    <link rel="stylesheet" href="../assets/css/allcss.css">
 </head>
 <body>
 
     <div class="users-container">
-        <h2 class="users-header">Candidatos à Oferta</h2>
+        <!-- Nome da empresa que publicou a oferta -->
+        <?php $row_empresa = $result->fetch_assoc(); ?>
+        <h2 class="users-header"><?= htmlspecialchars($row_empresa['nome_empresa']); ?></h2>
 
         <?php if ($result->num_rows > 0): ?>
             <div class="candidatos-grid">
-                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php do { ?>
                     <div class="candidato-card">
-                        <!-- Nome da empresa como título -->
-                        <h3 class="candidato-nome"><?= htmlspecialchars($row['nome_empresa']); ?></h3>
 
-                        <?php 
-                            // Separar o nome para pegar apenas primeiro e último
-                            $partes_nome = explode(" ", trim($row['nome']));
-                            $primeiro_nome = $partes_nome[0]; // Primeiro nome
-                            $ultimo_nome = end($partes_nome); // Último nome
-                            $nome_formatado = $primeiro_nome . " " . $ultimo_nome;
-                        ?>
+                        <!-- Informações do Aluno -->
+                        <div class="info-box">
+                            <p><strong>Nome do Aluno:</strong> <?= htmlspecialchars($row_empresa['nome']); ?></p>
+                            <p><strong>Turma:</strong> <?= htmlspecialchars($row_empresa['turma']); ?></p>
+                            <p><strong>Nº Processo:</strong> <?= htmlspecialchars($row_empresa['nr_processo']); ?></p>
+                            <p><strong>Email:</strong> <?= htmlspecialchars($row_empresa['email']); ?></p>
+                        </div>
 
-                        <!-- Nome do aluno (primeiro e último), turma e número de processo na mesma linha -->
-                        <p><strong>Aluno:</strong> <?= htmlspecialchars($nome_formatado); ?> | <strong>Turma:</strong> <?= htmlspecialchars($row['turma']); ?> | <strong>Nº Processo:</strong> <?= htmlspecialchars($row['nr_processo']); ?></p>
-                        
-                        <p><strong>Carta de Motivação:</strong> <?= nl2br(htmlspecialchars($row['carta_motivacao'])); ?></p>
+                        <hr>
 
-                        <p><strong>Respostas:</strong></p>
-                        <ul>
-                            <?php 
-                                $respostas = json_decode($row['respostas'], true);
-                                if (is_array($respostas)) {
-                                    foreach ($respostas as $pergunta => $resposta) {
-                                        echo "<li><strong>" . htmlspecialchars($pergunta) . ":</strong> " . htmlspecialchars($resposta) . "</li>";
-                                    }
-                                } else {
-                                    echo "<li>Erro ao processar respostas.</li>";
-                                }
-                            ?>
-                        </ul>
+                        <!-- Carta de Motivação -->
+                        <div class="info-box">
+                            <p><strong>Carta de Motivação:</strong></p>
+                            <div class="carta-motivacao"><?= nl2br(htmlspecialchars($row_empresa['carta_motivacao'])); ?></div>
+                        </div>
 
-                        <p><strong>Status Empresa:</strong> <?= htmlspecialchars($row['status_empresa']); ?></p>
+                        <hr>
 
+                        <!-- Respostas do Aluno -->
+                        <div class="info-box">
+                            <p><strong>Respostas do Aluno:</strong></p>
+                            <table class="respostas-table">
+                                <thead>
+                                    <tr>
+                                        <th>Pergunta</th>
+                                        <th>Resposta</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                        $mapa_perguntas = [
+                                            "experiencia" => "Possui experiência na área?",
+                                            "conhecimentos" => "Quais conhecimentos relevantes possui para a vaga?",
+                                            "trabalho_em_equipa" => "Sente-se confortável a trabalhar em equipa?"
+                                        ];
+
+                                        $respostas = json_decode($row_empresa['respostas'], true);
+                                        foreach ($mapa_perguntas as $chave_pergunta => $texto_pergunta) {
+                                            $resposta = isset($respostas[$chave_pergunta]) ? htmlspecialchars($respostas[$chave_pergunta]) : "Não informado";
+                                            echo "<tr><td><strong>$texto_pergunta</strong></td><td>$resposta</td></tr>";
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr>
+
+                        <!-- Status do Professor e Empresa -->
+                        <div class="status-container">
+                            <p><strong>Status Professor:</strong> 
+                                <span class="status-<?= htmlspecialchars($row_empresa['status_professor']); ?>">
+                                    <?= ucfirst($row_empresa['status_professor']); ?>
+                                </span>
+                            </p>
+
+                            <p><strong>Status Empresa:</strong> 
+                                <span class="status-<?= htmlspecialchars($row_empresa['status_empresa']); ?>">
+                                    <?= ucfirst($row_empresa['status_empresa']); ?>
+                                </span>
+                            </p>
+                        </div>
+
+                        <hr>
+
+                        <!-- Botões de Aceitar/Rejeitar e Cancelar -->
                         <div class="acoes-professor">
-                            <?php if ($row['status_professor'] == 'pendente'): ?>
-                                <form method="post" action="processa_candidatura.php">
-                                    <input type="hidden" name="id_candidatura" value="<?= $row['id_candidatura']; ?>">
+                            <form method="post" action="pagesprofessores/processa_candidatura.php">
+                                <input type="hidden" name="id_candidatura" value="<?= htmlspecialchars($row_empresa['id_candidatura']); ?>">
+                                <input type="hidden" name="oferta_id" value="<?= htmlspecialchars($id_oferta); ?>">
+
+                                <?php if ($row_empresa['status_professor'] == 'pendente'): ?>
+                                    <!-- O botão Cancelar não aparece se o status já for pendente -->
                                     <button type="submit" name="acao" value="aceitar" class="btn btn-success">Aceitar</button>
                                     <button type="submit" name="acao" value="rejeitar" class="btn btn-danger">Rejeitar</button>
-                                </form>
-                            <?php else: ?>
-                                <p class="status-finalizado">Status: <?= ucfirst($row['status_professor']); ?></p>
-                            <?php endif; ?>
+
+                                <?php elseif ($row_empresa['status_professor'] == 'aprovado' || $row_empresa['status_professor'] == 'rejeitado'): ?>
+                                    <button type="submit" name="acao" value="cancelar" class="btn-cancel">Cancelar</button>
+                                <?php endif; ?>
+                            </form>
                         </div>
+
                     </div>
-                <?php endwhile; ?>
+                <?php } while ($row_empresa = $result->fetch_assoc()); ?>
             </div>
         <?php else: ?>
             <p class="no-data">Nenhuma candidatura encontrada para esta oferta.</p>
