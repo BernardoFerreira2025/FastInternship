@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include '../database/mysqli.php';
+require_once '../database/mysqli.php';
 
 // Verifica se há mensagem de toast na sessão
 $toast_message = "";

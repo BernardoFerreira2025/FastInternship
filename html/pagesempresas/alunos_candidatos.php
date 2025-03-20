@@ -138,10 +138,23 @@ $result = $stmt->get_result();
 
                         <hr>
 
+                        <!-- Botões de Aceitar/Rejeitar -->
+                        <?php if ($row['status_professor'] == 'aprovado' && $row['status_empresa'] == 'pendente'): ?>
+                            <div class="acoes-empresa">
+                                <form method="post" action="pagesempresas/processa_candidatura_empresa.php">
+                                    <input type="hidden" name="id_candidatura" value="<?= htmlspecialchars($row['id_candidatura']); ?>">
+                                    <button type="submit" name="acao" value="aceitar" class="btn btn-success">Aceitar</button>
+                                    <button type="submit" name="acao" value="rejeitar" class="btn btn-danger">Rejeitar</button>
+                                </form>
+                            </div>
+                        <?php elseif ($row['status_professor'] == 'pendente'): ?>
+                            <p class="alerta">⏳ Aguarde a aprovação do professor antes de aceitar ou rejeitar.</p>
+                        <?php endif; ?>
+
                         <!-- Botão de Cancelar (Apenas se status for "aprovado" ou "rejeitado") -->
                         <?php if ($row['status_empresa'] == 'aprovado' || $row['status_empresa'] == 'rejeitado'): ?>
                             <div class="acoes-empresa">
-                                <form method="post" action="processa_candidatura_empresa.php">
+                                <form method="post" action="pagesempresas/processa_candidatura_empresa.php">
                                     <input type="hidden" name="id_candidatura" value="<?= htmlspecialchars($row['id_candidatura']); ?>">
                                     <button type="submit" name="acao" value="cancelar" class="btn-cancel">Cancelar</button>
                                 </form>
