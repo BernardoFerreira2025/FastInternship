@@ -12,6 +12,13 @@ if (!$conn) {
     die("Erro na conexão com o banco de dados: " . mysqli_connect_error());
 }
 
+// Definição de abreviações para os cursos
+$curso_abreviacoes = [
+    "Técnico(a) de Multimédia" => "Multimédia",
+    "Técnico(a) de Turismo" => "Turismo",
+    "Técnico(a) de Gestão e Programação de Sistemas Informáticos" => "TGPSI"
+];
+
 // Obtém os cursos disponíveis
 $cursos = $conn->query("SELECT id_curso, nome FROM cursos");
 if (!$cursos) {
@@ -35,24 +42,33 @@ if (!$ofertas) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/allcss.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Gestão de Ofertas</title>
 </head>
 <body>
-    <div class="ofertas-container">
+    <div class="users-container">
+        <h2 class="users-header">Gestão de Ofertas</h2>
+
         <!-- Filtro de Cursos -->
         <div class="filter-buttons">
-            <?php while ($curso = $cursos->fetch_assoc()) { ?>
-                <button class="filter-btn" onclick="showSection('curso_<?php echo $curso['id_curso']; ?>')">
-                    <i class="fas fa-graduation-cap"></i> <?php echo htmlspecialchars($curso['nome']); ?>
+            <?php 
+            $first = true;
+            while ($curso = $cursos->fetch_assoc()) { 
+                $abreviacao = $curso_abreviacoes[$curso['nome']] ?? $curso['nome']; 
+            ?>
+                <button class="filter-btn <?php echo $first ? 'active' : ''; ?>" 
+                        onclick="showSection('curso_<?php echo $curso['id_curso']; ?>', this)">
+                    <i class="fas fa-graduation-cap"></i> <?php echo htmlspecialchars($abreviacao); ?>
                 </button>
+                <?php $first = false; ?>
             <?php } ?>
         </div>
 
         <?php
-        $cursos->data_seek(0); // Reset curso para reutilizar
+        $cursos->data_seek(0); // Reset para reutilizar
+        $first = true;
         while ($curso = $cursos->fetch_assoc()) {
         ?>
-            <div id="curso_<?php echo $curso['id_curso']; ?>" class="section">
-                <h2 class="section-header">Ofertas - <?php echo htmlspecialchars($curso['nome']); ?></h2>
+            <div id="curso_<?php echo $curso['id_curso']; ?>" class="section <?php echo $first ? 'active' : ''; ?>">
                 <div class="users-grid">
                     <?php
                     $ofertas->data_seek(0);
@@ -86,21 +102,30 @@ if (!$ofertas) {
                     ?>
                 </div>
             </div>
-        <?php } ?>
+        <?php 
+        $first = false;
+        } 
+        ?>
     </div>
 
     <script>
-        function showSection(sectionId) {
+        function showSection(sectionId, btn) {
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
             document.getElementById(sectionId).classList.add('active');
+
+            // Remover classe ativa dos botões e ativar o clicado
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.classList.remove('active');
+            });
+            btn.classList.add('active');
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            const firstSection = document.querySelector('.section');
-            if (firstSection) {
-                firstSection.classList.add('active');
+            const firstSection = document.querySelector('.section.active');
+            if (!firstSection) {
+                document.querySelector('.section').classList.add('active');
             }
         });
     </script>

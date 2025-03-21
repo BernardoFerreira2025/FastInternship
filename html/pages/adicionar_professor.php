@@ -4,7 +4,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 include '../database/mysqli.php';
-
+//Verifica se o admin está com o login efetuado
+if (!isset($_SESSION['id_utilizador'])) {
+    $_SESSION['error'] = "Sessão inválida. Faça login novamente.";
+    header("Location: ../formlogin.php");
+    exit();
+}
 // Obtém os cursos disponíveis
 $cursos = $conn->query("SELECT id_curso, nome FROM cursos");
 
