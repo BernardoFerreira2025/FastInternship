@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../database/mysqli.php';
+require_once '../database/mysqli.php';
 
 // Verifica se o professor está logado corretamente
 if (!isset($_SESSION['id_professor']) || $_SESSION['user_role'] !== 'professor') {
@@ -73,7 +73,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
         <!-- Main Content -->
         <main class="main-content">
             <?php
-                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas', 'adicionar_empresa', 'ofertas_expiradas', 'alunos_candidatos'];
+                $allowed_pages = ['dashboard', 'gerir_ofertas', 'gestao_ofertas', 'adicionar_empresa', 'ofertas_expiradas', 'alunos_candidatos', 'editar_oferta'];
                 if (in_array($page, $allowed_pages)) {
                     include "pagesprofessores/{$page}.php";
                 } else {

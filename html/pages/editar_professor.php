@@ -1,6 +1,8 @@
 <?php
-session_start(); // Inicia a sessão para mensagens
-include '../../database/mysqli.php'; // Conexão com o banco de dados
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once "../database/mysqli.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id_professor'];
@@ -17,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['mensagem_sucesso'] = "Alterações guardadas com sucesso!";
         // Redireciona para gestao_utilizadores.php
         $_SESSION['toast_message'] = "Alterações guardadas com sucesso!";
-        header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
+        header("Location: admin_dashboard.php?page=gestao_utilizadores");
         exit();        
     } else {
         echo "Erro ao atualizar os dados.";
@@ -53,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Link para o CSS -->
 </head>
 <body>
-    <div class="form-container">
-        <h1>Editar Professor</h1>
-        <form action="editar_professor.php" method="POST">
+    <div class="users-container">
+        <h2 class="users-header">Editar Professor</h2>
+        <form method="POST" action="" id="editarProfessorForm">
             <input type="hidden" name="id_professor" value="<?php echo htmlspecialchars($professor['id_professor']); ?>">
             <div>
                 <label for="nome">Nome:</label>
@@ -75,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php } ?>
                 </select>
             </div>
-            <button type="submit">Guardar Alterações</button>
+            <button type="submit" class="btn-upload">Guardar Alterações</button>
         </form>
         <!-- Removido o botão "Voltar" -->
     </div>

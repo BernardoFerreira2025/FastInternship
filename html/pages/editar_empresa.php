@@ -1,6 +1,8 @@
 <?php
-session_start(); // Inicia a sessão para mensagens
-include '../../database/mysqli.php'; // Inclui o arquivo de conexão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once '../database/mysqli.php'; // Ligação mmysql
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id_empresas'];
@@ -18,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
         $_SESSION['toast_message'] = "Alterações guardadas com sucesso!";
-        header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
+        header("Location: admin_dashboard.php?page=gestao_utilizadores");
         exit();
         
     } else {
@@ -52,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Caminho para o CSS -->
 </head>
 <body>
-    <div class="form-container">
-        <h1>Editar Empresa</h1>
-        <form action="editar_empresa.php" method="POST">
+    <div class="users-container">
+        <h2 class="users-header">Editar Empresa</h2>
+        <form method="POST" action="" id="editarEmpresaForm">
             <input type="hidden" name="id_empresas" value="<?php echo htmlspecialchars($empresa['id_empresas']); ?>">
             <div>
                 <label for="responsavel">Responsável:</label>
@@ -84,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label for="Localidade">Localidade:</label>
                 <input type="Localidade" id="Localidade" name="Localidade" value="<?php echo htmlspecialchars($empresa['Localidade']); ?>" required>
             </div>
-            <button type="submit">Guardar Alterações</button>
+            <button type="submit" class="btn-upload">Guardar Alterações</button>
         </form>
     </div>
 </body>

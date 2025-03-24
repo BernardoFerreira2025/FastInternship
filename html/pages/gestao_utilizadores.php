@@ -67,7 +67,7 @@ $professores = $conn->query("
                 </p>
 
                 <div class="user-actions">
-                    <a href='pages/editar_aluno.php?id=<?php echo $aluno['id_aluno']; ?>' class="edit"><i class="fas fa-pen-to-square action-icon"></i> Editar</a>
+                    <a href='admin_dashboard.php?page=editar_aluno&id=<?php echo $aluno['id_aluno']; ?>' class="edit"><i class="fas fa-pen-to-square action-icon"></i> Editar</a>
                     <a href='pages/excluir_aluno.php?id=<?php echo $aluno['id_aluno']; ?>' class="delete"><i class="fas fa-trash action-icon"></i> Excluir</a>
                 </div>
             </div>
@@ -75,28 +75,28 @@ $professores = $conn->query("
     </div>
 </div>
 
-    <div id="empresas" class="section">
-        <h2 class="section-header">Empresas</h2>
-        <div class="users-grid">
-            <?php while ($empresa = $empresas->fetch_assoc()) { ?>
-                <div class="user-card">
-                    <div class="profile-pic-container">
-                        <img src="<?php echo !empty($empresa['foto']) ? '../images/'.$empresa['foto'] : '../images/company_default.png'; ?>" alt="Foto da Empresa">
-                    </div>
-                    <h3><?php echo htmlspecialchars($empresa['nome_empresa']); ?></h3>
-                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <?php echo htmlspecialchars($empresa['email']); ?></p>
-                    <p><i class="fas fa-phone"></i> <strong>Telefone:</strong> <?php echo htmlspecialchars($empresa['telefone']); ?></p>
-                    <p><i class="fas fa-map-marker-alt"></i> <strong>Localidade:</strong> <?php echo htmlspecialchars($empresa['Localidade']); ?></p>
-                    <div class="user-actions">
-                        <a href='pages/editar_empresa.php?id=<?php echo $empresa['id_empresas']; ?>' class="edit"><i class="fas fa-pen-to-square action-icon"></i> Editar</a>
-                        <a href='pages/excluir_empresa.php?id=<?php echo $empresa['id_empresas']; ?>' class="delete"><i class="fas fa-trash action-icon"></i> Excluir</a>
-                    </div>
+<div id="empresas" class="section">
+    <h2 class="section-header">Empresas</h2>
+    <div class="users-grid">
+        <?php while ($empresa = $empresas->fetch_assoc()) { ?>
+            <div class="user-card">
+                <div class="profile-pic-container">
+                    <img src="<?php echo !empty($empresa['foto']) ? '../images/'.$empresa['foto'] : '../images/company_default.png'; ?>" alt="Foto da Empresa">
                 </div>
-            <?php } ?>
-        </div>
+                <h3><?php echo htmlspecialchars($empresa['nome_empresa']); ?></h3>
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <?php echo htmlspecialchars($empresa['email']); ?></p>
+                <p><i class="fas fa-phone"></i> <strong>Telefone:</strong> <?php echo htmlspecialchars($empresa['telefone']); ?></p>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Localidade:</strong> <?php echo htmlspecialchars($empresa['Localidade']); ?></p>
+                <div class="user-actions">
+                    <a href='admin_dashboard.php?page=editar_empresa&id=<?php echo $empresa['id_empresas']; ?>' class="edit"><i class="fas fa-pen-to-square action-icon"></i> Editar</a>
+                    <a href='pages/excluir_empresa.php?id=<?php echo $empresa['id_empresas']; ?>' class="delete"><i class="fas fa-trash action-icon"></i> Excluir</a>
+                </div>
+            </div>
+        <?php } ?>
     </div>
+</div>
 
-    <div id="professores" class="section">
+<div id="professores" class="section">
     <h2 class="section-header">Professores</h2>
     <div class="users-grid">
         <?php while ($professor = $professores->fetch_assoc()) { ?>
@@ -117,7 +117,7 @@ $professores = $conn->query("
                     ?>
                 </p>
                 <div class="user-actions">
-                    <a href='pages/editar_professor.php?id=<?php echo $professor['id_professor']; ?>' class="edit"><i class="fas fa-pen-to-square action-icon"></i> Editar</a>
+                    <a href='admin_dashboard.php?page=editar_professor&id=<?php echo $professor['id_professor']; ?>' class="edit"><i class="fas fa-pen-to-square action-icon"></i> Editar</a>
                     <a href='pages/excluir_professor.php?id=<?php echo $professor['id_professor']; ?>' class="delete"><i class="fas fa-trash action-icon"></i> Excluir</a>
                 </div>
             </div>

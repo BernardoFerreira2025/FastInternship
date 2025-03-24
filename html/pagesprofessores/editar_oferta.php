@@ -1,6 +1,8 @@
 <?php
-session_start();
-include '../../database/mysqli.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once '../database/mysqli.php';
 
 // Verifica se o ID foi enviado
 if (isset($_GET['id'])) {
@@ -55,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ssssii", $titulo, $descricao, $data_inicio, $data_fim, $vagas, $id_oferta);
         if ($stmt->execute()) {
             $_SESSION['mensagem_sucesso'] = "Oferta alterada com sucesso!";
-            header("Location: ../professor_dashboard.php?page=gestao_ofertas");
+            header("Location: professor_dashboard.php?page=gestao_ofertas");
             exit;
         } else {
             $_SESSION['mensagem_erro'] = "Erro ao atualizar a oferta.";
@@ -76,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../assets/css/allcss.css">
 </head>
 <body>
-    <div class="form-container">
-        <h1>Editar Oferta</h1>
+    <div class="users-container">
+        <h2 class="users-header">Editar Oferta</h2>
         <?php
         if (isset($_SESSION['mensagem_erro'])) {
             echo "<script>

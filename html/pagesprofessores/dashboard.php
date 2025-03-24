@@ -1,6 +1,6 @@
 <?php
 // Conexão com o banco de dados
-include 'C:/xampp/htdocs/pap/database/mysqli.php';
+require_once '../database/mysqli.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -40,10 +40,10 @@ $result = $stmt->get_result();
 <div class="form-background">
     <div class="form-wrapper">
         <!-- Título do Painel -->
-        <h1 class="dashboard-header">Controlo das Candidaturas</h1>
+        <h1 class="users-header">Controlo das Candidaturas</h1>
 
         <!-- Seção de Ofertas Publicadas -->
-        <div class="users-container">
+        <div class="users-grid">
             <?php
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {

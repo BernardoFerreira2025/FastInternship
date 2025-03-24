@@ -1,6 +1,6 @@
 <?php
 // Conexão com o banco de dados
-include 'C:/xampp/htdocs/pap/database/mysqli.php';
+require_once '../database/mysqli.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
