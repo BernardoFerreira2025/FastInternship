@@ -2597,3 +2597,54 @@ input[type="date"].input-field::-webkit-calendar-picker-indicator {
     border-radius: 10px;
     border: 1px dashed rgba(255, 255, 255, 0.1);
 }
+
+/* ======== Estilo dos Ícones dos Botões de Ação ======== */
+.action-icon {
+    color: white !important;
+    margin-right: 6px;
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+.filtro-toggle {
+    display: inline-flex;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.filtro-opcao {
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #fff;
+    background: transparent;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.filtro-opcao.ativo {
+    background: linear-gradient(135deg, #ff4f8c, #4f8cff);
+    box-shadow: 0 4px 20px rgba(255, 79, 140, 0.4);
+    transform: translateY(-2px);
+}
+
+.filtro-opcao:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #4f8cff, #ff4f8c);
+    color: #fff;
+}
+
+.filtro-opcao i {
+    font-size: 1.2rem;
+    color: white;
+}

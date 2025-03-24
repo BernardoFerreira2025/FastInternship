@@ -65,6 +65,8 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'verofertas';
                 <i class="fas fa-briefcase"></i> Ver Ofertas</a></li>
             <li><a href="aluno_dashboard.php?page=historico" class="<?php echo $page === 'historico' ? 'active' : ''; ?>">
                 <i class="fas fa-history"></i> Histórico de Candidaturas</a></li>
+                <li><a href="aluno_dashboard.php?page=candidatura_final" class="<?php echo $page === 'candidatura_final' ? 'active' : ''; ?>">
+                <i class="fas fa-check-double"></i> Candidaturas Analisadas</a></li>
         </ul>
     </nav>
 
@@ -72,7 +74,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'verofertas';
     <main class="main-content">
         <?php
             // Lista de páginas permitidas
-            $allowed_pages = ['verofertas', 'historico', 'candidatar'];
+            $allowed_pages = ['verofertas', 'historico', 'candidatar', 'candidatura_final'];
             if (in_array($page, $allowed_pages)) {
                 $file_path = "pagesalunos/{$page}.php";
                 if (file_exists($file_path)) {

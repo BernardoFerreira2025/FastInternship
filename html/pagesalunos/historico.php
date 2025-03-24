@@ -78,30 +78,43 @@ $conn->close();
     <title>Histórico de Candidaturas</title>
 </head>
 <body>
-    <h1>Histórico de Candidaturas</h1>
-    <div class="historico-section">
+    <div class="users-container">
+    <h2 class="users-header">Histórico de Candidaturas</h2>
+    <div class="users-grid">
         <?php if (!empty($candidaturas)): ?>
             <?php foreach ($candidaturas as $candidatura): ?>
-                <div class="historico-card">
+                <div class="user-card">
                     <h3><?php echo htmlspecialchars($candidatura['titulo']); ?></h3>
                     <p><strong>Empresa:</strong> <?php echo htmlspecialchars($candidatura['nome_empresa']); ?></p>
                     <p><strong>Descrição:</strong> <?php echo htmlspecialchars($candidatura['descricao']); ?></p>
                     <p><strong>Data de Início:</strong> <?php echo htmlspecialchars($candidatura['data_inicio']); ?></p>
                     <p><strong>Data de Fim:</strong> <?php echo htmlspecialchars($candidatura['data_fim']); ?></p>
+        
                     <p><strong>Status do Professor:</strong> 
-                        <span class="status <?php echo htmlspecialchars($candidatura['status_professor']); ?>">
+                        <span class="status-<?php echo htmlspecialchars(strtolower($candidatura['status_professor'])); ?>">
                             <?php echo htmlspecialchars($candidatura['status_professor']); ?>
                         </span>
                     </p>
+        
                     <p><strong>Status da Empresa:</strong> 
-                        <span class="status <?php echo htmlspecialchars($candidatura['status_empresa']); ?>">
+                        <span class="status-<?php echo htmlspecialchars(strtolower($candidatura['status_empresa'])); ?>">
                             <?php echo htmlspecialchars($candidatura['status_empresa']); ?>
                         </span>
                     </p>
-                    <form method="post" onsubmit="return confirmCancel(event, this)">
-                        <input type="hidden" name="id_candidatura" value="<?php echo $candidatura['id_candidatura']; ?>">
-                        <button type="submit" class="btn-cancel">Cancelar Candidatura</button>
-                    </form>
+
+                    <?php
+                    // Verifica se ainda é possível cancelar (ambos pendentes)
+                    $statusProfessor = strtolower($candidatura['status_professor']);
+                    $statusEmpresa = strtolower($candidatura['status_empresa']);
+                    if ($statusProfessor === 'pendente' && $statusEmpresa === 'pendente'):
+                    ?>
+                        <form method="post" onsubmit="return confirmCancel(event, this)">
+                            <input type="hidden" name="id_candidatura" value="<?php echo $candidatura['id_candidatura']; ?>">
+                            <button type="submit" class="btn-cancel">Cancelar Candidatura</button>
+                        </form>
+                    <?php else: ?>
+                        <p style="margin-top: 15px; font-style: italic; color: #ccc;">A candidatura já foi avaliada por uma das partes responsáveis.</p>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

@@ -75,9 +75,9 @@ if ($total_candidaturas >= 3) {
     echo "<script>Swal.fire({ icon: 'error', title: 'Limite de Candidaturas Atingido', text: 'Você só pode se candidatar a no máximo 3 ofertas.', confirmButtonText: 'Entendido', confirmButtonColor: '#d33' });</script>";
 }
 ?>
-
-<h1>Ofertas Disponíveis</h1>
-<div class="offers-section">
+<div class="users-container">
+<h2 class="users-header">Ofertas Disponíveis</h2>
+<div class="users-grid">
     <?php if (!empty($ofertas)): ?>
         <?php foreach ($ofertas as $oferta): ?>
             <div class="offer-card">
@@ -88,7 +88,7 @@ if ($total_candidaturas >= 3) {
                 <p><strong>Período:</strong> <?php echo htmlspecialchars($oferta['data_inicio']) . " a " . htmlspecialchars($oferta['data_fim']); ?></p>
                 <p><strong>Vagas Disponíveis:</strong> <?php echo htmlspecialchars($oferta['vagas']); ?></p>
 
-                <p><strong>Curso Relacionado:</strong> 
+                <p><strong>Curso:</strong> 
                     <?php echo !empty($oferta['curso_relacionado']) ? htmlspecialchars($oferta['curso_relacionado']) : 'Não informado'; ?>
                 </p>
 

@@ -28,6 +28,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    // Verificar se o email já existe
+    $verifica = $conn->prepare("SELECT id_professor FROM professores WHERE email = ?");
+    $verifica->bind_param("s", $email);
+    $verifica->execute();
+    $verifica->store_result();
+
+    if ($verifica->num_rows > 0) {
+        $_SESSION['toast_message'] = "Erro: Este professor já está registado!";
+        $_SESSION['toast_type'] = "toast-error";
+        header("Location: admin_dashboard.php?page=adicionar_professor");
+        exit();
+    }
+
     // Insere os dados na tabela `professores`
     $sql = "INSERT INTO professores (nome, email, password, id_curso) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
@@ -62,8 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <?php unset($_SESSION['toast_message'], $_SESSION['toast_type']); ?>
     <?php endif; ?>
-
-    <div class="form-container">
+    <div class="users-container">
         <h2>Adicionar Professor</h2>
         <form method="POST">
             <label>Nome:</label>
@@ -73,7 +85,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="email" name="email" required>
 
             <label>Senha:</label>
-            <input type="password" name="password" required>
+            <div class="password-container">
+                <input type="password" id="password" name="password" required>
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i> <!-- Ícone do olho -->
+            </div>
 
             <label>Curso:</label>
             <select name="id_curso" required>
@@ -84,11 +99,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php } ?>
             </select>
 
-            <button type="submit">Adicionar</button>
+            <button type="submit" class="btn-upload">Adicionar</button>
         </form>
     </div>
 
     <script>
+         // Validação no frontend
+         document.getElementById("ProfForm").addEventListener("submit", function(event) {
+            let emailInput = document.getElementById("email").value;
+
+            if (!emailInput.endsWith("@esag-edu.net")) {
+                showToast("Apenas e-mails @esag-edu.net são permitidos.", "error");
+                event.preventDefault();
+                return;
+            }
         // Exibir e ocultar toast automaticamente
         document.addEventListener("DOMContentLoaded", function() {
             let toast = document.getElementById("toast");
@@ -98,7 +122,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }, 4000);
             }
         });
+
+                // Alternar visibilidade da senha
+                document.getElementById("togglePassword").addEventListener("click", function() {
+            let passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                this.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        });
     </script>
+    
 
 </body>
 </html>
