@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute()) {
         $_SESSION['toast_message'] = "Alterações guardadas com sucesso!";
-        header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
+        header("Location: admin_dashboard.php?page=gestao_utilizadores");
         exit();        
     } else {
         echo "Erro ao atualizar os dados.";
@@ -47,43 +47,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-<div class="form-container">
+<div class="form-box-editar">
     <h1>Editar Aluno</h1>
     <form method="POST" action="" enctype="multipart/form-data" id="editarAlunoForm">
         <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($aluno['id_aluno']) ?>">
 
-        <div class="form-group">
+        <div class="input-group-editar">
             <label for="Nome">Nome do Aluno:</label>
             <input type="text" name="Nome" id="Nome" value="<?= htmlspecialchars($aluno['Nome']) ?>" required>
         </div>
 
-        <div class="form-group">
+        <div class="input-group-editar">
             <label for="Email">Email do Aluno:</label>
             <input type="email" name="Email" id="Email" value="<?= htmlspecialchars($aluno['Email']) ?>" required>
         </div>
 
-        <div class="form-group">
+        <div class="input-group-editar">
             <label for="nr_processo">Nº de Processo:</label>
             <input type="text" name="nr_processo" id="nr_processo" value="<?= htmlspecialchars($aluno['nr_processo']) ?>" required>
         </div>
 
-        <div class="form-group">
+        <div class="input-group-editar">
             <label>Currículo Atual:</label>
             <?php if (!empty($aluno['Curriculo'])): ?>
-                <a href="../uploads/<?= htmlspecialchars($aluno['Curriculo']) ?>" download target="_blank" title="Transferir Currículo">
-                    <i class="fas fa-file-download" style="color: #4f8cff; font-size: 1.3rem; margin-left: 8px;"></i>
+                <a href="../uploads/<?= htmlspecialchars($aluno['Curriculo']) ?>" download target="_blank" class="curriculo-link-editar" title="Transferir Currículo">
+                    <i class="fas fa-file-download"></i> Ver Currículo Atual
                 </a>
             <?php else: ?>
-                <span class="no-cv">Nenhum currículo enviado</span>
+                <span class="no-cv-msg-editar">Nenhum currículo enviado</span>
             <?php endif; ?>
         </div>
 
-        <div class="form-group">
+        <div class="input-group-editar">
             <label for="novo_curriculo">Novo Currículo (PDF):</label>
             <input type="file" name="novo_curriculo" id="novo_curriculo" accept=".pdf">
         </div>
 
-        <button type="submit" class="btn-submit">Salvar Alterações</button>
+        <button type="submit" class="btn-editar-submit">Salvar Alterações</button>
     </form>
 </div>
 

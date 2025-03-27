@@ -52,34 +52,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Professor</title>
-    <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Link para o CSS -->
+    <link rel="stylesheet" href="../assets/css/allcss.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="users-container">
-        <h2 class="users-header">Editar Professor</h2>
-        <form method="POST" action="" id="editarProfessorForm">
-            <input type="hidden" name="id_professor" value="<?php echo htmlspecialchars($professor['id_professor']); ?>">
-            <div>
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" value="<?php echo htmlspecialchars($professor['nome']); ?>" required>
-            </div>
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($professor['email']); ?>" required>
-            </div>
-            <div>
-                <label for="id_curso">Curso:</label>
-                <select id="id_curso" name="id_curso" required>
-                    <?php while ($curso = $cursos->fetch_assoc()) { ?>
-                        <option value="<?php echo $curso['id_curso']; ?>" <?php if ($professor['id_curso'] == $curso['id_curso']) echo 'selected'; ?>>
-                            <?php echo htmlspecialchars($curso['nome']); ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
-            <button type="submit" class="btn-upload">Guardar Alterações</button>
-        </form>
-        <!-- Removido o botão "Voltar" -->
-    </div>
+
+<div class="form-box-editar">
+    <h1>Editar Professor</h1>
+    <form method="POST" action="" id="editarProfessorForm">
+        <input type="hidden" name="id_professor" value="<?= htmlspecialchars($professor['id_professor']); ?>">
+
+        <div class="input-group-editar">
+            <label for="nome"><i class="fas fa-user"></i> Nome:</label>
+            <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($professor['nome']); ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+            <input type="email" id="email" name="email" value="<?= htmlspecialchars($professor['email']); ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="id_curso"><i class="fas fa-graduation-cap"></i> Curso:</label>
+            <select id="id_curso" name="id_curso" required>
+                <?php while ($curso = $cursos->fetch_assoc()) { ?>
+                    <option value="<?= $curso['id_curso']; ?>" <?= ($professor['id_curso'] == $curso['id_curso']) ? 'selected' : ''; ?>>
+                        <?= htmlspecialchars($curso['nome']); ?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-editar-submit">Salvar Alterações</button>
+    </form>
+</div>
+
 </body>
 </html>
+

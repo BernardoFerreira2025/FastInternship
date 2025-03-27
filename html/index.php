@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="assets/css/allcss.css">
     <link rel="stylesheet" href="assets/elements/header.css"> 
     <link rel="stylesheet" href="assets/elements/footer.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
 </head>
 <body>
         <?php require 'assets/elements/header.php'; ?>
@@ -47,7 +49,5 @@
         </div>
     </section>
         <?php include 'assets/elements/footer.php'; ?>  
-    <!-- Script do Bootstrap sem o atributo integrity e crossorigin -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

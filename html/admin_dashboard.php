@@ -71,7 +71,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'gestao_utilizadores';
         <main class="main-content">
             <?php
             // Lista de páginas permitidas
-            $allowed_pages = ['gestao_utilizadores', 'gestao_ofertas', 'adicionar_professor', 'editar_aluno', 'editar_empresa', 'editar_professor'];
+            $allowed_pages = ['gestao_utilizadores', 'gestao_ofertas', 'adicionar_professor', 'editar_aluno', 'editar_empresa', 'editar_professor', 'editar_oferta'];
 
             if (in_array($page, $allowed_pages)) {
                 $file_path = "pages/{$page}.php";

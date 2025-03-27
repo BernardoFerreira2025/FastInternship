@@ -123,8 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         });
 
-                // Alternar visibilidade da senha
-                document.getElementById("togglePassword").addEventListener("click", function() {
+   // Alternar visibilidade da senha
+   document.getElementById("togglePassword").addEventListener("click", function() {
             let passwordField = document.getElementById("password");
             if (passwordField.type === "password") {
                 passwordField.type = "text";
@@ -134,8 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 this.classList.replace("fa-eye-slash", "fa-eye");
             }
         });
+    });
     </script>
-    
-
 </body>
 </html>

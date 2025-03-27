@@ -68,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
@@ -76,63 +75,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Oferta</title>
     <link rel="stylesheet" href="../assets/css/allcss.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div class="users-container">
-        <h2 class="users-header">Editar Oferta</h2>
-        <?php
-        if (isset($_SESSION['mensagem_erro'])) {
-            echo "<script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        showToast('" . addslashes($_SESSION['mensagem_erro']) . "', 'error');
-                    });
-                  </script>";
-            unset($_SESSION['mensagem_erro']);
-        }
-        ?>
-        <form method="POST" action="" id="editarOfertaForm">
-            <div class="form-group">
-                <label for="titulo">Título</label>
-                <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($oferta['titulo']) ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" required><?= htmlspecialchars($oferta['descricao']) ?></textarea>
-            </div>
-            <div class="form-group">
-                <label for="data_inicio">Data Início</label>
-                <input type="date" id="data_inicio" name="data_inicio" value="<?= htmlspecialchars($oferta['data_inicio']) ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="data_fim">Data Fim</label>
-                <input type="date" id="data_fim" name="data_fim" value="<?= htmlspecialchars($oferta['data_fim']) ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="vagas">Número de Vagas</label>
-                <input type="number" id="vagas" name="vagas" value="<?= htmlspecialchars($oferta['vagas']) ?>" required>
-            </div>
-            <button type="submit" class="btn-submit">Salvar Alterações</button>
-        </form>
-    </div>
+<div class="form-box-editar">
+    <h1>Editar Oferta</h1>
 
-    <script>
-        document.getElementById('editarOfertaForm').addEventListener('submit', function(event) {
-            const dataInicio = new Date(document.getElementById('data_inicio').value);
-            const dataFim = new Date(document.getElementById('data_fim').value);
+    <?php if (isset($_SESSION['mensagem_erro'])): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toast = document.createElement('div');
+                toast.className = 'toast-message toast-error';
+                toast.textContent = '<?= addslashes($_SESSION['mensagem_erro']) ?>';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 4000);
+            });
+        </script>
+        <?php unset($_SESSION['mensagem_erro']); ?>
+    <?php endif; ?>
 
-            if (dataFim < dataInicio) {
-                showToast('A Data de Fim não pode ser menor que a Data de Início.', 'error');
-                event.preventDefault();
-            }
-        });
+    <form method="POST" action="" id="editarOfertaForm">
+        <div class="input-group-editar">
+            <label for="titulo"><i class="fas fa-briefcase"></i> Título</label>
+            <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($oferta['titulo']) ?>" required>
+        </div>
 
-        function showToast(message, type) {
+        <div class="input-group-editar">
+            <label for="descricao"><i class="fas fa-align-left"></i> Descrição</label>
+            <textarea id="descricao" name="descricao" required><?= htmlspecialchars($oferta['descricao']) ?></textarea>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="data_inicio"><i class="fas fa-calendar-alt"></i> Data Início</label>
+            <input type="date" id="data_inicio" name="data_inicio" value="<?= htmlspecialchars($oferta['data_inicio']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="data_fim"><i class="fas fa-calendar-check"></i> Data Fim</label>
+            <input type="date" id="data_fim" name="data_fim" value="<?= htmlspecialchars($oferta['data_fim']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="vagas"><i class="fas fa-users"></i> Número de Vagas</label>
+            <input type="number" id="vagas" name="vagas" value="<?= htmlspecialchars($oferta['vagas']) ?>" required>
+        </div>
+
+        <button type="submit" class="btn-editar-submit">Salvar Alterações</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('editarOfertaForm').addEventListener('submit', function(event) {
+        const dataInicio = new Date(document.getElementById('data_inicio').value);
+        const dataFim = new Date(document.getElementById('data_fim').value);
+
+        if (dataFim < dataInicio) {
+            event.preventDefault();
             const toast = document.createElement('div');
-            toast.className = `toast-${type}`;
-            toast.textContent = message;
+            toast.className = 'toast-message toast-error';
+            toast.textContent = 'A Data de Fim não pode ser menor que a Data de Início.';
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 5000);
         }
-    </script>
+    });
+</script>
 </body>
 </html>

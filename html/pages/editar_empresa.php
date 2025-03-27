@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../database/mysqli.php'; // Ligação mmysql
+require_once '../database/mysqli.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id_empresas'];
@@ -14,24 +14,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cod_postal = $_POST['cod_postal'];
     $Localidade = $_POST['Localidade'];
 
-    // Atualizar dados no banco de dados
-    $stmt = $conn->prepare("UPDATE empresas SET responsavel = ?, nome_empresa = ?, email = ?,  telefone = ? WHERE id_empresas = ?");
-    $stmt->bind_param("ssssi", $responsavel, $nome, $email, $telefone, $id);
+    $stmt = $conn->prepare("UPDATE empresas SET responsavel = ?, nome_empresa = ?, email = ?, telefone = ?, morada = ?, cod_postal = ?, Localidade = ? WHERE id_empresas = ?");
+    $stmt->bind_param("sssssssi", $responsavel, $nome, $email, $telefone, $morada, $cod_postal, $Localidade, $id);
 
     if ($stmt->execute()) {
         $_SESSION['toast_message'] = "Alterações guardadas com sucesso!";
         header("Location: admin_dashboard.php?page=gestao_utilizadores");
         exit();
-        
     } else {
         echo "Erro ao atualizar os dados.";
     }
-    } else {
-    // Verificar se o ID foi passado
+} else {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
-
-        // Buscar os dados da empresa
         $result = $conn->query("SELECT * FROM empresas WHERE id_empresas = $id");
         if ($result->num_rows > 0) {
             $empresa = $result->fetch_assoc();
@@ -45,49 +40,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Empresa</title>
-    <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Caminho para o CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/allcss.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="users-container">
-        <h2 class="users-header">Editar Empresa</h2>
-        <form method="POST" action="" id="editarEmpresaForm">
-            <input type="hidden" name="id_empresas" value="<?php echo htmlspecialchars($empresa['id_empresas']); ?>">
-            <div>
-                <label for="responsavel">Responsável:</label>
-                <input type="responsavel" id="responsavel" name="responsavel" value="<?php echo htmlspecialchars($empresa['responsavel']); ?>" required>
-            </div>
-            <div>
-                <label for="nome_empresa">Nome da Empresa:</label>
-                <input type="text" id="nome_empresa" name="nome_empresa" value="<?php echo htmlspecialchars($empresa['nome_empresa']); ?>" required>
-            </div>
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($empresa['email']); ?>" required>
-            </div>
-            <div>
-                <label for="telefone">Telefone:</label>
-                <input type="telefone" id="telefone" name="telefone" value="<?php echo htmlspecialchars($empresa['telefone']); ?>" required>
-            </div>
-            <div>
-                <label for="morada">Morada:</label>
-                <input type="morada" id="morada" name="morada" value="<?php echo htmlspecialchars($empresa['morada']); ?>" required>
-            </div>
-            <div>
-                <label for="cod_postal">Código Postal:</label>
-                <input type="cod_postal" id="cod_postal" name="cod_postal" value="<?php echo htmlspecialchars($empresa['cod_postal']); ?>" required>
-            </div>
-            <div>
-                <label for="Localidade">Localidade:</label>
-                <input type="Localidade" id="Localidade" name="Localidade" value="<?php echo htmlspecialchars($empresa['Localidade']); ?>" required>
-            </div>
-            <button type="submit" class="btn-upload">Guardar Alterações</button>
-        </form>
-    </div>
+
+<div class="form-box-editar">
+    <h1>Editar Empresa</h1>
+    <form method="POST" action="" id="editarEmpresaForm">
+        <input type="hidden" name="id_empresas" value="<?= htmlspecialchars($empresa['id_empresas']) ?>">
+
+        <div class="input-group-editar">
+            <label for="responsavel">Responsável:</label>
+            <input type="text" id="responsavel" name="responsavel" value="<?= htmlspecialchars($empresa['responsavel']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="nome_empresa">Nome da Empresa:</label>
+            <input type="text" id="nome_empresa" name="nome_empresa" value="<?= htmlspecialchars($empresa['nome_empresa']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="<?= htmlspecialchars($empresa['email']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="telefone">Telefone:</label>
+            <input type="text" id="telefone" name="telefone" value="<?= htmlspecialchars($empresa['telefone']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="morada">Morada:</label>
+            <input type="text" id="morada" name="morada" value="<?= htmlspecialchars($empresa['morada']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="cod_postal">Código Postal:</label>
+            <input type="text" id="cod_postal" name="cod_postal" value="<?= htmlspecialchars($empresa['cod_postal']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="Localidade">Localidade:</label>
+            <input type="text" id="Localidade" name="Localidade" value="<?= htmlspecialchars($empresa['Localidade']) ?>" required>
+        </div>
+
+        <button type="submit" class="btn-editar-submit">Salvar Alterações</button>
+    </form>
+</div>
+
 </body>
 </html>

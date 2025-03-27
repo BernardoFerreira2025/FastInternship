@@ -84,8 +84,11 @@ $professores = $conn->query("
                     <img src="<?php echo !empty($empresa['foto']) ? '../images/'.$empresa['foto'] : '../images/company_default.png'; ?>" alt="Foto da Empresa">
                 </div>
                 <h3><?php echo htmlspecialchars($empresa['nome_empresa']); ?></h3>
+                <p><i class="fas fa-user-tie"></i> <strong>Responsável:</strong> <?php echo htmlspecialchars($empresa['responsavel']); ?></p>
                 <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <?php echo htmlspecialchars($empresa['email']); ?></p>
                 <p><i class="fas fa-phone"></i> <strong>Telefone:</strong> <?php echo htmlspecialchars($empresa['telefone']); ?></p>
+                <p><i class="fas fa-map-marked-alt"></i> <strong>Morada:</strong> <?php echo htmlspecialchars($empresa['morada']); ?></p>
+                <p><i class="fas fa-mail-bulk"></i> <strong>Código Postal:</strong> <?php echo htmlspecialchars($empresa['cod_postal']); ?></p>
                 <p><i class="fas fa-map-marker-alt"></i> <strong>Localidade:</strong> <?php echo htmlspecialchars($empresa['Localidade']); ?></p>
                 <div class="user-actions">
                     <a href='admin_dashboard.php?page=editar_empresa&id=<?php echo $empresa['id_empresas']; ?>' class="edit"><i class="fas fa-pen-to-square action-icon"></i> Editar</a>

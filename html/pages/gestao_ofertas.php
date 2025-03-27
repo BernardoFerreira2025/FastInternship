@@ -3,10 +3,14 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 // Inclui a conexão com o banco de dados
-include '../database/mysqli.php';
+require_once '../database/mysqli.php';
 
+$toast_message = "";
+if (isset($_SESSION['toast_message'])) {
+    $toast_message = $_SESSION['toast_message'];
+    unset($_SESSION['toast_message']);
+}
 // Verifica se a conexão foi bem-sucedida
 if (!$conn) {
     die("Erro na conexão com o banco de dados: " . mysqli_connect_error());
@@ -45,6 +49,11 @@ if (!$ofertas) {
     <title>Gestão de Ofertas</title>
 </head>
 <body>
+    <?php if (!empty($toast_message)) : ?>
+        <div id="toast" class="toast-message toast-success">
+            <?= htmlspecialchars($toast_message) ?>
+        </div>
+    <?php endif; ?>
     <div class="users-container">
         <h2 class="users-header">Gestão de Ofertas</h2>
 
@@ -85,13 +94,14 @@ if (!$ofertas) {
                                 <p><i class="fas fa-users"></i> <strong>Vagas:</strong> <?php echo htmlspecialchars($oferta['vagas']); ?></p>
                             </div>
                             <div class="user-actions">
-                                <a href='editar_oferta.php?id=<?php echo $oferta['id_oferta']; ?>' class="edit">
-                                    <i class="fas fa-edit"></i> Editar
-                                </a>
-                                <a href='excluir_oferta.php?id=<?php echo $oferta['id_oferta']; ?>' class="delete">
-                                    <i class="fas fa-trash"></i> Excluir
-                                </a>
-                            </div>
+    <a href='admin_dashboard.php?page=editar_oferta&id=<?php echo $oferta['id_oferta']; ?>' class="edit">
+        <i class="fas fa-pen-to-square action-icon"></i> Editar
+    </a>
+    <a href='pages/excluir_oferta.php?id=<?php echo $oferta['id_oferta']; ?>' class="delete">
+        <i class="fas fa-trash action-icon"></i> Excluir
+    </a>
+</div>
+
                         </div>
                     <?php
                         }
@@ -129,5 +139,16 @@ if (!$ofertas) {
             }
         });
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toast = document.getElementById("toast");
+        if (toast) {
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 4000); // 4 segundos
+        }
+    });
+</script>
+
 </body>
 </html>

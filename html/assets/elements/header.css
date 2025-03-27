@@ -5,7 +5,7 @@
     top: 0;
     left: 0;
     padding: 1rem 3%;
-    background: rgba(26, 26, 46, 0.98); /* Fundo consistente */
+    background: rgba(26, 26, 46, 0.98);
     backdrop-filter: blur(15px);
     display: flex;
     justify-content: space-between;
@@ -15,7 +15,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para o logo */
+/* Logo */
 .logo {
     font-size: 2rem;
     font-weight: 700;
@@ -63,7 +63,7 @@
     transform: translateY(-3px);
 }
 
-/* Autenticação (Botões Login e Registe-se) */
+/* Botões Login e Registo */
 .auth-links {
     display: flex;
     justify-content: flex-end;
@@ -71,19 +71,21 @@
     gap: 1.5rem;
     margin-right: 1rem;
 }
-/* Botão Login */
-.btn-login {
+
+.btn-login,
+.btn-signup {
     padding: 0.8rem 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 25px;
-    color: #ffffff;
-    text-decoration: none;
-    display: inline-block; /* Garante que o botão apareça corretamente */
-    align-items: center;
-    justify-content: center;
-    background: transparent; /* Fundo transparente inicialmente */
     font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
     transition: all 0.3s ease;
+}
+
+.btn-login {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .btn-login:hover {
@@ -94,18 +96,9 @@
     box-shadow: 0 5px 15px rgba(79, 140, 255, 0.3);
 }
 
-/* Botão Registe-se */
 .btn-signup {
-    padding: 0.8rem 1.5rem;
     background: linear-gradient(90deg, #4f8cff, #ff4f8c);
-    border-radius: 25px;
     color: #ffffff;
-    text-decoration: none;
-    display: inline-block; /* Garante que o botão apareça corretamente */
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    transition: all 0.3s ease;
 }
 
 .btn-signup:hover {
@@ -113,7 +106,7 @@
     box-shadow: 0 5px 15px rgba(255, 79, 140, 0.3);
 }
 
-/* Estilos do Dropdown */
+/* Dropdown Clássico */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -166,14 +159,82 @@
     display: block;
 }
 
+/* Dropdown Ícones Personalizados */
+.dropdown-icone {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle-icone {
+    padding: 0.7rem 1.2rem;
+    background: linear-gradient(90deg, #4f8cff, #ff4f8c);
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-toggle-icone:hover {
+    box-shadow: 0 4px 12px rgba(79, 140, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Dropdown permanece aberto ao passar o rato */
+.dropdown-menu-icone {
+    display: none;
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: #1f1f2e;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    min-width: 220px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.dropdown-menu-icone .dropdown-item-icone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: #eee;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s ease;
+}
+
+.dropdown-menu-icone .dropdown-item-icone:hover {
+    background: linear-gradient(135deg, #4f8cff, #ff4f8c);
+    color: #fff;
+}
+
+/* IMPORTANTE: Garante que o menu não desaparece ao passar sobre ele */
+.dropdown-icone:hover .dropdown-menu-icone,
+.dropdown-menu-icone:hover {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .navbar {
         padding: 1rem 2rem;
     }
+
     .nav-links {
         display: none;
     }
+
     .auth-links {
         gap: 1rem;
     }

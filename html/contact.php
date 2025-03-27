@@ -8,7 +8,7 @@ session_start(); // Inicia sessão para verificar o status do e-mail
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacte-nos - FastInternship</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/allcss.css">
     <link rel="stylesheet" href="assets/elements/header.css">
     <link rel="stylesheet" href="assets/elements/footer.css">
@@ -31,7 +31,7 @@ session_start(); // Inicia sessão para verificar o status do e-mail
                     </div>
                     <div class="info-text">
                         <h3>Localização</h3>
-                        <p>Rua da Inovação, 123, Vale Tecnológico</p>
+                        <p>Tv. Silva Pinheiro, Matosinhos</p>
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@ session_start(); // Inicia sessão para verificar o status do e-mail
                     </div>
                     <div class="info-text">
                         <h3>Telefone</h3>
-                        <p>+351 912 345 678</p>
+                        <p>+351 915 008 662</p>
                     </div>
                 </div>
 
@@ -96,9 +96,7 @@ session_start(); // Inicia sessão para verificar o status do e-mail
                         <textarea name="message" id="message" class="form-input" rows="5" placeholder="Escreva a sua mensagem" required></textarea>
                     </div>
 
-                    <button type="submit" class="submit-btn">
-                        <span class="btn-text">Enviar Mensagem</span>
-                    </button>
+                    <button type="submit" class="signup-btn">Enviar Mensagem</button>
                 </form>
             </div>
         </div>

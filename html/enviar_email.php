@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Tentativa de envio de e-mail
         if ($mail->send()) {
-            $_SESSION['email_status'] = "success|✅ Mensagem enviada com sucesso!";
+            $_SESSION['email_status'] = "success|Mensagem enviada com sucesso!";
         } else {
             $_SESSION['email_status'] = "error|❌ Erro ao enviar e-mail.";
         }
