@@ -47,8 +47,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
                     <img src="<?php echo $foto; ?>">
                     <label for="upload-foto" class="upload-icon"><i class="fas fa-camera"></i></label>
                 </div>
-                <h3>Bem-vindo, <?php echo htmlspecialchars($empresa['nome_empresa']); ?></h3>
-
+              
                 <!-- Formulário de Upload -->
                 <form action="upload_foto.php" method="POST" enctype="multipart/form-data">
                     <input type="file" id="upload-foto" name="foto" accept="image/*" required onchange="this.form.submit()">

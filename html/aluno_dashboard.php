@@ -51,7 +51,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'verofertas';
                 <img src="<?php echo $foto; ?>">
                 <label for="upload-foto" class="upload-icon"><i class="fas fa-camera"></i></label>
             </div>
-            <h3>Olá, <?php echo htmlspecialchars($primeiro_nome . " " . $ultimo_nome); ?></h3>
 
             <!-- Formulário de Upload -->
             <form action="upload_foto_aluno.php" method="POST" enctype="multipart/form-data">

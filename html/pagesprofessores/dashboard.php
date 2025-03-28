@@ -67,7 +67,7 @@ $result = $stmt->get_result();
                     echo "</div>";
                 }
             } else {
-                echo "<p>Nenhuma oferta publicada para o seu curso.</p>";
+                echo "<p>Não existe nenhuma candidatura.</p>";
             }
             ?>
         </div>

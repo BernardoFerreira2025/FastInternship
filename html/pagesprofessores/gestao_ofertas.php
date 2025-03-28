@@ -54,13 +54,17 @@ $resultOfertas = $stmtOfertas->get_result();
         <?php
         if ($resultOfertas->num_rows > 0) {
             while ($oferta = $resultOfertas->fetch_assoc()) {
+                // Formatar datas à portuguesa
+                $data_inicio = date('d-m-Y', strtotime($oferta['data_inicio']));
+                $data_fim = date('d-m-Y', strtotime($oferta['data_fim']));
+
                 echo "<div class='user-card'>";
                 echo "<h3>" . htmlspecialchars($oferta['titulo']) . "</h3>";
                 echo "<p><strong>Empresa:</strong> " . htmlspecialchars($oferta['nome_empresa']) . "</p>";
                 echo "<p><strong>Responsável:</strong> " . htmlspecialchars($oferta['responsavel']) . "</p>";
                 echo "<p><strong>Descrição:</strong> " . htmlspecialchars($oferta['descricao']) . "</p>";
-                echo "<p><strong>Data Início:</strong> " . htmlspecialchars($oferta['data_inicio']) . "</p>";
-                echo "<p><strong>Data Fim:</strong> " . htmlspecialchars($oferta['data_fim']) . "</p>";
+                echo "<p><strong>Data Início:</strong> " . $data_inicio . "</p>";
+                echo "<p><strong>Data Fim:</strong> " . $data_fim . "</p>";
                 echo "<p><strong>Vagas:</strong> " . htmlspecialchars($oferta['vagas']) . "</p>";
                 echo "<div class='user-actions'>";
                 echo "<a href='professor_dashboard.php?page=editar_oferta&id=" . $oferta['id_oferta'] . "' class='edit'>";

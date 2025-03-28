@@ -29,12 +29,14 @@ if (!$cursos) {
     die("Erro na consulta de cursos: " . $conn->error);
 }
 
-// Obtém as ofertas disponíveis
-$ofertas = $conn->query("SELECT ofertas_empresas.id_oferta, ofertas_empresas.titulo, ofertas_empresas.descricao, ofertas_empresas.vagas, 
+// Obtém as ofertas com datas
+$ofertas = $conn->query("SELECT ofertas_empresas.id_oferta, ofertas_empresas.titulo, ofertas_empresas.descricao, 
+                                ofertas_empresas.vagas, ofertas_empresas.data_inicio, ofertas_empresas.data_fim,
                                 cursos.id_curso, cursos.nome AS curso, empresas.nome_empresa 
                          FROM ofertas_empresas 
                          INNER JOIN cursos ON ofertas_empresas.id_curso = cursos.id_curso
                          INNER JOIN empresas ON ofertas_empresas.id_empresa = empresas.id_empresas");
+
 if (!$ofertas) {
     die("Erro na consulta de ofertas: " . $conn->error);
 }
@@ -85,23 +87,28 @@ if (!$ofertas) {
                     while ($oferta = $ofertas->fetch_assoc()) {
                         if ($oferta['id_curso'] == $curso['id_curso']) {
                             $hasOffers = true;
+
+                            // Formatando datas à portuguesa
+                            $data_inicio = date('d-m-Y', strtotime($oferta['data_inicio']));
+                            $data_fim = date('d-m-Y', strtotime($oferta['data_fim']));
                     ?>
                         <div class="user-card">
                             <h3><?php echo htmlspecialchars($oferta['titulo']); ?></h3>
                             <div class="card-content">
                                 <p><i class="fas fa-building"></i> <strong>Empresa:</strong> <?php echo htmlspecialchars($oferta['nome_empresa']); ?></p>
                                 <p><i class="fas fa-file-alt"></i> <strong>Descrição:</strong> <?php echo htmlspecialchars($oferta['descricao']); ?></p>
+                                <p><i class="fas fa-calendar-day"></i> <strong>Data Início:</strong> <?= $data_inicio ?></p>
+                                <p><i class="fas fa-calendar-check"></i> <strong>Data Fim:</strong> <?= $data_fim ?></p>
                                 <p><i class="fas fa-users"></i> <strong>Vagas:</strong> <?php echo htmlspecialchars($oferta['vagas']); ?></p>
                             </div>
                             <div class="user-actions">
-    <a href='admin_dashboard.php?page=editar_oferta&id=<?php echo $oferta['id_oferta']; ?>' class="edit">
-        <i class="fas fa-pen-to-square action-icon"></i> Editar
-    </a>
-    <a href='pages/excluir_oferta.php?id=<?php echo $oferta['id_oferta']; ?>' class="delete">
-        <i class="fas fa-trash action-icon"></i> Excluir
-    </a>
-</div>
-
+                                <a href='admin_dashboard.php?page=editar_oferta&id=<?php echo $oferta['id_oferta']; ?>' class="edit">
+                                    <i class="fas fa-pen-to-square action-icon"></i> Editar
+                                </a>
+                                <a href='pages/excluir_oferta.php?id=<?php echo $oferta['id_oferta']; ?>' class="delete">
+                                    <i class="fas fa-trash action-icon"></i> Excluir
+                                </a>
+                            </div>
                         </div>
                     <?php
                         }
@@ -138,17 +145,15 @@ if (!$ofertas) {
                 document.querySelector('.section').classList.add('active');
             }
         });
-    </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toast = document.getElementById("toast");
-        if (toast) {
-            setTimeout(() => {
-                toast.style.display = "none";
-            }, 4000); // 4 segundos
-        }
-    });
-</script>
 
+        document.addEventListener("DOMContentLoaded", function () {
+            const toast = document.getElementById("toast");
+            if (toast) {
+                setTimeout(() => {
+                    toast.style.display = "none";
+                }, 4000); // 4 segundos
+            }
+        });
+    </script>
 </body>
 </html>

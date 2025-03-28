@@ -48,8 +48,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'gestao_utilizadores';
                     <img src="<?php echo $foto; ?>">
                     <label for="upload-foto" class="upload-icon"><i class="fas fa-camera"></i></label>
                 </div>
-                <h3>Olá, <?php echo htmlspecialchars($nome_admin); ?></h3>
-
+                
                 <!-- Formulário de Upload -->
                 <form action="upload_foto.php" method="POST" enctype="multipart/form-data">
                     <input type="file" id="upload-foto" name="foto" accept="image/*" required onchange="this.form.submit()">

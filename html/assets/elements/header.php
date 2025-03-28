@@ -8,11 +8,11 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Logo -->
     <a class="logo" href="index.php">FastInternship</a>
 
-    <!-- Links de navegação -->
+    <!-- Links de navegação com ícones -->
     <div class="nav-links">
-        <a href="index.php">Início</a>
-        <a href="about.php">Sobre</a>
-        <a href="contact.php">Contacto</a>
+        <a href="index.php"><i class="fas fa-home"></i> Início</a>
+        <a href="about.php"><i class="fas fa-info-circle"></i> Sobre</a>
+        <a href="contact.php"><i class="fas fa-envelope"></i> Contacto</a>
     </div>
 
     <!-- Ícones com dropdown -->
@@ -41,8 +41,7 @@ if (session_status() === PHP_SESSION_NONE) {
         ?>
             <div class="dropdown-icone">
                 <button class="dropdown-toggle-icone">
-                    <i class="fas fa-user-circle"></i> Olá, <?php echo htmlspecialchars($userFirstName); ?>
-                    <i class="fas fa-caret-down"></i>
+                    Olá, <?php echo htmlspecialchars($userFirstName); ?>
                 </button>
                 <div class="dropdown-menu-icone">
                     <?php if ($role !== 'admin'): ?>
