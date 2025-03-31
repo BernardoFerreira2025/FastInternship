@@ -54,18 +54,6 @@ session_start(); // Inicia sessão para verificar o status do e-mail
                         <p>+351 915 008 662</p>
                     </div>
                 </div>
-
-                <div class="social-links">
-                    <a href="#" class="social-link">
-                        <i class="fab fa-facebook-f"></i> Facebook
-                    </a>
-                    <a href="#" class="social-link">
-                        <i class="fab fa-linkedin-in"></i> LinkedIn
-                    </a>
-                    <a href="#" class="social-link">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                </div>
             </div>
 
             <!-- Formulário de Contacto -->

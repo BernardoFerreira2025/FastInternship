@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="file" name="novo_curriculo" id="novo_curriculo" accept=".pdf">
         </div>
 
-        <button type="submit" class="btn-editar-submit">Salvar Alterações</button>
+        <button type="submit" class="btn-editar-submit">Guardar Alterações</button>
     </form>
 </div>
 

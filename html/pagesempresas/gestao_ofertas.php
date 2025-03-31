@@ -2,18 +2,19 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-//include '../../database/mysqli.php';
+
 require_once '../database/mysqli.php';
-// Verifica se o usuário está logado e é um professor
+
+// Verifica se o usuário está logado e é uma empresa
 if (!isset($_SESSION['id_empresas'])) {
     $_SESSION['error'] = "Sessão inválida. Faça login novamente.";
     header("Location: ../formlogin.php");
     exit();
 }
 
-$id_professor = $_SESSION['id_empresas'];
+$id_empresas = $_SESSION['id_empresas'];
 
-// Obtém o curso do professor logado
+// Obtém o curso da empresa logada
 $query = "SELECT id_curso FROM empresas WHERE id_empresas = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $id_empresas);
@@ -26,7 +27,7 @@ if (!$id_curso) {
     die("<p>Erro: A empresa não tem um curso associado.</p>");
 }
 
-// Consulta para o curso associado 
+// Consulta para as ofertas associadas ao curso
 $queryOfertas = "
     SELECT 
         ofertas_empresas.*, 
@@ -54,26 +55,33 @@ $resultOfertas = $stmtOfertas->get_result();
 
         <!-- Grade de Ofertas -->
         <div class="users-grid">
-            <?php
-            if ($resultOfertas->num_rows > 0) {
-                while ($oferta = $resultOfertas->fetch_assoc()) {
-                    echo "<div class='user-card'>";
-                    echo "<h3>" . htmlspecialchars($oferta['titulo']) . "</h3>";
-                    echo "<p><strong>Empresa:</strong> " . htmlspecialchars($oferta['nome_empresa']) . "</p>";
-                    echo "<p><strong>Responsável:</strong> " . htmlspecialchars($oferta['responsavel']) . "</p>";
-                    echo "<p><strong>Descrição:</strong> " . htmlspecialchars($oferta['descricao']) . "</p>";
-                    echo "<p><strong>Data Início:</strong> " . htmlspecialchars($oferta['data_inicio']) . "</p>";
-                    echo "<p><strong>Data Fim:</strong> " . htmlspecialchars($oferta['data_fim']) . "</p>";
-                    echo "<p><strong>Vagas:</strong> " . htmlspecialchars($oferta['vagas']) . "</p>";
-                    echo "<div class='user-actions'>";
-                    echo "<a href='pagesempresas/editar_oferta.php?id=" . $oferta['id_oferta'] . "'>Editar</a>";
-                    echo "</div>";
-                    echo "</div>";
-                }
-            } else {
-                echo "<p>Nenhuma oferta encontrada para o seu curso.</p>";
+        <?php
+        if ($resultOfertas->num_rows > 0) {
+            while ($oferta = $resultOfertas->fetch_assoc()) {
+                // Formatar datas para o padrão português
+                $data_inicio = date('d-m-Y', strtotime($oferta['data_inicio']));
+                $data_fim = date('d-m-Y', strtotime($oferta['data_fim']));
+
+                echo "<div class='user-card'>";
+                echo "<h3><i class='fas fa-briefcase'></i> " . htmlspecialchars($oferta['titulo']) . "</h3>";
+                echo "<p><i class='fas fa-user-tie'></i> <strong>Responsável:</strong> " . htmlspecialchars($oferta['responsavel']) . "</p>";
+                echo "<p><i class='fas fa-align-left'></i> <strong>Descrição:</strong> " . htmlspecialchars($oferta['descricao']) . "</p>";
+                echo "<p><i class='fas fa-calendar-alt'></i> <strong>Data Início:</strong> " . $data_inicio . "</p>";
+                echo "<p><i class='fas fa-calendar-check'></i> <strong>Data Fim:</strong> " . $data_fim . "</p>";
+                echo "<p><i class='fas fa-users'></i> <strong>Vagas:</strong> " . htmlspecialchars($oferta['vagas']) . "</p>";
+                echo "<div class='user-actions'>";
+                echo "<a href='empresa_dashboard.php?page=editar_oferta&id=" . $oferta['id_oferta'] . "' class='edit'>";
+                echo "<i class='fas fa-pen-to-square action-icon'></i> Editar</a>";
+                echo "<a href='pagesempresas/excluir_oferta.php?id=" . $oferta['id_oferta'] . "' class='delete'>";
+                echo "<i class='fas fa-trash action-icon'></i> Excluir</a>";
+                echo "</div>";
+
+                echo "</div>";
             }
-            ?>
+        } else {
+            echo "<p>Nenhuma oferta encontrada para o seu curso.</p>";
+        }
+        ?>
         </div>
     </div>
 </div>
@@ -106,5 +114,3 @@ if (isset($_SESSION['mensagem_erro'])) {
     unset($_SESSION['mensagem_erro']);
 }
 ?>
-
-

@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </select>
         </div>
 
-        <button type="submit" class="btn-editar-submit">Salvar Alterações</button>
+        <button type="submit" class="btn-editar-submit">Guardar Alterações</button>
     </form>
 </div>
 

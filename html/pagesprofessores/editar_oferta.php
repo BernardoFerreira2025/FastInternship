@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="number" id="vagas" name="vagas" value="<?= htmlspecialchars($oferta['vagas']) ?>" required>
         </div>
 
-        <button type="submit" class="btn-editar-submit">Salvar Alterações</button>
+        <button type="submit" class="btn-editar-submit">Guardar Alterações</button>
     </form>
 </div>
 
