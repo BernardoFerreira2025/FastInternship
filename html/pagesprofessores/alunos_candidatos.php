@@ -52,8 +52,25 @@ $stmt = $conn->prepare($query);
 $stmt->bind_param("iii", $id_oferta, $id_curso, $id_curso);
 $stmt->execute();
 $result = $stmt->get_result();
-?>
 
+// Buscar o nome da empresa que publicou a oferta
+$nome_empresa = "Empresa não encontrada"; // Valor padrão
+
+$sql_nome_empresa = "SELECT e.nome_empresa 
+                     FROM ofertas_empresas oe
+                     INNER JOIN empresas e ON oe.id_empresa = e.id_empresas
+                     WHERE oe.id_oferta = ?";
+$stmt_nome = $conn->prepare($sql_nome_empresa);
+$stmt_nome->bind_param("i", $id_oferta);
+$stmt_nome->execute();
+$result_nome = $stmt_nome->get_result();
+
+if ($result_nome->num_rows > 0) {
+    $row_nome = $result_nome->fetch_assoc();
+    $nome_empresa = $row_nome['nome_empresa'];
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
@@ -66,8 +83,7 @@ $result = $stmt->get_result();
 
     <div class="users-container">
         <!-- Nome da empresa que publicou a oferta -->
-        <?php $row_empresa = $result->fetch_assoc(); ?>
-        <h2 class="users-header"><?= htmlspecialchars($row_empresa['nome_empresa']); ?></h2>
+        <h2 class="users-header"><?= htmlspecialchars($nome_empresa); ?></h2>
 
         <?php if ($result->num_rows > 0): ?>
             <div class="candidatos-grid">
