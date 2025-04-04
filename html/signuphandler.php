@@ -1,6 +1,10 @@
 <?php
 include '../database/mysqli.php'; // Conexão com a base de dados
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Capturar os dados do formulário
     $nome = trim($_POST['name']);
@@ -14,12 +18,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validar se o e-mail tem o domínio correto
     if (!str_ends_with($email, "@escolaaugustogomes.pt")) {
-        die("Apenas alunos com e-mail '@escolaaugustogomes.pt' podem se registrar.");
+       // die("Apenas alunos com e-mail '@escolaaugustogomes.pt' podem se registar.");
+       $_SESSION['error'] = "Apenas alunos com e-mail '@escolaaugustogomes.pt' se podem registar.";
+       header("Location: signup.php");
+       exit();
     }
+
+    $query="SELECT * FROM `alunos` WHERE `Email` LIKE ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $_SESSION['error'] = "Email já existente    .";
+        header("Location: signup.php");
+        exit();
+     }
 
     // Validar se as senhas coincidem
     if ($password !== $confirm_password) {
-        die("As senhas não coincidem! Tente novamente.");
+        //die("As senhas não coincidem! Tente novamente.");
+        $_SESSION['error'] = "As senhas não coincidem! Tente novamente.";
+        header("Location: signup.php");
+        exit();
     }
 
     // Hash da senha para armazenamento seguro
@@ -34,12 +56,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Permitir somente PDF
     if ($curriculo_extensao !== 'pdf') {
-        die("Erro: Apenas arquivos PDF são permitidos.");
+        //die("Erro: Apenas arquivos PDF são permitidos.");
+        $_SESSION['error'] = "Apenas arquivos PDF são permitidos.";
+        header("Location: signup.php");
+        exit();
     }
 
     // Limite de 2MB
     if ($curriculo_tamanho > 2 * 1024 * 1024) {
-        die("Erro: O arquivo ultrapassa o limite de 2MB.");
+        //die("Erro: O arquivo ultrapassa o limite de 2MB.");
+        $_SESSION['error'] = "O arquivo ultrapassa o limite de 2MB.";
+        header("Location: signup.php");
+        exit();
     }
 
     // Criar diretório caso não exista
@@ -50,7 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $destino_curriculo = $destino_diretorio . uniqid() . ".pdf";
     if (!move_uploaded_file($curriculo_tmp, $destino_curriculo)) {
-        die("Erro ao fazer upload do arquivo. Tente novamente.");
+        //die("Erro ao fazer upload do arquivo. Tente novamente.");
+        $_SESSION['error'] = "Erro ao fazer upload do arquivo. Tente novamente.";
+        header("Location: signup.php");
+        exit();
     }
 
     // Inserir os dados no banco de dados
@@ -64,11 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ssssisss", $nome, $nr_processo, $email, $password_hashed, $turma, $id_curso, $data_nascimento, $destino_curriculo);
 
     if ($stmt->execute()) {
-        echo "Registro realizado com sucesso!";
+        //echo "Registo realizado com sucesso!";
+        $_SESSION['toast_message'] = "Registo realizado com sucesso!";
         header("Location: formlogin.php"); // Redirecionar para a página de login
         exit();
     } else {
-        die("Erro ao registrar: " . $stmt->error);
+        //die("Erro ao registar: " . $stmt->error);
     }
 
     $stmt->close();

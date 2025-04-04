@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <?php session_start(); ?>
     <?php require 'assets/elements/header.php'; ?>
 
     <!-- Exibir toast caso a senha esteja incorreta -->
@@ -24,6 +23,13 @@
             <?php echo $_SESSION['error']; ?>
         </div>
         <?php unset($_SESSION['error']); // Remove o erro após exibir ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['toast_message'])): ?>
+        <div class="toast-message toast-success" id="toast-message">
+            <?php echo $_SESSION['toast_message']; ?>
+        </div>
+        <?php unset($_SESSION['toast_message']); // Remove o erro após exibir ?>
     <?php endif; ?>
 
     <!-- Login Section -->
