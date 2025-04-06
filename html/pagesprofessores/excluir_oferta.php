@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../../database/mysqli.php';
+require_once '../database/mysqli.php';
 
 // Verifica se o ID foi enviado
 if (isset($_GET['id'])) {
@@ -13,7 +13,7 @@ if (isset($_GET['id'])) {
     if ($stmt) {
         $stmt->bind_param("i", $id_oferta);
         if ($stmt->execute()) {
-            $_SESSION['mensagem_sucesso'] = "Oferta excluída com sucesso!";
+            $_SESSION['error'] = "Oferta excluída com sucesso!";
         } else {
             $_SESSION['mensagem_sucesso'] = "Erro ao excluir a oferta.";
         }

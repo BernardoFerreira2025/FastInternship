@@ -4,6 +4,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Iniciar buffer para evitar envio de headers antes do redirecionamento
+ob_start();
+
 // Conexão com o banco de dados
 require_once '../../database/mysqli.php';
 use PHPMailer\PHPMailer\PHPMailer;
@@ -19,12 +22,13 @@ if (!isset($_SESSION['id_professor'])) {
 $id_professor = $_SESSION['id_professor'];
 
 // Verifica se os dados foram recebidos
-if (!isset($_POST['id_candidatura']) || !isset($_POST['acao'])) {
+if (!isset($_POST['id_candidatura']) || !isset($_POST['acao']) || !isset($_POST['oferta_id'])) {
     die("Erro: Dados incompletos.");
 }
 
 $id_candidatura = intval($_POST['id_candidatura']);
-$acao = $_POST['acao']; // "aceitar", "rejeitar" ou "cancelar"
+$acao = $_POST['acao'];
+$id_oferta = intval($_POST['oferta_id']);
 
 // Determinar status
 if ($acao === 'aceitar') {
@@ -32,7 +36,7 @@ if ($acao === 'aceitar') {
 } elseif ($acao === 'rejeitar') {
     $status_professor = 'rejeitado';
 } elseif ($acao === 'cancelar') {
-    $status_professor = 'pendente'; // Define o status de volta para pendente
+    $status_professor = 'pendente';
 } else {
     die("Ação inválida.");
 }
@@ -43,15 +47,21 @@ $stmt = $conn->prepare($query);
 $stmt->bind_param("si", $status_professor, $id_candidatura);
 $stmt->execute();
 
+// Verificar se o botão "Cancelar" foi clicado
+if ($acao === 'cancelar') {
+    // Limpar o buffer de saída antes de redirecionar para a mesma página de candidatos
+    ob_end_clean();
+    header("Location: ../pagesprofessores/alunos_candidatos.php?oferta_id=$id_oferta");
+    exit();
+}
+
 // Se a candidatura foi aceita, enviar e-mail
 if ($acao === 'aceitar') {
-    // Buscar informações do aluno e da oferta
-    $query_info = "SELECT a.nome, a.turma, a.nr_processo, e.nome_empresa, oe.titulo 
-                   FROM candidaturas c
-                   INNER JOIN alunos a ON c.id_aluno = a.id_aluno
-                   INNER JOIN ofertas_empresas oe ON c.id_oferta = oe.id_oferta
-                   INNER JOIN empresas e ON oe.id_empresa = e.id_empresas
-                   WHERE c.id_candidatura = ?";
+    $query_info = "SELECT a.nome, e.nome_empresa, e.email FROM candidaturas c 
+                  INNER JOIN alunos a ON c.id_aluno = a.id_aluno 
+                  INNER JOIN ofertas_empresas oe ON c.id_oferta = oe.id_oferta 
+                  INNER JOIN empresas e ON oe.id_empresa = e.id_empresas 
+                  WHERE c.id_candidatura = ?";
     $stmt_info = $conn->prepare($query_info);
     $stmt_info->bind_param("i", $id_candidatura);
     $stmt_info->execute();
@@ -60,44 +70,43 @@ if ($acao === 'aceitar') {
 
     if ($info) {
         $nome_aluno = htmlspecialchars($info['nome']);
-        $turma = htmlspecialchars($info['turma']);
-        $nr_processo = htmlspecialchars($info['nr_processo']);
         $nome_empresa = htmlspecialchars($info['nome_empresa']);
-        $titulo_oferta = htmlspecialchars($info['titulo']);
-        $email_destino = "fastinternship@gmail.com"; // E-mail fixo para notificação
+        $email_empresa = htmlspecialchars($info['email']);
+        $email_destino = 'testesfastpap@gmail.com';
+        $senha_predefinida = '1234';
+        $link_login = 'http://localhost/pap/html/formlogin.php';
 
-        // Enviar e-mail
         $mail = new PHPMailer(true);
         try {
-            $mail->SMTPDebug = 0;
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'fastinternship@gmail.com';
-            $mail->Password   = 'zesa fvuw lsbt tuni'; // Proteja essa credencial
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'fastinternship@gmail.com';
+            $mail->Password = 'zesa fvuw lsbt tuni';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->Port = 587;
 
-            // Definir remetente e destinatário
             $mail->setFrom('fastinternship@gmail.com', 'FastInternship');
-            $mail->addAddress($email_destino, 'FastInternship');
+            $mail->addAddress($email_destino, 'Equipa FastInternship');
 
             $mail->isHTML(true);
-            $mail->Subject = "Candidatura Aprovada - FastInternship";
-            $mail->Body    = "
-                <h2>Uma candidatura foi aprovada!</h2>
-                <p><strong>Empresa:</strong> $titulo_oferta</p>
-                <p><strong>Aluno:</strong> $nome_aluno</p>
-                <p><strong>Turma:</strong> $turma</p>
-                <p><strong>Nº Processo:</strong> $nr_processo</p>
-                <p>O aluno agora pode continuar o processo diretamente com a empresa.</p>
-                <br>
-                <p>Atenciosamente,</p>
-                <p>FastInternship</p>
-            ";
+            $mail->Subject = "Candidatura Recebida";
+            $mail->Body = "<div style='font-family: Arial, sans-serif; color: #333;'>
+                            <h2 style='color: #0056b3;'>📢 Nova Candidatura Recebida!</h2>
+                            <p>Olá,</p>
+                            <p>O aluno <strong>$nome_aluno</strong> candidatou-se a uma oferta de estágio da empresa <strong>$nome_empresa</strong>.</p>
+                            <hr>
+                            <p>💼 <strong>Empresa:</strong> $nome_empresa</p>
+                            <p>✉️ <strong>Email da Empresa:</strong> $email_empresa</p>
+                            <p>🔑 <strong>Senha Padrão:</strong> $senha_predefinida</p>
+                            <br>
+                            <p>🔗 <a href='$link_login' style='color: #0056b3;'>Clique aqui para fazer login</a></p>
+                            <br>
+                            <p>Com os melhores cumprimentos,<br><strong>Equipa FastInternship</strong></p>
+                          </div>";
 
+            $mail->SMTPDebug = 0;
             $mail->send();
-            echo "E-mail enviado com sucesso!";
         } catch (Exception $e) {
             echo "Erro ao enviar e-mail: " . $mail->ErrorInfo;
             exit();
@@ -105,6 +114,7 @@ if ($acao === 'aceitar') {
     }
 }
 
-// Redirecionar para a dashboard após a ação
+// Limpar o buffer de saída antes de redirecionar para o dashboard
+ob_end_clean();
 header("Location: ../professor_dashboard.php?page=dashboard");
 exit();

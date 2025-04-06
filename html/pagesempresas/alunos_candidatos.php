@@ -12,6 +12,12 @@ if (!isset($_SESSION['id_empresas'])) {
 
 $id_empresa = $_SESSION['id_empresas'];
 
+$mapa_perguntas = [
+    "experiencia" => "Tem experiência na área?",
+    "conhecimentos" => "Tem conhecimentos relevantes para a vaga?",
+    "trabalho_em_equipa" => "Sente-se confortável a trabalhar em equipa?"
+];
+
 // Buscar nome da empresa
 $sql_empresa = "SELECT nome_empresa FROM empresas WHERE id_empresas = ?";
 $stmt_empresa = $conn->prepare($sql_empresa);
@@ -29,7 +35,7 @@ if (!isset($_GET['oferta_id']) || empty($_GET['oferta_id'])) {
 $id_oferta = intval($_GET['oferta_id']);
 
 $query = "SELECT c.id_candidatura, 
-                a.nome, a.turma, a.nr_processo, a.email,
+                a.nome, a.turma, a.nr_processo, a.email, a.curriculo,
                 c.carta_motivacao, c.respostas, 
                 c.status_empresa, c.status_professor,
                 p.nome AS nome_professor, p.email AS email_professor
@@ -68,6 +74,16 @@ $result = $stmt->get_result();
                         <!-- Informações do Aluno -->
                         <div class="info-box">
                             <p><strong>Nome do Aluno:</strong> <?= htmlspecialchars($row['nome']); ?></p>
+                            <p>
+                                <strong>Currículo:</strong>
+                                <?php if (!empty($row['curriculo'])): ?>
+                                    <a href="../uploads/<?= htmlspecialchars($row['curriculo']); ?>" download target="_blank" class="curriculo-link-editar" title="Transferir Currículo">
+                                        <i class="fas fa-file-download"></i>
+                                    </a>
+                                <?php else: ?>
+                                    <span class="no-cv">Nenhum currículo enviado</span>
+                                <?php endif; ?>
+                            </p>
                             <p><strong>Turma:</strong> <?= htmlspecialchars($row['turma']); ?></p>
                             <p><strong>Nº Processo:</strong> <?= htmlspecialchars($row['nr_processo']); ?></p>
                             <p><strong>Email:</strong> <?= htmlspecialchars($row['email']); ?></p>
@@ -103,12 +119,6 @@ $result = $stmt->get_result();
                                 </thead>
                                 <tbody>
                                     <?php 
-                                        $mapa_perguntas = [
-                                            "experiencia" => "Possui experiência na área?",
-                                            "conhecimentos" => "Quais conhecimentos relevantes possui para a vaga?",
-                                            "trabalho_em_equipa" => "Sente-se confortável a trabalhar em equipa?"
-                                        ];
-
                                         $respostas = json_decode($row['respostas'], true);
                                         foreach ($mapa_perguntas as $chave_pergunta => $texto_pergunta) {
                                             $resposta = isset($respostas[$chave_pergunta]) ? htmlspecialchars($respostas[$chave_pergunta]) : "Não informado";
@@ -123,13 +133,13 @@ $result = $stmt->get_result();
 
                         <!-- Status do Professor e Empresa -->
                         <div class="status-container">
-                            <p><strong>Status Professor:</strong> 
+                            <p><strong>Status do Professor:</strong> 
                                 <span class="status-<?= htmlspecialchars($row['status_professor']); ?>">
                                     <?= ucfirst($row['status_professor']); ?>
                                 </span>
                             </p>
 
-                            <p><strong>Status Empresa:</strong> 
+                            <p><strong>Status da Empresa:</strong> 
                                 <span class="status-<?= htmlspecialchars($row['status_empresa']); ?>">
                                     <?= ucfirst($row['status_empresa']); ?>
                                 </span>
@@ -148,15 +158,15 @@ $result = $stmt->get_result();
                                 </form>
                             </div>
                         <?php elseif ($row['status_professor'] == 'pendente'): ?>
-                            <p class="alerta">⏳ Aguarde a aprovação do professor antes de aceitar ou rejeitar.</p>
+                            <p class="alerta">⏳ Aguardar aprovação do professor antes de aceitar ou rejeitar.</p>
                         <?php endif; ?>
 
-                        <!-- Botão de Cancelar (Apenas se status for "aprovado" ou "rejeitado") -->
+                        <!-- Botão de Cancelar (Se já aprovado ou rejeitado) -->
                         <?php if ($row['status_empresa'] == 'aprovado' || $row['status_empresa'] == 'rejeitado'): ?>
                             <div class="acoes-empresa">
                                 <form method="post" action="pagesempresas/processa_candidatura_empresa.php">
                                     <input type="hidden" name="id_candidatura" value="<?= htmlspecialchars($row['id_candidatura']); ?>">
-                                    <button type="submit" name="acao" value="cancelar" class="btn-cancel">Cancelar</button>
+                                    <button type="submit" name="acao" value="cancelar" class="btn btn-warning">Cancelar</button>
                                 </form>
                             </div>
                         <?php endif; ?>
@@ -165,7 +175,7 @@ $result = $stmt->get_result();
                 <?php endwhile; ?>
             </div>
         <?php else: ?>
-            <p class="no-data">Nenhuma candidatura encontrada para esta oferta.</p>
+            <p class="no-data">Não foram encontradas candidaturas para esta oferta.</p>
         <?php endif; ?>
     </div>
 

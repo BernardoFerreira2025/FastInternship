@@ -27,10 +27,11 @@ if (!$curso) {
 
 $id_curso = $curso['id_curso'];
 
-// Consulta para obter apenas as ofertas do curso do professor logado
-$query = "SELECT id_oferta, titulo, descricao, vagas, id_curso, data_inicio, data_fim 
-          FROM ofertas_empresas 
-          WHERE id_curso = ? AND data_fim >= CURDATE()";
+// Consulta para obter as ofertas do curso do professor logado
+$query = "SELECT oe.id_oferta, oe.titulo, oe.descricao, oe.vagas, oe.id_curso, oe.data_inicio, oe.data_fim, 
+                 (SELECT COUNT(*) FROM candidaturas c WHERE c.id_oferta = oe.id_oferta AND c.status_professor = 'aprovado') AS candidaturas_aprovadas
+          FROM ofertas_empresas oe
+          WHERE oe.id_curso = ? AND oe.data_fim >= CURDATE()";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $id_curso);
 $stmt->execute();
@@ -39,10 +40,8 @@ $result = $stmt->get_result();
 
 <div class="form-background">
     <div class="form-wrapper">
-        <!-- Título do Painel -->
         <h1 class="users-header">Controlo das Candidaturas</h1>
 
-        <!-- Seção de Ofertas Publicadas -->
         <div class="users-grid">
             <?php
             if ($result->num_rows > 0) {
@@ -51,6 +50,7 @@ $result = $stmt->get_result();
                     echo "<h3>" . htmlspecialchars($row['titulo']) . "</h3>";
                     echo "<p><strong>Descrição:</strong> " . htmlspecialchars($row['descricao']) . "</p>";
                     echo "<p><strong>Vagas:</strong> " . htmlspecialchars($row['vagas']) . "</p>";
+                    echo "<p><strong>Candidaturas Aprovadas:</strong> " . htmlspecialchars($row['candidaturas_aprovadas']) . "</p>";
 
                     // Obter o nome do curso
                     $cursoNomeQuery = "SELECT nome FROM cursos WHERE id_curso = ?";
@@ -73,33 +73,3 @@ $result = $stmt->get_result();
         </div>
     </div>
 </div>
-
-<?php
-// Exibe mensagens de sucesso ou erro
-if (isset($_SESSION['mensagem_sucesso'])) {
-    echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const toast = document.createElement('div');
-                toast.className = 'toast-message toast-success';
-                toast.textContent = '" . addslashes($_SESSION['mensagem_sucesso']) . "';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-            });
-          </script>";
-    unset($_SESSION['mensagem_sucesso']);
-}
-
-if (isset($_SESSION['mensagem_erro'])) {
-    echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const toast = document.createElement('div');
-                toast.className = 'toast-message toast-error';
-                toast.textContent = '" . addslashes($_SESSION['mensagem_erro']) . "';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-            });
-          </script>";
-    unset($_SESSION['mensagem_erro']);
-}
-?>
-

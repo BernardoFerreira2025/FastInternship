@@ -1651,7 +1651,7 @@ button.primary:hover {
         margin-bottom: 20px;
         border: none;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.2);
+        background: #aaa;
         color: #171b2d;
         font-size: 1rem;
         transition: all 0.3s ease;

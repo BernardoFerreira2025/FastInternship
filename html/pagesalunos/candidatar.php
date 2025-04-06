@@ -10,8 +10,14 @@ if (!isset($_SESSION['id_aluno'])) {
 
 require_once '../database/mysqli.php';
 
+$mapa_perguntas = [
+    "experiencia" => "Tem experiência na área?",
+    "conhecimentos" => "Tem conhecimentos relevantes para a vaga?",
+    "trabalho_em_equipa" => "Sente-se confortável a trabalhar em equipa?"
+];
+
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    echo "Erro: ID da oferta inválido";
+    echo "Erro: ID da oferta inválido.";
     exit();
 }
 
@@ -26,7 +32,7 @@ if ($stmt = $conn->prepare($sql_check)) {
 
     if ($stmt->num_rows > 0) {
         $stmt->close();
-        echo "Você já se candidatou a esta oferta.";
+        echo "Já se candidatou a esta oferta.";
         exit();
     }
     $stmt->close();
@@ -52,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: aluno_dashboard.php?page=verofertas&candidatura=sucesso");
             exit();
         } else {
-            echo "Erro ao inserir candidatura: " . $stmt->error;
+            echo "Erro ao inserir a candidatura: " . $stmt->error;
         }
 
         $stmt->close();
@@ -70,45 +76,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
     ?>
 <div class="candidatar-container">
-    <h1>Candidatar a Oferta</h1>
+    <h1>Candidatar-se à Oferta</h1>
     <form method="post" onsubmit="return validateForm()">
         <fieldset>
             <legend>Perguntas sobre Competências</legend>
-            <label for="pergunta1">Possui experiência na área?</label>
-            <select id="pergunta1" name="respostas[experiencia]" required>
-                <option value="">Selecione</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-
-            <label for="pergunta2">Possui conhecimentos em ferramentas específicas?</label>
-            <select id="pergunta2" name="respostas[conhecimentos]" required>
-                <option value="">Selecione</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-
-            <label for="pergunta3">Sente-se confortável a trabalhar em equipa?</label>
-            <select id="pergunta3" name="respostas[trabalho_em_equipa]" required>
-                <option value="">Selecione</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
+            <?php foreach ($mapa_perguntas as $chave => $texto): ?>
+                <label for="pergunta_<?= $chave; ?>"><?= $texto; ?></label>
+                <select id="pergunta_<?= $chave; ?>" name="respostas[<?= $chave; ?>]" required>
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            <?php endforeach; ?>
         </fieldset>
 
         <fieldset>
-    <legend>Currículo Disponível</legend>
-    <?php if (!empty($curriculo)): ?>
-        <p>Seu currículo está disponível para ser visualizado por empresas e professores.</p>
-    <?php else: ?>
-        <p>Você ainda não enviou um currículo. Por favor, faça o upload no seu perfil.</p>
-    <?php endif; ?>
-</fieldset>
+            <legend>Currículo Disponível</legend>
+            <?php if (!empty($curriculo)): ?>
+                <p>O seu currículo está disponível para ser visualizado por empresas e professores.</p>
+            <?php else: ?>
+                <p>Ainda não enviou um currículo. Por favor, carregue-o no seu perfil.</p>
+            <?php endif; ?>
+        </fieldset>
 
         <label for="motivacao">Carta de Motivação</label>
         <textarea id="motivacao" name="motivacao" rows="4" required></textarea>
 
-        <input type="submit" value="Candidatar">
+        <input type="submit" value="Candidatar-se">
     </form>
 </div>
 <script>
