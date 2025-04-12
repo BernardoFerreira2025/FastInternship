@@ -637,15 +637,15 @@ button.primary:hover {
         color: var(--text-color);
     }
     .form-header h2 {
-        font-size: 2.5rem; /* Mesmo tamanho que o outro título */
-        font-weight: 700; /* Negrito igual ao outro */
-        margin-bottom: 1rem;
-        text-align: center; /* Centraliza o texto */
-        background: var(--gradient); /* Gradiente aplicado ao fundo */
-        background-clip: text; /* Define o clip do fundo para o texto */
-        -webkit-background-clip: text; /* Compatibilidade Webkit */
-        -webkit-text-fill-color: transparent; /* Torna o texto transparente para mostrar o fundo */
-        color: transparent; /* Fallback para o texto transparente */
+        font-size: 2.5rem; 
+        font-weight: 700; 
+        margin-bottom: 1.5rem;
+        text-align: center; 
+        background: var(--gradient); 
+        background-clip: text; 
+        -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
+        color: transparent; 
     }
     .form-group {
         margin-bottom: 1.5rem;
@@ -2751,3 +2751,4 @@ input[type="date"].input-field::-webkit-calendar-picker-indicator {
     opacity: 0.9;
     transform: scale(1.02);
 }
+
