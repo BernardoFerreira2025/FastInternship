@@ -8,10 +8,10 @@ session_start(); // Inicia sessão para verificar o status do e-mail
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacte-nos - FastInternship</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/allcss.css">
     <link rel="stylesheet" href="assets/elements/header.css">
     <link rel="stylesheet" href="assets/elements/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
         <?php include 'assets/elements/header.php'; ?>
@@ -22,7 +22,7 @@ session_start(); // Inicia sessão para verificar o status do e-mail
             <div class="contact-info">
                 <div class="info-header">
                     <h2>Contacte-nos</h2>
-                    <p>Entre em contacto connosco através de qualquer uma destas plataformas</p>
+                    <p>Pode entrar em contacto connosco através dos seguintes meios.</p>
                 </div>
 
                 <div class="info-item">
