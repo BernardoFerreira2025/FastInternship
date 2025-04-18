@@ -1,32 +1,43 @@
 <?php
-session_start(); // Inicia a sessão
-include '../../database/mysqli.php'; // Corrija o caminho conforme necessário
+session_start();
+include '../../database/mysqli.php';
 
-if (!$conn) {
-    die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    $_SESSION['toast_message'] = "Erro: ID da empresa não fornecido.";
+    header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
+    exit();
 }
 
-// Verifica se o ID foi enviado
-if (isset($_GET['id'])) {
-    $id = intval($_GET['id']); // Converte para inteiro
+$id = intval($_GET['id']);
 
-    // Prepara a consulta de exclusão
-    $stmt = $conn->prepare("DELETE FROM empresas WHERE id_empresas = ?");
-    if ($stmt) {
-        $stmt->bind_param("i", $id);
-        if ($stmt->execute()) {
-            // Define uma mensagem de sucesso
-            $_SESSION['mensagem_sucesso'] = "Empresa excluída com sucesso!";
-            header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
-            exit();
-        } else {
-            echo "Erro ao excluir a empresa: " . $stmt->error;
-        }
-        $stmt->close();
+// Verifica se a empresa existe (opcional, mas recomendado)
+$check = $conn->prepare("SELECT id_empresas FROM empresas WHERE id_empresas = ?");
+$check->bind_param("i", $id);
+$check->execute();
+$check->store_result();
+
+if ($check->num_rows === 0) {
+    $_SESSION['toast_message'] = "Erro: Empresa não encontrada.";
+    $check->close();
+    header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
+    exit();
+}
+$check->close();
+
+// Executa exclusão
+$stmt = $conn->prepare("DELETE FROM empresas WHERE id_empresas = ?");
+if ($stmt) {
+    $stmt->bind_param("i", $id);
+    if ($stmt->execute()) {
+        $_SESSION['toast_message'] = "Empresa excluída com sucesso!";
     } else {
-        echo "Erro ao preparar a consulta: " . $conn->error;
+        $_SESSION['toast_message'] = "Erro ao excluir a empresa.";
     }
+    $stmt->close();
 } else {
-    echo "ID da empresa não fornecido.";
+    $_SESSION['toast_message'] = "Erro na preparação da exclusão.";
 }
+
+header("Location: ../admin_dashboard.php?page=gestao_utilizadores");
+exit();
 ?>

@@ -72,7 +72,7 @@ if ($acao === 'aceitar') {
         $nome_aluno = htmlspecialchars($info['nome']);
         $nome_empresa = htmlspecialchars($info['nome_empresa']);
         $email_empresa = htmlspecialchars($info['email']);
-        $email_destino = 'testesfastpap@gmail.com';
+        $email_destino = '28969.bernardoferreira@escolaaugustogomes.pt';
         $senha_predefinida = '1234';
         $link_login = 'http://localhost/pap/html/formlogin.php';
 

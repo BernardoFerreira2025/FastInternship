@@ -68,15 +68,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="input-group-editar">
-            <label>Currículo Atual:</label>
-            <?php if (!empty($aluno['Curriculo'])): ?>
-                <a href="../uploads/<?= htmlspecialchars($aluno['Curriculo']) ?>" download target="_blank" class="curriculo-link-editar" title="Transferir Currículo">
-                    <i class="fas fa-file-download"></i> Ver Currículo Atual
-                </a>
-            <?php else: ?>
-                <span class="no-cv-msg-editar">Nenhum currículo enviado</span>
-            <?php endif; ?>
-        </div>
+    <label for="curriculo">Currículo (PDF)</label>
+    <input type="file" id="curriculo" name="curriculo" accept="application/pdf">
+
+    <?php if (!empty($aluno['Curriculo'])): ?>
+        <a href="../uploads/<?= htmlspecialchars($aluno['Curriculo']) ?>" target="_blank" class="perfil-cv-link">
+            <i class="fas fa-download"></i> Transferir Currículo Atual
+        </a>
+    <?php else: ?>
+        <span class="no-cv-msg-editar">Nenhum currículo enviado</span>
+    <?php endif; ?>
+</div>
 
         <div class="input-group-editar">
             <label for="novo_curriculo">Novo Currículo (PDF):</label>

@@ -38,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($nova) < 4) {
         $erro = "A palavra-passe deve ter pelo menos 4 caracteres.";
     } else {
-        // Verificar a palavra-passe atual
         $stmt = $conn->prepare("SELECT password FROM $tabela WHERE $coluna_id = ?");
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
@@ -61,6 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+// Define o destino para o botão "Voltar"
+$voltar_para = match ($user_role) {
+    'aluno' => 'aluno_dashboard.php',
+    'professor' => 'professor_dashboard.php',
+    'empresa' => 'empresa_dashboard.php',
+};
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="assets/elements/header.css">
     <link rel="stylesheet" href="assets/elements/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 </head>
 <body>
 
@@ -80,6 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <section class="seguranca-section">
     <div class="seguranca-container">
+        <!-- Botão Voltar -->
+        <div style="text-align: left; margin-bottom: 20px;">
+            <a href="<?= $voltar_para ?>" class="back-button">
+                <i class="fas fa-arrow-left"></i> Voltar ao Painel de Controlo
+            </a>
+        </div>
+
         <h2>Alterar Palavra-passe</h2>
 
         <?php if ($erro): ?>
@@ -90,14 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="popup success-popup"><?= $sucesso ?></div>
             <script>
                 setTimeout(function() {
-                    <?php
-                        $destino = match ($user_role) {
-                            'aluno' => 'aluno_dashboard.php',
-                            'professor' => 'professor_dashboard.php',
-                            'empresa' => 'empresa_dashboard.php',
-                        };
-                        echo "window.location.href = '$destino';";
-                    ?>
+                    window.location.href = '<?= $voltar_para ?>';
                 }, 3000);
             </script>
         <?php endif; ?>

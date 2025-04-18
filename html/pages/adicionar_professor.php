@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_curso = intval($_POST['id_curso']);
 
     // Validação do domínio do email
-    if (!preg_match("/^[a-zA-Z0-9._%+-]+@esag-edu\.net$/", $email)) {
+    if (!preg_match("/^[a-zA-Z0-9._%+-]+@esag-edu\\.net$/", $email)) {
         $_SESSION['toast_message'] = "Erro: Apenas emails @esag-edu.net são permitidos!";
         $_SESSION['toast_type'] = "toast-error";
         header("Location: admin_dashboard.php?page=adicionar_professor");
@@ -64,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/allcss.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Adicionar Professor</title>
 </head>
 <body>
@@ -75,19 +76,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <?php unset($_SESSION['toast_message'], $_SESSION['toast_type']); ?>
     <?php endif; ?>
+
     <div class="users-container">
         <h2>Adicionar Professor</h2>
-        <form method="POST">
+        <form method="POST" id="ProfForm">
             <label>Nome:</label>
             <input type="text" name="nome" required>
 
             <label>Email:</label>
-            <input type="email" name="email" required>
+            <input type="email" name="email" id="email" required>
 
             <label>Senha:</label>
             <div class="password-container">
                 <input type="password" id="password" name="password" required>
-                <i class="fas fa-eye toggle-password" id="togglePassword"></i> <!-- Ícone do olho -->
+                <i class="fas fa-eye toggle-password" id="togglePassword" style="cursor:pointer;"></i>
             </div>
 
             <label>Curso:</label>
@@ -104,37 +106,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script>
-         // Validação no frontend
-         document.getElementById("ProfForm").addEventListener("submit", function(event) {
-            let emailInput = document.getElementById("email").value;
-
-            if (!emailInput.endsWith("@esag-edu.net")) {
-                showToast("Apenas e-mails @esag-edu.net são permitidos.", "error");
-                event.preventDefault();
-                return;
-            }
-        // Exibir e ocultar toast automaticamente
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            // Toast timeout
             let toast = document.getElementById("toast");
             if (toast) {
-                setTimeout(function() {
+                setTimeout(function () {
                     toast.style.display = "none";
                 }, 4000);
             }
-        });
 
-   // Alternar visibilidade da senha
-   document.getElementById("togglePassword").addEventListener("click", function() {
-            let passwordField = document.getElementById("password");
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                this.classList.replace("fa-eye", "fa-eye-slash");
-            } else {
-                passwordField.type = "password";
-                this.classList.replace("fa-eye-slash", "fa-eye");
-            }
+            // Alternar visibilidade da senha
+            document.getElementById("togglePassword").addEventListener("click", function () {
+                let passwordField = document.getElementById("password");
+                const icon = this;
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    icon.classList.replace("fa-eye", "fa-eye-slash");
+                } else {
+                    passwordField.type = "password";
+                    icon.classList.replace("fa-eye-slash", "fa-eye");
+                }
+            });
+
+            // Validação no frontend
+            document.getElementById("ProfForm").addEventListener("submit", function (event) {
+                let emailInput = document.getElementById("email").value;
+                if (!emailInput.endsWith("@esag-edu.net")) {
+                    alert("Apenas e-mails @esag-edu.net são permitidos.");
+                    event.preventDefault();
+                }
+            });
         });
-    });
     </script>
 </body>
 </html>
