@@ -31,8 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 switch ($role) {
                     case 'professor':
                         $_SESSION['id_professor'] = $user['id_professor'];
+                        $_SESSION['id_curso'] = $user['id_curso']; // <- esta linha é fundamental!
                         $_SESSION['foto'] = !empty($user['foto']) ? "../images/" . $user['foto'] : "../images/professor.png";
-                        break;
+                        break;                 
                     case 'aluno':
                         $_SESSION['id_aluno'] = $user['id_aluno'];
                         $_SESSION['foto'] = !empty($user['foto']) ? "../images/" . $user['foto'] : "../images/default.png";
@@ -70,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (str_ends_with($email, "@escolaaugustogomes.pt")) {
         verify_login("SELECT id_aluno, nome, password, foto FROM alunos WHERE email = ?", $email, $password, 'aluno', 'aluno_dashboard.php', $conn);
     } elseif (str_ends_with($email, "@esag-edu.net")) {
-        verify_login("SELECT id_professor, nome, password, foto FROM professores WHERE email = ?", $email, $password, 'professor', 'professor_dashboard.php', $conn);
+        verify_login("SELECT id_professor, nome, password, foto, id_curso FROM professores WHERE email = ?", $email, $password, 'professor', 'professor_dashboard.php', $conn);
     } elseif (str_ends_with($email, "@admin.pt")) {
         verify_login("SELECT id_utilizador, username, password, foto FROM utilizadores WHERE email = ?", $email, $password, 'admin', 'admin_dashboard.php', $conn);
     } elseif (str_ends_with($email, "@gmail.com")) {
