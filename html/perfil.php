@@ -15,7 +15,7 @@ $user_id = $user_role === 'aluno' ? $_SESSION['id_aluno'] : $_SESSION['id_empres
 $tabela = $user_role === 'aluno' ? 'alunos' : 'empresas';
 $id_coluna = $user_role === 'aluno' ? 'id_aluno' : 'id_empresas';
 
-$erro = $sucesso = "";
+$erro = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user_role === 'aluno') {
@@ -50,14 +50,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $telefone = $_POST['telefone'] ?? '';
         $morada = $_POST['morada'] ?? '';
         $cod_postal = $_POST['cod_postal'] ?? '';
-        $localidade = $_POST['localidade'] ?? '';
+        $Localidade = $_POST['Localidade'] ?? '';
 
-        $stmt = $conn->prepare("UPDATE empresas SET nome_empresa=?, responsavel=?, telefone=?, morada=?, cod_postal=?, localidade=? WHERE id_empresas=?");
-        $stmt->bind_param("ssssssi", $nome_empresa, $responsavel, $telefone, $morada, $cod_postal, $localidade, $user_id);
+        $stmt = $conn->prepare("UPDATE empresas SET nome_empresa=?, responsavel=?, telefone=?, morada=?, cod_postal=?, Localidade=? WHERE id_empresas=?");
+        $stmt->bind_param("ssssssi", $nome_empresa, $responsavel, $telefone, $morada, $cod_postal, $Localidade, $user_id);
     }
 
     if ($stmt->execute()) {
-        $sucesso = "Dados atualizados com sucesso!";
+        $_SESSION['toast_message'] = "Alterações guardadas com sucesso!";
+        $dashboard = $user_role === 'aluno' ? 'aluno_dashboard.php' : 'empresa_dashboard.php';
+        header("Location: $dashboard");
+        exit();
+  
     } else {
         $erro = "Erro ao atualizar os dados.";
     }
@@ -92,9 +96,6 @@ $stmt->close();
 
     <?php if ($erro): ?>
         <div class="popup error-popup"><?= htmlspecialchars($erro) ?></div>
-    <?php endif; ?>
-    <?php if ($sucesso): ?>
-        <div class="popup success-popup"><?= htmlspecialchars($sucesso) ?></div>
     <?php endif; ?>
 
     <?php if ($dados): ?>
@@ -143,8 +144,8 @@ $stmt->close();
                     <input type="text" id="cod_postal" name="cod_postal" value="<?= htmlspecialchars($dados['cod_postal'] ?? '') ?>">
                 </div>
                 <div class="perfil-field-group">
-                    <label for="localidade">Localidade</label>
-                    <input type="text" id="localidade" name="localidade" value="<?= htmlspecialchars($dados['localidade'] ?? '') ?>">
+                    <label for="Localidade">Localidade</label>
+                    <input type="text" id="Localidade" name="Localidade" value="<?= htmlspecialchars($dados['Localidade'] ?? '') ?>">
                 </div>
             <?php endif; ?>
 

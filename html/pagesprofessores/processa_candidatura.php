@@ -51,7 +51,7 @@ $stmt->execute();
 if ($acao === 'cancelar') {
     // Limpar o buffer de saída antes de redirecionar para a mesma página de candidatos
     ob_end_clean();
-    header("Location: ../pagesprofessores/alunos_candidatos.php?oferta_id=$id_oferta");
+    header("Location: ../professor_dashboard.php?page=alunos_candidatos&oferta_id=$id_oferta");
     exit();
 }
 

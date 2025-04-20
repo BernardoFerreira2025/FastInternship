@@ -15,7 +15,7 @@ $id_curso_professor = $_SESSION['id_curso'] ?? null;
 // Verifica se o ID da empresa foi passado
 if (!isset($_GET['id'])) {
     $_SESSION['toast_message'] = "Erro: ID da empresa não fornecido.";
-    header("Location: professor_dashboard.php?page=gestao_empresas");
+    header("Location: ../professor_dashboard.php?page=gestao_empresas");
     exit();
 }
 
@@ -30,7 +30,7 @@ $empresa = $res->fetch_assoc();
 
 if (!$empresa || $empresa['id_curso'] != $id_curso_professor) {
     $_SESSION['toast_message'] = "Erro: Não tens permissão para excluir esta empresa.";
-    header("Location: professor_dashboard.php?page=gestao_empresas");
+    header("Location: ../professor_dashboard.php?page=gestao_empresas");
     exit();
 }
 
@@ -44,5 +44,5 @@ if ($stmt->execute()) {
     $_SESSION['toast_message'] = "Erro ao excluir a empresa.";
 }
 
-header("Location: professor_dashboard.php?page=gestao_empresas");
+header("Location: ../professor_dashboard.php?page=gestao_empresas");
 exit();

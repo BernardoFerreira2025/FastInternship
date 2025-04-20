@@ -81,30 +81,24 @@ $resultOfertas = $stmtOfertas->get_result();
 </div>
 
 <?php
-// Exibe mensagens de sucesso ou erro
-if (isset($_SESSION['mensagem_sucesso'])) {
-    echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const toast = document.createElement('div');
-                toast.className = 'toast-message toast-success';
-                toast.textContent = '" . addslashes($_SESSION['mensagem_sucesso']) . "';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-            });
-          </script>";
-    unset($_SESSION['mensagem_sucesso']);
-}
+if (isset($_SESSION['toast_message'])) {
+    $mensagem = addslashes($_SESSION['toast_message']);
 
-if (isset($_SESSION['mensagem_erro'])) {
+    // 👇 Detecta exclusões e erros como "toast-error"
+    $tipo = (stripos($mensagem, 'exclu') !== false || stripos($mensagem, 'erro') !== false)
+    ? 'toast-error'
+    : 'toast-success';
+
     echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const toast = document.createElement('div');
-                toast.className = 'toast-message toast-error';
-                toast.textContent = '" . addslashes($_SESSION['mensagem_erro']) . "';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-            });
-          </script>";
-    unset($_SESSION['mensagem_erro']);
+        document.addEventListener('DOMContentLoaded', function() {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message {$tipo}';
+            toast.textContent = '{$mensagem}';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        });
+    </script>";
+
+    unset($_SESSION['toast_message']);
 }
 ?>

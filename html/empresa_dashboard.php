@@ -36,7 +36,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-
     <?php require "assets/elements/header.php"; ?>
 
     <div class="dashboard-container">
@@ -64,18 +63,35 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
         <!-- Main Content -->
         <main class="main-content">
-            <?php
-                $allowed_pages = ['dashboard', 'gestao_ofertas', 'alunos_candidatos', 'editar_oferta'];
-                if (in_array($page, $allowed_pages)) {
-                    include "pagesempresas/{$page}.php";
-                } else {
-                    echo "<h1>Página não encontrada</h1>";
-                }
-            ?>
-        </main>
+
+<?php if (isset($_SESSION['toast_message'])): ?>
+    <div class="toast-message <?= stripos($_SESSION['toast_message'], 'erro') !== false ? 'toast-error' : 'toast-success' ?>">
+        <?= htmlspecialchars($_SESSION['toast_message']) ?>
+    </div>
+    <?php unset($_SESSION['toast_message']); ?>
+<?php endif; ?>
+
+<?php
+    $allowed_pages = ['dashboard', 'gestao_ofertas', 'alunos_candidatos', 'editar_oferta'];
+    if (in_array($page, $allowed_pages)) {
+        include "pagesempresas/{$page}.php";
+    } else {
+        echo "<h1>Página não encontrada</h1>";
+    }
+?>
+</main>
+
     </div>
 
     <!-- Footer -->
     <?php require "assets/elements/footer.php"; ?>
+
+    <script>
+    setTimeout(() => {
+        const toast = document.querySelector('.toast-message');
+        if (toast) toast.remove();
+    }, 4000); // tempo um pouco maior que a animação
+</script>
+
 </body>
 </html>

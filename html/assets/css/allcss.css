@@ -1562,17 +1562,19 @@ button.primary:hover {
 
     .toast-message {
         position: fixed;
-        bottom: 20px; /* Aparece na parte inferior */
+        bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 9999;
         padding: 12px 20px;
-        font-size: 16px;
-        font-weight: bold;
         border-radius: 8px;
+        font-weight: bold;
+        font-size: 14px;
         color: #fff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        animation: fadeInOut 4s ease-in-out;
+        z-index: 9999;
+        background-color: #28a745;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        opacity: 1;
+        animation: fadeOut 5s forwards;
     }
     
     .toast-success {

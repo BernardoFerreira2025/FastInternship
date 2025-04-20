@@ -71,6 +71,14 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'verofertas';
 
     <!-- Main Content -->
     <main class="main-content">
+
+    <?php if (isset($_SESSION['toast_message'])): ?>
+    <div class="toast-message <?= stripos($_SESSION['toast_message'], 'erro') !== false ? 'toast-error' : 'toast-success' ?>">
+        <?= htmlspecialchars($_SESSION['toast_message']) ?>
+    </div>
+    <?php unset($_SESSION['toast_message']); ?>
+<?php endif; ?>
+
         <?php
             // Lista de páginas permitidas
             $allowed_pages = ['verofertas', 'historico', 'candidatar', 'candidatura_final'];
@@ -89,5 +97,12 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'verofertas';
 
     <!-- Footer -->
     <?php require "assets/elements/footer.php"; ?>
+
+    <script>
+    setTimeout(() => {
+        const toast = document.querySelector('.toast-message');
+        if (toast) toast.remove();
+    }, 4000); // tempo um pouco maior que a animação
+</script>
 </body>
 </html>

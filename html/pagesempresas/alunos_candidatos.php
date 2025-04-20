@@ -46,7 +46,6 @@ if ($res_verifica->num_rows === 0) {
     die("Acesso não autorizado a esta oferta.");
 }
 
-// Buscar os dados dos candidatos
 $query = "SELECT c.id_candidatura, 
                 a.nome, a.turma, a.nr_processo, a.email, a.curriculo,
                 c.carta_motivacao, c.respostas, 
@@ -56,7 +55,7 @@ $query = "SELECT c.id_candidatura,
          INNER JOIN alunos a ON c.id_aluno = a.id_aluno
          INNER JOIN ofertas_empresas oe ON c.id_oferta = oe.id_oferta
          INNER JOIN professores p ON a.id_curso = p.id_curso
-         WHERE c.id_oferta = ? AND oe.id_empresa = ?";
+         WHERE c.id_oferta = ? AND oe.id_empresa = ? AND c.status_professor = 'aprovado'";
 
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ii", $id_oferta, $id_empresa);
@@ -178,7 +177,7 @@ $result = $stmt->get_result();
                             <div class="acoes-empresa">
                                 <form method="post" action="pagesempresas/processa_candidatura_empresa.php">
                                     <input type="hidden" name="id_candidatura" value="<?= htmlspecialchars($row['id_candidatura']); ?>">
-                                    <button type="submit" name="acao" value="cancelar" class="btn btn-warning">Cancelar</button>
+                                    <button type="submit" name="acao" value="cancelar" class="btn-danger">Cancelar</button>
                                 </form>
                             </div>
                         <?php endif; ?>

@@ -17,14 +17,14 @@ if (isset($_SESSION['toastMessage'])) {
     unset($_SESSION['toastMessage']);
 }
 
-// Exibir apenas candidaturas cujo status do professor NÃO seja "rejeitado"
 $sql_historico = "SELECT c.id_candidatura, o.titulo, o.descricao, o.data_inicio, o.data_fim, 
                          e.nome_empresa, c.status_professor, c.status_empresa
                   FROM candidaturas c
                   INNER JOIN ofertas_empresas o ON c.id_oferta = o.id_oferta
                   INNER JOIN empresas e ON o.id_empresa = e.id_empresas
                   WHERE c.id_aluno = ? 
-                  AND c.status_professor != 'rejeitado'";
+                  AND c.status_professor = 'pendente'";
+
 $stmt = $conn->prepare($sql_historico);
 $stmt->bind_param("i", $id_aluno);
 $stmt->execute();

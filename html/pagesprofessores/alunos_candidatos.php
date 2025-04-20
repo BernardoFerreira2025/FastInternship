@@ -1,6 +1,6 @@
 <?php
 
-require_once '../database/mysqli.php';
+require_once __DIR__ . '/../../database/mysqli.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
