@@ -1,5 +1,5 @@
 <?php
-// Conexão com o banco de dados
+
 require_once '../database/mysqli.php';
 
 if (session_status() === PHP_SESSION_NONE) {

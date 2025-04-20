@@ -42,29 +42,34 @@ $empresas = $stmt->get_result();
     </div>
 <?php } ?>
 
-<div class="users-container">
-    <h2 class="users-header">Empresas</h2>
+<div class="oferta-container">
+    <h2 class="oferta-titulo">Empresas</h2>
 
-    <div class="users-grid">
+    <div class="oferta-grid">
         <?php if ($empresas->num_rows === 0): ?>
             <p style="color: yellow;">Nenhuma empresa encontrada para o teu curso.</p>
         <?php endif; ?>
 
         <?php while ($empresa = $empresas->fetch_assoc()) { ?>
-            <div class="user-card">
-                <div class="profile-pic-container">
-                    <img src="<?= !empty($empresa['foto']) ? '../images/' . $empresa['foto'] : '../images/company_default.png' ?>" alt="Foto da Empresa">
+            <div class="oferta-card">
+                <div class="profile-pic-container" style="text-align: center; margin-bottom: 1rem;">
+                    <img src="<?= !empty($empresa['foto']) ? '../images/' . $empresa['foto'] : '../images/company_default.png' ?>" alt="Foto da Empresa" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: 2px solid #fff;">
                 </div>
                 <h3><?= htmlspecialchars($empresa['nome_empresa']) ?></h3>
-                <p><i class="fas fa-user-tie"></i> <strong>Responsável:</strong> <?= htmlspecialchars($empresa['responsavel']) ?></p>
-                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <?= htmlspecialchars($empresa['email']) ?></p>
-                <p><i class="fas fa-phone"></i> <strong>Telefone:</strong> <?= htmlspecialchars($empresa['telefone']) ?></p>
-                <p><i class="fas fa-map-marked-alt"></i> <strong>Morada:</strong> <?= htmlspecialchars($empresa['morada']) ?></p>
-                <p><i class="fas fa-mail-bulk"></i> <strong>Código Postal:</strong> <?= htmlspecialchars($empresa['cod_postal']) ?></p>
-                <p><i class="fas fa-map-marker-alt"></i> <strong>Localidade:</strong> <?= htmlspecialchars($empresa['Localidade']) ?></p>
-                <div class="user-actions">
-                    <a href='professor_dashboard.php?page=editar_empresa&id=<?= $empresa['id_empresas'] ?>' class="edit"><i class="fas fa-pen-to-square action-icon"></i> Editar</a>
-                    <a href='pagesprofessores/excluir_empresa.php?id=<?= $empresa['id_empresas'] ?>' class="delete"><i class="fas fa-trash action-icon"></i> Excluir</a>
+                <p><strong>Responsável:</strong> <?= htmlspecialchars($empresa['responsavel']) ?></p>
+                <p><strong>Email:</strong> <?= htmlspecialchars($empresa['email']) ?></p>
+                <p><strong>Telefone:</strong> <?= htmlspecialchars($empresa['telefone']) ?></p>
+                <p><strong>Morada:</strong> <?= htmlspecialchars($empresa['morada']) ?></p>
+                <p><strong>Código Postal:</strong> <?= htmlspecialchars($empresa['cod_postal']) ?></p>
+                <p><strong>Localidade:</strong> <?= htmlspecialchars($empresa['Localidade']) ?></p>
+
+                <div class="oferta-actions">
+                    <a href='professor_dashboard.php?page=editar_empresa&id=<?= $empresa['id_empresas'] ?>' class="btn-editar">
+                        <i class="fas fa-pen-to-square"></i> Editar
+                    </a>
+                    <a href='pagesprofessores/excluir_empresa.php?id=<?= $empresa['id_empresas'] ?>' class="btn-excluir">
+                        <i class="fas fa-trash"></i> Excluir
+                    </a>
                 </div>
             </div>
         <?php } ?>

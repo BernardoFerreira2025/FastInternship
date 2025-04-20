@@ -48,17 +48,16 @@ $stmtOfertas->execute();
 $resultOfertas = $stmtOfertas->get_result();
 ?>
 
-<div class="users-container">
-    <h2 class="users-header">Gerir Ofertas Publicadas</h2>
-    <div class="users-grid">
+<div class="oferta-container">
+    <h2 class="oferta-titulo">Gerir Ofertas Publicadas</h2>
+    <div class="oferta-grid">
         <?php
         if ($resultOfertas->num_rows > 0) {
             while ($oferta = $resultOfertas->fetch_assoc()) {
-                // Formatar datas à portuguesa
                 $data_inicio = date('d-m-Y', strtotime($oferta['data_inicio']));
                 $data_fim = date('d-m-Y', strtotime($oferta['data_fim']));
 
-                echo "<div class='user-card'>";
+                echo "<div class='oferta-card'>";
                 echo "<h3>" . htmlspecialchars($oferta['titulo']) . "</h3>";
                 echo "<p><strong>Empresa:</strong> " . htmlspecialchars($oferta['nome_empresa']) . "</p>";
                 echo "<p><strong>Responsável:</strong> " . htmlspecialchars($oferta['responsavel']) . "</p>";
@@ -66,11 +65,11 @@ $resultOfertas = $stmtOfertas->get_result();
                 echo "<p><strong>Data Início:</strong> " . $data_inicio . "</p>";
                 echo "<p><strong>Data Fim:</strong> " . $data_fim . "</p>";
                 echo "<p><strong>Vagas:</strong> " . htmlspecialchars($oferta['vagas']) . "</p>";
-                echo "<div class='user-actions'>";
-                echo "<a href='professor_dashboard.php?page=editar_oferta&id=" . $oferta['id_oferta'] . "' class='edit'>";
-                echo "<i class='fas fa-pen-to-square action-icon'></i> Editar</a>";
-                echo "<a href='pagesprofessores/excluir_oferta.php?id=" . $oferta['id_oferta'] . "' class='delete'>";
-                echo "<i class='fas fa-trash action-icon'></i> Excluir</a>";
+                echo "<div class='oferta-actions'>";
+                echo "<a href='professor_dashboard.php?page=editar_oferta&id=" . $oferta['id_oferta'] . "' class='btn-editar'>";
+                echo "<i class='fas fa-pen-to-square'></i> Editar</a>";
+                echo "<a href='pagesprofessores/excluir_oferta.php?id=" . $oferta['id_oferta'] . "' class='btn-excluir'>";
+                echo "<i class='fas fa-trash'></i> Excluir</a>";
                 echo "</div>";
                 echo "</div>";
             }

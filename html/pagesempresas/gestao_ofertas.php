@@ -14,75 +14,64 @@ if (!isset($_SESSION['id_empresas'])) {
 
 $id_empresas = $_SESSION['id_empresas'];
 
-// Obtém o curso da empresa logada
-$query = "SELECT id_curso FROM empresas WHERE id_empresas = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $id_empresas);
-$stmt->execute();
-$result = $stmt->get_result();
-$empresa = $result->fetch_assoc();
-$id_curso = $empresa['id_curso'] ?? null;
-
-if (!$id_curso) {
-    die("<p>Erro: A empresa não tem um curso associado.</p>");
-}
-
-// Consulta para as ofertas associadas ao curso
+// Consulta para as ofertas associadas SÓ à empresa logada
 $queryOfertas = "
     SELECT 
         ofertas_empresas.*, 
         empresas.nome_empresa, 
-        empresas.responsavel 
+        empresas.responsavel,
+        cursos.nome AS curso_nome
     FROM 
         ofertas_empresas
     INNER JOIN 
-        empresas 
-    ON 
-        ofertas_empresas.id_empresa = empresas.id_empresas
+        empresas ON ofertas_empresas.id_empresa = empresas.id_empresas
+    INNER JOIN 
+        cursos ON ofertas_empresas.id_curso = cursos.id_curso
     WHERE 
-        ofertas_empresas.id_curso = ?
+        ofertas_empresas.id_empresa = ?
 ";
 
 $stmtOfertas = $conn->prepare($queryOfertas);
-$stmtOfertas->bind_param("i", $id_curso);
+$stmtOfertas->bind_param("i", $id_empresas);
 $stmtOfertas->execute();
 $resultOfertas = $stmtOfertas->get_result();
 ?>
 
-<div class="form-background">
-    <div class="form-wrapper">
-        <h1 class="users-header">Gerir Ofertas Publicadas</h1>
+<div class="oferta-container">
+    <h2 class="oferta-titulo">Gerir Ofertas Publicadas</h2>
 
-        <!-- Grade de Ofertas -->
-        <div class="users-grid">
-        <?php
-        if ($resultOfertas->num_rows > 0) {
-            while ($oferta = $resultOfertas->fetch_assoc()) {
-                // Formatar datas para o padrão português
-                $data_inicio = date('d-m-Y', strtotime($oferta['data_inicio']));
-                $data_fim = date('d-m-Y', strtotime($oferta['data_fim']));
+    <!-- Grade de Ofertas -->
+    <div class="oferta-grid">
+    <?php
+    if ($resultOfertas->num_rows > 0) {
+        while ($oferta = $resultOfertas->fetch_assoc()) {
+            $data_inicio = date('d-m-Y', strtotime($oferta['data_inicio']));
+            $data_fim = date('d-m-Y', strtotime($oferta['data_fim']));
+            // Abreviação TGPSI
+            $curso_nome = ($oferta['curso_nome'] === 'Técnico(a) de Gestão e Programação de Sistemas Informáticos') ? 'TGPSI' : htmlspecialchars($oferta['curso_nome']);
 
-                echo "<div class='user-card'>";
-                echo "<h3><i class='fas fa-briefcase'></i> " . htmlspecialchars($oferta['titulo']) . "</h3>";
-                echo "<p><i class='fas fa-user-tie'></i> <strong>Responsável:</strong> " . htmlspecialchars($oferta['responsavel']) . "</p>";
-                echo "<p><i class='fas fa-align-left'></i> <strong>Descrição:</strong> " . htmlspecialchars($oferta['descricao']) . "</p>";
-                echo "<p><i class='fas fa-calendar-alt'></i> <strong>Data Início:</strong> " . $data_inicio . "</p>";
-                echo "<p><i class='fas fa-calendar-check'></i> <strong>Data Fim:</strong> " . $data_fim . "</p>";
-                echo "<p><i class='fas fa-users'></i> <strong>Vagas:</strong> " . htmlspecialchars($oferta['vagas']) . "</p>";
-                echo "<div class='user-actions'>";
-                echo "<a href='empresa_dashboard.php?page=editar_oferta&id=" . $oferta['id_oferta'] . "' class='edit'>";
-                echo "<i class='fas fa-pen-to-square action-icon'></i> Editar</a>";
-                echo "<a href='pagesempresas/excluir_oferta.php?id=" . $oferta['id_oferta'] . "' class='delete'>";
-                echo "<i class='fas fa-trash action-icon'></i> Excluir</a>";
-                echo "</div>";
+            echo "<div class='oferta-card'>";
+            echo "<h3><i class='fas fa-briefcase'></i> " . htmlspecialchars($oferta['titulo']) . "</h3>";
+            echo "<p><i class='fas fa-user-tie'></i> <strong>Responsável:</strong> " . htmlspecialchars($oferta['responsavel']) . "</p>";
+            echo "<p><i class='fas fa-align-left'></i> <strong>Descrição:</strong> " . htmlspecialchars($oferta['descricao']) . "</p>";
+            echo "<p><i class='fas fa-calendar-alt'></i> <strong>Data Início:</strong> " . $data_inicio . "</p>";
+            echo "<p><i class='fas fa-calendar-check'></i> <strong>Data Fim:</strong> " . $data_fim . "</p>";
+            echo "<p><i class='fas fa-users'></i> <strong>Vagas:</strong> " . htmlspecialchars($oferta['vagas']) . "</p>";
+            echo "<p><i class='fas fa-graduation-cap'></i> <strong>Curso:</strong> " . $curso_nome . "</p>";
 
-                echo "</div>";
-            }
-        } else {
-            echo "<p>Nenhuma oferta encontrada para o seu curso.</p>";
+            echo "<div class='oferta-actions'>";
+            echo "<a href='empresa_dashboard.php?page=editar_oferta&id=" . $oferta['id_oferta'] . "' class='btn-editar'>";
+            echo "<i class='fas fa-pen-to-square'></i> Editar</a>";
+            echo "<a href='pagesempresas/excluir_oferta.php?id=" . $oferta['id_oferta'] . "' class='btn-excluir'>";
+            echo "<i class='fas fa-trash'></i> Excluir</a>";
+            echo "</div>";
+
+            echo "</div>";
         }
-        ?>
-        </div>
+    } else {
+        echo "<p style='color: yellow;'>Nenhuma oferta publicada pela sua empresa.</p>";
+    }
+    ?>
     </div>
 </div>
 

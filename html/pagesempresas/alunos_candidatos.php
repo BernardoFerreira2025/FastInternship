@@ -1,5 +1,4 @@
 <?php
-// Conexão com o banco de dados
 require_once '../database/mysqli.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -7,7 +6,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Verifica se a empresa está logada
 if (!isset($_SESSION['id_empresas'])) {
-    die("Acesso negado.");
+    header("Location: ../formlogin.php");
+    exit();
 }
 
 $id_empresa = $_SESSION['id_empresas'];
@@ -29,11 +29,24 @@ $nome_empresa = $empresa['nome_empresa'] ?? "Empresa Desconhecida";
 
 // Verifica se foi passado o ID da oferta
 if (!isset($_GET['oferta_id']) || empty($_GET['oferta_id'])) {
-    die("Erro: ID da oferta não especificado.");
+    header("Location: empresa_dashboard.php?page=gestao_ofertas");
+    exit();
 }
 
 $id_oferta = intval($_GET['oferta_id']);
 
+// Verifica se a oferta pertence MESMO à empresa logada
+$sql_verifica_oferta = "SELECT id_oferta FROM ofertas_empresas WHERE id_oferta = ? AND id_empresa = ?";
+$stmt_verifica = $conn->prepare($sql_verifica_oferta);
+$stmt_verifica->bind_param("ii", $id_oferta, $id_empresa);
+$stmt_verifica->execute();
+$res_verifica = $stmt_verifica->get_result();
+
+if ($res_verifica->num_rows === 0) {
+    die("Acesso não autorizado a esta oferta.");
+}
+
+// Buscar os dados dos candidatos
 $query = "SELECT c.id_candidatura, 
                 a.nome, a.turma, a.nr_processo, a.email, a.curriculo,
                 c.carta_motivacao, c.respostas, 
@@ -43,8 +56,7 @@ $query = "SELECT c.id_candidatura,
          INNER JOIN alunos a ON c.id_aluno = a.id_aluno
          INNER JOIN ofertas_empresas oe ON c.id_oferta = oe.id_oferta
          INNER JOIN professores p ON a.id_curso = p.id_curso
-         WHERE c.id_oferta = ? 
-         AND oe.id_empresa = ?";
+         WHERE c.id_oferta = ? AND oe.id_empresa = ?";
 
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ii", $id_oferta, $id_empresa);

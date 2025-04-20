@@ -1580,9 +1580,21 @@ button.primary:hover {
     }
     
     .toast-error {
-        background-color: #f44336;
+        position: fixed;
+        bottom: 30px; /* distancia do fundo */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #e74c3c;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.3);
+        z-index: 9999;
+        animation: fadeInOut 5s ease-in-out;
     }
     
+   
     @keyframes fadeInOut {
         0% {
             opacity: 0;
@@ -3067,4 +3079,311 @@ input[type="date"].input-field::-webkit-calendar-picker-indicator {
 
 .perfil-cv-link i {
     font-size: 1.2rem;
+}
+
+/* ===== Estilo exclusivo para a página de gestão de ofertas dos professores ===== */
+
+.oferta-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.oferta-titulo {
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.oferta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.oferta-card {
+    background: #1e1f2f;
+    border-radius: 16px;
+    padding: 1.8rem;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    color: #e2e2e2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+}
+
+.oferta-card:hover {
+    transform: translateY(-5px);
+}
+
+.oferta-card h3 {
+    font-size: 1.3rem;
+    color: #4da6ff;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.oferta-card p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.oferta-card p strong {
+    color: #ffffff;
+}
+
+.oferta-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+.oferta-actions a {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.oferta-actions a:hover {
+    transform: scale(1.03);
+}
+
+.btn-editar {
+    background-color: #3b82f6;
+    color: #fff;
+}
+
+.btn-editar:hover {
+    background-color: #2563eb;
+}
+
+.btn-excluir {
+    background-color: #ef4444;
+    color: #fff;
+}
+
+.btn-excluir:hover {
+    background-color: #dc2626;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .oferta-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .oferta-card {
+        width: 90%;
+    }
+}
+
+.verofertas-container {
+    margin-left: 260px; /* espaço para a sidebar */
+    padding: 40px 50px;
+    background-color: #0f1126;
+    min-height: 100vh;
+}
+
+.verofertas-titulo {
+    color: #ffffff;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.verofertas-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.veroferta-card {
+    background-color: #181a31;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 430px;
+    flex: 1 1 calc(50% - 30px); /* 2 por linha */
+    min-height: 440px;
+}
+
+.veroferta-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(79, 140, 255, 0.3);
+}
+
+.veroferta-card h3 {
+    color: #4f8cff;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.veroferta-card p {
+    color: #dddddd;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.veroferta-card strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-candidatar {
+    margin-top: auto;
+    background: linear-gradient(90deg, #6a78ff, #ff5faa);
+    color: white;
+    padding: 10px 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    text-align: center;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    display: inline-block;
+    box-shadow: 0 0 10px rgba(255, 95, 170, 0.3);
+}
+
+.btn-candidatar:hover {
+    opacity: 0.9;
+}
+
+.btn-candidatado,
+.btn-disabled {
+    margin-top: auto;
+    background-color: #5a5a5a;
+    color: #cfcfcf;
+    padding: 10px 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    border: none;
+    text-align: center;
+    cursor: not-allowed;
+}
+
+/* Mensagem sem dados */
+.no-data {
+    color: #ffcc00;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Responsividade */
+@media (max-width: 1000px) {
+    .veroferta-card {
+        flex: 1 1 100%; /* 1 por linha no tablet/mobile */
+    }
+
+    .verofertas-container {
+        margin-left: 0;
+        padding: 30px 20px;
+    }
+}
+/* Container principal */
+.historico-container {
+    padding: 40px 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* Título da secção */
+.historico-titulo {
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* Grid das candidaturas */
+.historico-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 25px;
+}
+
+/* Cartão de cada candidatura */
+.historico-card {
+    background-color: #1c1f2e;
+    color: #f0f0f0;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+}
+
+.historico-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Texto dentro do cartão */
+.historico-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    color: #4f8cff;
+}
+
+.historico-card p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+.historico-card p strong {
+    color: #ffffff;
+}
+
+/* Botão para cancelar candidatura */
+.btn-cancelar-historico {
+    margin-top: 20px;
+    padding: 10px 16px;
+    background-color: #FF4F4F;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-cancelar-historico:hover {
+    background-color: #e53935;
+}
+
+/* Mensagem de candidatura avaliada */
+.historico-avaliada-msg {
+    margin-top: 15px;
+    font-style: italic;
+    color: #ccc;
+    font-size: 0.9rem;
 }

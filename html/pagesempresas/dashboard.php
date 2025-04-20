@@ -1,105 +1,76 @@
 <?php
-// Conexão com o banco de dados
-//include '../../database/mysqli.php';
 require_once '../database/mysqli.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Verifica se a empresa está logada e obtém o ID do curso ao qual ele pertence
+// Verifica se a empresa está logada
 if (!isset($_SESSION['id_empresas'])) {
     die("Acesso negado.");
 }
 
-$id_professor = $_SESSION['id_empresas'];
+$id_empresa = $_SESSION['id_empresas'];
 
-// Busca o id_curso da empresa logada
-$queryCurso = "SELECT id_curso FROM empresas WHERE id_empresas = ?";
-$stmtCurso = $conn->prepare($queryCurso);
-$stmtCurso->bind_param("i", $id_empresas);
-$stmtCurso->execute();
-$resultCurso = $stmtCurso->get_result();
-$curso = $resultCurso->fetch_assoc();
-
-if (!$curso) {
-    die("Erro ao obter curso da empresa.");
-}
-
-$id_curso = $curso['id_curso'];
-
-// Consulta para obter apenas as ofertas do curso da empresa logada
-$query = "SELECT id_oferta, titulo, descricao, vagas, id_curso, data_inicio, data_fim 
-          FROM ofertas_empresas 
-          WHERE id_curso = ? AND data_fim >= CURDATE()";
+// Busca as ofertas associadas a esta empresa
+$query = "SELECT o.*, c.nome AS curso_nome
+          FROM ofertas_empresas o
+          INNER JOIN cursos c ON o.id_curso = c.id_curso
+          WHERE o.id_empresa = ? AND o.data_fim >= CURDATE()";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("i", $id_curso);
+$stmt->bind_param("i", $id_empresa);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
 <div class="form-background">
     <div class="form-wrapper">
-        <!-- Título do Painel -->
         <h1 class="users-header">Controlo das Candidaturas</h1>
 
-        <!-- Seção de Ofertas Publicadas -->
         <div class="users-grid">
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<div class='offer-card'>";
-                    echo "<h3>" . htmlspecialchars($row['titulo']) . "</h3>";
-                    echo "<p><strong>Descrição:</strong> " . htmlspecialchars($row['descricao']) . "</p>";
-                    echo "<p><strong>Vagas:</strong> " . htmlspecialchars($row['vagas']) . "</p>";
-
-                    // Obter o nome do curso
-                    $cursoNomeQuery = "SELECT nome FROM cursos WHERE id_curso = ?";
-                    $stmtCursoNome = $conn->prepare($cursoNomeQuery);
-                    $stmtCursoNome->bind_param("i", $row['id_curso']);
-                    $stmtCursoNome->execute();
-                    $cursoNomeResult = $stmtCursoNome->get_result();
-                    $cursoNome = $cursoNomeResult->fetch_assoc()['nome'] ?? 'Curso não encontrado';
-
-                    echo "<p><strong>Curso Relacionado:</strong> " . htmlspecialchars($cursoNome) . "</p>";
-                    echo "<p><strong>Início:</strong> " . htmlspecialchars($row['data_inicio']) . "</p>";
-                    echo "<p><strong>Fim:</strong> " . htmlspecialchars($row['data_fim']) . "</p>";
-                    echo "<a href='empresa_dashboard.php?page=alunos_candidatos&oferta_id=" . $row['id_oferta'] . "' class='btn-view'>Ver Candidatos</a>";
-                    echo "</div>";
-                }
-            } else {
-                echo "<p>Nenhuma oferta publicada para o seu curso.</p>";
-            }
-            ?>
+            <?php if ($result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="offer-card">
+                        <h3><?= htmlspecialchars($row['titulo']) ?></h3>
+                        <p><strong>Descrição:</strong> <?= htmlspecialchars($row['descricao']) ?></p>
+                        <p><strong>Vagas:</strong> <?= htmlspecialchars($row['vagas']) ?></p>
+                        <p><strong>Curso Relacionado:</strong> <?= $row['curso_nome'] === 'Técnico(a) de Gestão e Programação de Sistemas Informáticos' ? 'TGPSI' : htmlspecialchars($row['curso_nome']) ?></p>
+                        <p><strong>Início:</strong> <?= htmlspecialchars($row['data_inicio']) ?></p>
+                        <p><strong>Fim:</strong> <?= htmlspecialchars($row['data_fim']) ?></p>
+                        <a href='empresa_dashboard.php?page=alunos_candidatos&oferta_id=<?= $row['id_oferta'] ?>' class='btn-view'>Ver Candidatos</a>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p style="color: yellow;">Nenhuma oferta publicada pela sua empresa.</p>
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
 <?php
-// Exibe mensagens de sucesso ou erro
+// Toasts
 if (isset($_SESSION['mensagem_sucesso'])) {
     echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const toast = document.createElement('div');
-                toast.className = 'toast-message toast-success';
-                toast.textContent = '" . addslashes($_SESSION['mensagem_sucesso']) . "';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-            });
-          </script>";
+        document.addEventListener('DOMContentLoaded', function() {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message toast-success';
+            toast.textContent = '" . addslashes($_SESSION['mensagem_sucesso']) . "';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        });
+    </script>";
     unset($_SESSION['mensagem_sucesso']);
 }
 
 if (isset($_SESSION['mensagem_erro'])) {
     echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const toast = document.createElement('div');
-                toast.className = 'toast-message toast-error';
-                toast.textContent = '" . addslashes($_SESSION['mensagem_erro']) . "';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 4000);
-            });
-          </script>";
+        document.addEventListener('DOMContentLoaded', function() {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message toast-error';
+            toast.textContent = '" . addslashes($_SESSION['mensagem_erro']) . "';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        });
+    </script>";
     unset($_SESSION['mensagem_erro']);
 }
 ?>
-

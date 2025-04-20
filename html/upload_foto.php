@@ -36,9 +36,9 @@ switch ($user_role) {
         $redirect_page = 'admin_dashboard.php';
         break;
     case 'empresa':
-        $user_id = $_SESSION['id_empresa'];
+        $user_id = $_SESSION['id_empresas'];
         $table = 'empresas';
-        $id_column = 'id_empresa';
+        $id_column = 'id_empresas';
         $redirect_page = 'empresa_dashboard.php';
         break;
     default:

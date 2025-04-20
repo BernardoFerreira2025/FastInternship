@@ -10,15 +10,14 @@ if (!$id_aluno) {
     die("Acesso não autorizado.");
 }
 
-// Buscar candidaturas analisadas por ambas as partes
+// Buscar candidaturas que já foram analisadas por pelo menos uma das partes
 $sql = "SELECT c.id_candidatura, o.titulo, o.descricao, o.data_inicio, o.data_fim, 
                e.nome_empresa, c.status_professor, c.status_empresa
         FROM candidaturas c
         INNER JOIN ofertas_empresas o ON c.id_oferta = o.id_oferta
         INNER JOIN empresas e ON o.id_empresa = e.id_empresas
         WHERE c.id_aluno = ? 
-          AND c.status_professor != 'pendente' 
-          AND c.status_empresa != 'pendente'";
+          AND (c.status_professor != 'pendente' OR c.status_empresa != 'pendente')";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id_aluno);
@@ -38,7 +37,7 @@ foreach ($candidaturas as $candidatura) {
 
     if ($profStatus === 'aprovado' && $empStatus === 'aprovado') {
         $aprovadas[] = $candidatura;
-    } else {
+    } elseif ($profStatus === 'rejeitado' || $empStatus === 'rejeitado') {
         $rejeitadas[] = $candidatura;
     }
 }
@@ -59,10 +58,10 @@ foreach ($candidaturas as $candidatura) {
         botoes.forEach(btn => btn.classList.remove("ativo"));
 
         if (tipo === 'aprovadas') {
-            document.getElementById("secao-aprovadas").style.display = "block";
+            document.getElementById("secao-aprovadas").style.display = "flex";
             botoes[0].classList.add("ativo");
         } else {
-            document.getElementById("secao-rejeitadas").style.display = "block";
+            document.getElementById("secao-rejeitadas").style.display = "flex";
             botoes[1].classList.add("ativo");
         }
     }
@@ -74,8 +73,8 @@ foreach ($candidaturas as $candidatura) {
 </head>
 <body>
 
-<div class="users-container">
-    <h2 class="users-header">Candidaturas Analisadas</h2>
+<div class="historico-container">
+    <h2 class="historico-titulo">Candidaturas Analisadas</h2>
 
     <div class="filtro-toggle">
         <button class="filtro-opcao ativo" onclick="showSection('aprovadas')">
@@ -87,10 +86,10 @@ foreach ($candidaturas as $candidatura) {
     </div>
 
     <!-- Secção Aprovadas -->
-    <div id="secao-aprovadas" class="users-grid">
+    <div id="secao-aprovadas" class="historico-grid">
         <?php if (count($aprovadas) > 0): ?>
             <?php foreach ($aprovadas as $c): ?>
-                <div class="user-card">
+                <div class="historico-card">
                     <h3><?= htmlspecialchars($c['titulo']) ?></h3>
                     <p><strong>Empresa:</strong> <?= htmlspecialchars($c['nome_empresa']) ?></p>
                     <p><strong>Descrição:</strong> <?= htmlspecialchars($c['descricao']) ?></p>
@@ -110,10 +109,10 @@ foreach ($candidaturas as $candidatura) {
     </div>
 
     <!-- Secção Rejeitadas -->
-    <div id="secao-rejeitadas" class="users-grid" style="display: none;">
+    <div id="secao-rejeitadas" class="historico-grid" style="display: none;">
         <?php if (count($rejeitadas) > 0): ?>
             <?php foreach ($rejeitadas as $c): ?>
-                <div class="user-card">
+                <div class="historico-card">
                     <h3><?= htmlspecialchars($c['titulo']) ?></h3>
                     <p><strong>Empresa:</strong> <?= htmlspecialchars($c['nome_empresa']) ?></p>
                     <p><strong>Descrição:</strong> <?= htmlspecialchars($c['descricao']) ?></p>

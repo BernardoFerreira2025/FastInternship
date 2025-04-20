@@ -13,9 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $morada = $_POST['morada'];
     $cod_postal = $_POST['cod_postal'];
     $Localidade = $_POST['Localidade'];
+    $id_curso = $_POST['id_curso']; // Novo campo
 
-    $stmt = $conn->prepare("UPDATE empresas SET responsavel = ?, nome_empresa = ?, email = ?, telefone = ?, morada = ?, cod_postal = ?, Localidade = ? WHERE id_empresas = ?");
-    $stmt->bind_param("sssssssi", $responsavel, $nome, $email, $telefone, $morada, $cod_postal, $Localidade, $id);
+    $stmt = $conn->prepare("UPDATE empresas SET responsavel = ?, nome_empresa = ?, email = ?, telefone = ?, morada = ?, cod_postal = ?, Localidade = ?, id_curso = ? WHERE id_empresas = ?");
+    $stmt->bind_param("sssssssii", $responsavel, $nome, $email, $telefone, $morada, $cod_postal, $Localidade, $id_curso, $id);
 
     if ($stmt->execute()) {
         $_SESSION['toast_message'] = "Alterações guardadas com sucesso!";
@@ -30,6 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $conn->query("SELECT * FROM empresas WHERE id_empresas = $id");
         if ($result->num_rows > 0) {
             $empresa = $result->fetch_assoc();
+
+            // Buscar todos os cursos
+            $cursos_result = $conn->query("SELECT * FROM cursos");
+            $cursos = $cursos_result->fetch_all(MYSQLI_ASSOC);
         } else {
             echo "Empresa não encontrada.";
             exit();
@@ -90,6 +95,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="input-group-editar">
             <label for="Localidade">Localidade:</label>
             <input type="text" id="Localidade" name="Localidade" value="<?= htmlspecialchars($empresa['Localidade']) ?>" required>
+        </div>
+
+        <div class="input-group-editar">
+            <label for="id_curso">Curso Associado:</label>
+            <select id="id_curso" name="id_curso" required>
+                <option value="">Selecione o curso</option>
+                <?php foreach ($cursos as $curso): ?>
+                    <option value="<?= $curso['id_curso'] ?>" <?= $curso['id_curso'] == $empresa['id_curso'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($curso['nome']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <button type="submit" class="btn-editar-submit">Guardar Alterações</button>

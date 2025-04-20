@@ -75,35 +75,29 @@ if ($total_candidaturas >= 3) {
     echo "<script>Swal.fire({ icon: 'error', title: 'Limite de Candidaturas Atingido', text: 'Você só pode se candidatar a no máximo 3 ofertas.', confirmButtonText: 'Entendido', confirmButtonColor: '#d33' });</script>";
 }
 ?>
-<div class="users-container">
-<h2 class="users-header">Ofertas Disponíveis</h2>
-<div class="users-grid">
-    <?php if (!empty($ofertas)): ?>
+<div class="verofertas-container">
+    <h2 class="verofertas-titulo">Ofertas Disponíveis</h2>
+    <div class="verofertas-grid">
         <?php foreach ($ofertas as $oferta): ?>
-            <div class="offer-card">
-                <h3><?php echo htmlspecialchars($oferta['titulo']); ?></h3>
-                <p><strong>Empresa:</strong> <?php echo htmlspecialchars($oferta['empresa_nome']); ?></p>
-                <p><strong>Responsável:</strong> <?php echo htmlspecialchars($oferta['empresa_responsavel']); ?></p>
-                <p><strong>Descrição:</strong> <?php echo nl2br(htmlspecialchars($oferta['descricao'])); ?></p>
-                <p><strong>Período:</strong> <?php echo htmlspecialchars($oferta['data_inicio']) . " a " . htmlspecialchars($oferta['data_fim']); ?></p>
-                <p><strong>Vagas Disponíveis:</strong> <?php echo htmlspecialchars($oferta['vagas']); ?></p>
-
-                <p><strong>Curso:</strong> 
-                    <?php echo !empty($oferta['curso_relacionado']) ? htmlspecialchars($oferta['curso_relacionado']) : 'Não informado'; ?>
-                </p>
+            <div class="veroferta-card">
+                <h3><?= htmlspecialchars($oferta['titulo']) ?></h3>
+                <p><strong>Empresa:</strong> <?= htmlspecialchars($oferta['empresa_nome']) ?></p>
+                <p><strong>Responsável:</strong> <?= htmlspecialchars($oferta['empresa_responsavel']) ?></p>
+                <p><strong>Descrição:</strong> <?= nl2br(htmlspecialchars($oferta['descricao'])) ?></p>
+                <p><strong>Período:</strong> <?= htmlspecialchars($oferta['data_inicio']) ?> a <?= htmlspecialchars($oferta['data_fim']) ?></p>
+                <p><strong>Vagas Disponíveis:</strong> <?= htmlspecialchars($oferta['vagas']) ?></p>
+                <p><strong>Curso:</strong> <?= htmlspecialchars($oferta['curso_relacionado'] ?? 'Não informado') ?></p>
 
                 <?php if ($oferta['ja_candidatado'] > 0): ?>
-                    <button class="btn btn-danger btn-remove-candidatura" disabled>Já Candidatado</button>
-                <?php elseif ($total_candidaturas < 3): ?>
-                    <a href="aluno_dashboard.php?page=candidatar&id=<?php echo urlencode($oferta['id_oferta']); ?>" class="btn-view">Candidatar</a>
-                <?php else: ?>
-                    <button class="btn-disabled" onclick="limiteCandidaturas()" disabled>Limite Atingido</button>
-                <?php endif; ?>
+    <button class="btn-candidatado" disabled>Já Candidatado</button>
+<?php elseif ($total_candidaturas < 3): ?>
+    <a href="aluno_dashboard.php?page=candidatar&id=<?= urlencode($oferta['id_oferta']); ?>" class="btn-candidatar">Candidatar</a>
+<?php else: ?>
+    <button class="btn-disabled" disabled>Limite Atingido</button>
+<?php endif; ?>
             </div>
         <?php endforeach; ?>
-    <?php else: ?>
-        <p class="no-data">Nenhuma oferta disponível no momento para o seu curso.</p>
-    <?php endif; ?>
+    </div>
 </div>
 
 </body>
