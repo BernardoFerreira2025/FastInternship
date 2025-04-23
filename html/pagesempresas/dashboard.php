@@ -34,8 +34,8 @@ $result = $stmt->get_result();
                         <p><strong>Descrição:</strong> <?= htmlspecialchars($row['descricao']) ?></p>
                         <p><strong>Vagas:</strong> <?= htmlspecialchars($row['vagas']) ?></p>
                         <p><strong>Curso Relacionado:</strong> <?= $row['curso_nome'] === 'Técnico(a) de Gestão e Programação de Sistemas Informáticos' ? 'TGPSI' : htmlspecialchars($row['curso_nome']) ?></p>
-                        <p><strong>Início:</strong> <?= htmlspecialchars($row['data_inicio']) ?></p>
-                        <p><strong>Fim:</strong> <?= htmlspecialchars($row['data_fim']) ?></p>
+                        <p><strong>Início:</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($row['data_inicio']))) ?></p>
+                        <p><strong>Fim:</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($row['data_fim']))) ?></p>
                         <a href='empresa_dashboard.php?page=alunos_candidatos&oferta_id=<?= $row['id_oferta'] ?>' class='btn-view'>Ver Candidatos</a>
                     </div>
                 <?php endwhile; ?>

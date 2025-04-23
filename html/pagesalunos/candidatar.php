@@ -100,7 +100,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </fieldset>
 
         <label for="motivacao">Carta de Motivação</label>
-        <textarea id="motivacao" name="motivacao" rows="4" required></textarea>
+<textarea id="motivacao" name="motivacao" rows="4" required>
+Gostaria muito de me candidatar a esta oportunidade de estágio, pois acredito que poderá contribuir significativamente para o meu desenvolvimento académico e profissional. Tenho um grande interesse na área e estou motivado para aprender, colaborar com a equipa e aplicar os conhecimentos adquiridos ao longo do curso.
+</textarea>
 
         <input type="submit" value="Candidatar-se">
     </form>

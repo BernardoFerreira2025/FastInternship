@@ -61,8 +61,10 @@ $result = $stmt->get_result();
                     $cursoNome = $cursoNomeResult->fetch_assoc()['nome'] ?? 'Curso não encontrado';
 
                     echo "<p><strong>Curso Relacionado:</strong> " . htmlspecialchars($cursoNome) . "</p>";
-                    echo "<p><strong>Início:</strong> " . htmlspecialchars($row['data_inicio']) . "</p>";
-                    echo "<p><strong>Fim:</strong> " . htmlspecialchars($row['data_fim']) . "</p>";
+                    $inicioFormatado = date("d/m/Y", strtotime($row['data_inicio']));
+                    $fimFormatado = date("d/m/Y", strtotime($row['data_fim']));
+                    echo "<p><strong>Início:</strong> $inicioFormatado</p>";
+                    echo "<p><strong>Fim:</strong> $fimFormatado</p>";        
                     echo "<a href='professor_dashboard.php?page=alunos_candidatos&oferta_id=" . $row['id_oferta'] . "' class='btn-view'>Ver Candidatos</a>";
                     echo "</div>";
                 }

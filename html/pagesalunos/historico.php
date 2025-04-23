@@ -23,7 +23,10 @@ $sql_historico = "SELECT c.id_candidatura, o.titulo, o.descricao, o.data_inicio,
                   INNER JOIN ofertas_empresas o ON c.id_oferta = o.id_oferta
                   INNER JOIN empresas e ON o.id_empresa = e.id_empresas
                   WHERE c.id_aluno = ? 
-                  AND c.status_professor = 'pendente'";
+                  AND (
+                      c.status_professor = 'pendente'
+                      OR (c.status_professor = 'aprovado' AND c.status_empresa = 'pendente')
+                  )";
 
 $stmt = $conn->prepare($sql_historico);
 $stmt->bind_param("i", $id_aluno);
@@ -77,8 +80,8 @@ $conn->close();
                 <div class="historico-card">
                     <h3><?php echo htmlspecialchars($candidatura['titulo']); ?></h3>
                     <p><strong>Descrição:</strong> <?php echo htmlspecialchars($candidatura['descricao']); ?></p>
-                    <p><strong>Data de Início:</strong> <?php echo htmlspecialchars($candidatura['data_inicio']); ?></p>
-                    <p><strong>Data de Fim:</strong> <?php echo htmlspecialchars($candidatura['data_fim']); ?></p>
+                    <p><strong>Data de Início:</strong> <?php echo htmlspecialchars(date('d/m/Y', strtotime($candidatura['data_inicio']))); ?></p>
+                    <p><strong>Data de Fim:</strong> <?php echo htmlspecialchars(date('d/m/Y', strtotime($candidatura['data_fim']))); ?></p>
 
                     <p><strong>Status do Professor:</strong> 
                         <span class="status-<?php echo htmlspecialchars(strtolower($candidatura['status_professor'])); ?>">

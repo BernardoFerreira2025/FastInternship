@@ -81,10 +81,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Adicionar Professor</h2>
         <form method="POST" id="ProfForm">
             <label>Nome:</label>
-            <input type="text" name="nome" required>
+            <input type="text" value="João Silva" name="nome" required>
 
             <label>Email:</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" value="joaosilva@esag-edu.net" name="email" id="email" required>
 
             <label>Senha:</label>
             <div class="password-container">

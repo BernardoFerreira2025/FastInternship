@@ -84,7 +84,10 @@ if ($total_candidaturas >= 3) {
                 <p><strong>Empresa:</strong> <?= htmlspecialchars($oferta['empresa_nome']) ?></p>
                 <p><strong>Responsável:</strong> <?= htmlspecialchars($oferta['empresa_responsavel']) ?></p>
                 <p><strong>Descrição:</strong> <?= nl2br(htmlspecialchars($oferta['descricao'])) ?></p>
-                <p><strong>Período:</strong> <?= htmlspecialchars($oferta['data_inicio']) ?> a <?= htmlspecialchars($oferta['data_fim']) ?></p>
+                <p><strong>Período:</strong> 
+    <?= date('d/m/Y', strtotime($oferta['data_inicio'])) ?> a 
+    <?= date('d/m/Y', strtotime($oferta['data_fim'])) ?>
+</p>
                 <p><strong>Vagas Disponíveis:</strong> <?= htmlspecialchars($oferta['vagas']) ?></p>
                 <p><strong>Curso:</strong> <?= htmlspecialchars($oferta['curso_relacionado'] ?? 'Não informado') ?></p>
 

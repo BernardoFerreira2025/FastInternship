@@ -53,29 +53,30 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ofertas Expiradas</title>
-    <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Certifique-se de que o caminho do CSS está correto -->
+    <link rel="stylesheet" href="../assets/css/allcss.css"> <!-- Certifica-te de que o caminho está correto -->
 </head>
 <body>
 
-    <div class="offers-container">
-        <h2 class="users-header">Ofertas Expiradas</h2>
+<div class="expired-offers-container">
+    <h2 class="expired-offers-title">Ofertas Expiradas</h2>
 
-        <?php if ($result->num_rows > 0): ?>
-            <div class="offers-grid">
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <div class="offer-card">
-                        <h3 class="offer-title"><?= htmlspecialchars($row['titulo']); ?></h3>
-                        <p class="offer-company">Empresa: <?= htmlspecialchars($row['nome_empresa']); ?></p>
-                        <p class="offer-description">Descrição: <?= htmlspecialchars($row['descricao']); ?></p>
-                        <p class="offer-vagas">Vagas: <?= htmlspecialchars($row['vagas']); ?></p>
-                        <p class="offer-curso">Curso Relacionado: <?= htmlspecialchars($row['curso_relacionado']); ?></p>
-                        <p class="offer-dates">Início: <?= date("d/m/Y", strtotime($row['data_inicio'])); ?> | Fim: <?= date("d/m/Y", strtotime($row['data_fim'])); ?></p>
-                    </div>
-                <?php endwhile; ?>
-            </div>
-        <?php else: ?>
-            <p class="no-results">Nenhuma oferta expirada encontrada para o seu curso.</p>
-        <?php endif; ?>
-    </div>
+    <?php if ($result->num_rows > 0): ?>
+        <div class="expired-offers-grid">
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <div class="expired-offer-card">
+                    <h3 class="expired-offer-title"><?= htmlspecialchars($row['titulo']); ?></h3>
+                    <p class="expired-offer-detail"><strong>Empresa:</strong> <?= htmlspecialchars($row['nome_empresa']); ?></p>
+                    <p class="expired-offer-detail"><strong>Descrição:</strong> <?= htmlspecialchars($row['descricao']); ?></p>
+                    <p class="expired-offer-detail"><strong>Vagas:</strong> <?= htmlspecialchars($row['vagas']); ?></p>
+                    <p class="expired-offer-detail"><strong>Curso Relacionado:</strong> <?= htmlspecialchars($row['curso_relacionado']); ?></p>
+                    <p class="expired-offer-dates"><strong>Início:</strong> <?= date("d/m/Y", strtotime($row['data_inicio'])); ?> | <strong>Fim:</strong> <?= date("d/m/Y", strtotime($row['data_fim'])); ?></p>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    <?php else: ?>
+        <p class="expired-offer-detail">Nenhuma oferta expirada encontrada para o seu curso.</p>
+    <?php endif; ?>
+</div>
+        
 </body>
 </html>

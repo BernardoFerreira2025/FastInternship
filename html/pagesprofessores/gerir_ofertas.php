@@ -37,20 +37,27 @@ if (!$id_curso) {
         <h1>Inserir Nova Oferta</h1>
 
         <form action="geriroferta_handler.php" method="POST" id="ofertaForm">
-            <div class="form-group">
-                <label for="titulo">Título da Oferta:</label>
-                <input type="text" id="titulo" name="titulo" placeholder="Ex: Nome da Empresa" required>
-            </div>
+        <div class="form-group">
+    <label for="titulo">Título da Oferta:</label>
+    <input type="text" id="titulo" name="titulo" placeholder="Ex: Nome da Empresa" required value="Estágio em Logística e Sistemas - FedEx">
+</div>
 
-            <div class="form-group">
-                <label for="descricao">Descrição:</label>
-                <textarea id="descricao" name="descricao" placeholder="Descreva os detalhes da oferta..." required></textarea>
-            </div>
+<div class="form-group">
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" name="descricao" placeholder="Descreva os detalhes da oferta..." required>
+A FedEx está à procura de um estagiário para apoiar a equipa de logística e gestão de sistemas. O estágio permitirá o contacto direto com processos reais de transporte, rastreamento de encomendas e suporte técnico aos sistemas internos da empresa.
+    </textarea>
+</div>
 
-            <div class="form-group">
-                <label for="requisitos">Requisitos:</label>
-                <textarea id="requisitos" name="requisitos" placeholder="Liste os requisitos necessários..." required></textarea>
-            </div>
+<div class="form-group">
+    <label for="requisitos">Requisitos:</label>
+    <textarea id="requisitos" name="requisitos" placeholder="Liste os requisitos necessários..." required>
+• Conhecimentos em informática e sistemas de gestão  
+• Boa capacidade de comunicação  
+• Sentido de responsabilidade e pontualidade  
+• Capacidade de trabalhar em equipa
+    </textarea>
+</div>
 
             <div class="form-group">
                 <label for="id_empresa">Empresa:</label>
@@ -83,12 +90,12 @@ if (!$id_curso) {
 
             <div class="form-group">
                 <label for="data_inicio">Data de Início:</label>
-                <input type="date" id="data_inicio" name="data_inicio" required>
+                <input type="date" id="data_inicio" value="2025-05-01" name="data_inicio" required>
             </div>
 
             <div class="form-group">
                 <label for="data_fim">Data de Fim:</label>
-                <input type="date" id="data_fim" name="data_fim" required>
+                <input type="date" id="data_fim" value="2025-06-30" name="data_fim" required>
             </div>
 
             <button type="submit" class="btn-submit">Salvar Oferta</button>

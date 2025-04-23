@@ -75,14 +75,16 @@ session_start(); // Inicia sessão para verificar o status do e-mail
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="subject">Assunto</label>
-                        <input type="text" name="subject" id="subject" class="form-input" placeholder="Insira o assunto" required>
-                    </div>
+    <label class="form-label" for="subject">Assunto</label>
+    <input type="text" name="subject" id="subject" class="form-input" placeholder="Insira o assunto" value="Dúvida sobre os requisitos da oferta" required>
+</div>
 
                     <div class="form-group">
-                        <label class="form-label" for="message">A Sua Mensagem</label>
-                        <textarea name="message" id="message" class="form-input" rows="5" placeholder="Escreva a sua mensagem" required></textarea>
-                    </div>
+    <label class="form-label" for="message">A Sua Mensagem</label>
+    <textarea name="message" id="message" class="form-input" rows="5" placeholder="Escreva a sua mensagem" required>
+Olá, gostaria de saber se as vagas disponíveis são apenas para alunos do curso de TGPSI?
+    </textarea>
+</div>
 
                     <button type="submit" class="signup-btn">Enviar Mensagem</button>
                 </form>

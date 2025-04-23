@@ -84,6 +84,6 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     $_SESSION['error'] = "Nenhuma imagem foi enviada.";
 }
 
-// Redireciona para a dashboard do usuário correto
+
 header("Location: $redirect_page");
 exit();

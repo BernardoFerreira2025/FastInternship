@@ -48,12 +48,12 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'verofertas';
     <nav class="sidebar">
         <div class="profile">
             <div class="profile-pic-container">
-                <img src="<?php echo $foto; ?>">
+                <img src="<?php echo htmlspecialchars($foto_aluno); ?>"  class="foto-perfil">
                 <label for="upload-foto" class="upload-icon"><i class="fas fa-camera"></i></label>
             </div>
 
             <!-- Formulário de Upload -->
-            <form action="upload_foto_aluno.php" method="POST" enctype="multipart/form-data">
+            <form action="upload_foto.php" method="POST" enctype="multipart/form-data">
                 <input type="file" id="upload-foto" name="foto" accept="image/*" required onchange="this.form.submit()">
             </form>
         </div>

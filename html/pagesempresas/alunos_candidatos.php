@@ -29,7 +29,7 @@ $nome_empresa = $empresa['nome_empresa'] ?? "Empresa Desconhecida";
 
 // Verifica se foi passado o ID da oferta
 if (!isset($_GET['oferta_id']) || empty($_GET['oferta_id'])) {
-    header("Location: empresa_dashboard.php?page=gestao_ofertas");
+    header("Location: empresa_dashboard.php?page=dashboard");
     exit();
 }
 

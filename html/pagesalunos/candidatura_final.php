@@ -93,8 +93,8 @@ foreach ($candidaturas as $candidatura) {
                     <h3><?= htmlspecialchars($c['titulo']) ?></h3>
                     <p><strong>Empresa:</strong> <?= htmlspecialchars($c['nome_empresa']) ?></p>
                     <p><strong>Descrição:</strong> <?= htmlspecialchars($c['descricao']) ?></p>
-                    <p><strong>Data de Início:</strong> <?= htmlspecialchars($c['data_inicio']) ?></p>
-                    <p><strong>Data de Fim:</strong> <?= htmlspecialchars($c['data_fim']) ?></p>
+                    <p><strong>Data de Início:</strong> <?= date('d/m/Y', strtotime($c['data_inicio'])) ?></p>
+                    <p><strong>Data de Fim:</strong> <?= date('d/m/Y', strtotime($c['data_fim'])) ?></p>
                     <p><strong>Status do Professor:</strong> 
                         <span class="status-aprovado"><?= htmlspecialchars($c['status_professor']) ?></span>
                     </p>
@@ -116,8 +116,8 @@ foreach ($candidaturas as $candidatura) {
                     <h3><?= htmlspecialchars($c['titulo']) ?></h3>
                     <p><strong>Empresa:</strong> <?= htmlspecialchars($c['nome_empresa']) ?></p>
                     <p><strong>Descrição:</strong> <?= htmlspecialchars($c['descricao']) ?></p>
-                    <p><strong>Data de Início:</strong> <?= htmlspecialchars($c['data_inicio']) ?></p>
-                    <p><strong>Data de Fim:</strong> <?= htmlspecialchars($c['data_fim']) ?></p>
+                    <p><strong>Data de Início:</strong> <?= date('d/m/Y', strtotime($c['data_inicio'])) ?></p>
+                    <p><strong>Data de Fim:</strong> <?= date('d/m/Y', strtotime($c['data_fim'])) ?></p>
                     <p><strong>Status do Professor:</strong> 
                         <span class="status-<?= strtolower($c['status_professor']) ?>"><?= htmlspecialchars($c['status_professor']) ?></span>
                     </p>

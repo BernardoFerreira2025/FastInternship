@@ -3389,3 +3389,68 @@ input[type="date"].input-field::-webkit-calendar-picker-indicator {
     color: #ccc;
     font-size: 0.9rem;
 }
+.expired-offers-container {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.expired-offers-title {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.expired-offers-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.expired-offer-card {
+    background-color: #1e1e2f;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    width: 360px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+    border-top: 5px solid #ff5e5e;
+}
+
+.expired-offer-card:hover {
+    transform: translateY(-6px);
+}
+
+.expired-offer-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #42c8ff;
+    margin-bottom: 15px;
+}
+
+.expired-offer-detail {
+    color: #ddd;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.expired-offer-detail strong {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.expired-offer-dates {
+    font-size: 0.9rem;
+    color: #ccc;
+    border-top: 1px solid #333;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+

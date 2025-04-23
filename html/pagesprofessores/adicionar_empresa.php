@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             $_SESSION['toast_message'] = "Empresa adicionada com sucesso!";
             $_SESSION['toast_type'] = "success";
-            header("Location: professor_dashboard.php?page=adicionar_empresa");
+            header("Location: professor_dashboard.php?page=gestao_empresas");
             exit();
         } else {
             $_SESSION['toast_message'] = "Erro ao adicionar empresa.";
@@ -73,26 +73,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1 class="users-header">Adicionar Empresa</h1>
 
         <form method="POST" id="empresaForm">
-            <label>Nome da Empresa:</label>
-            <input type="text" name="nome_empresa" required>
+        <label>Nome da Empresa:</label>
+<input type="text" name="nome_empresa" required value="FedEx">
 
-            <label>Responsável:</label>
-            <input type="text" name="responsavel" required>
+<label>Responsável:</label>
+<input type="text" name="responsavel" required value="Joaquim Sousa">
 
-            <label>Email:</label>
-            <input type="email" id="email" name="email" required>
+<label>Email:</label>
+<input type="email" id="email" name="email" required value="fedex@gmail.com">
 
-            <label>Telefone:</label>
-            <input type="text" id="telefone" name="telefone" required placeholder="XXX-XXX-XXX" maxlength="11">
+<label>Telefone:</label>
+<input type="text" id="telefone" name="telefone" required placeholder="XXX-XXX-XXX" maxlength="11" value="911-234-642">
 
-            <label>Morada:</label>
-            <input type="text" name="morada" required>
+<label>Morada:</label>
+<input type="text" name="morada" required value="Rua Engenheiro Ferreira Dias, 924">
 
-            <label>Código Postal:</label>
-            <input type="text" id="cod_postal" name="cod_postal" required placeholder="XXXX-XXX" maxlength="8">
+<label>Código Postal:</label>
+<input type="text" id="cod_postal" name="cod_postal" required placeholder="XXXX-XXX" maxlength="8" value="4100-247">
 
-            <label>Localidade:</label>
-            <input type="text" name="localidade" required>
+<label>Localidade:</label>
+<input type="text" name="localidade" required value="Porto">
 
             <label>Senha:</label>
             <div class="password-container">
